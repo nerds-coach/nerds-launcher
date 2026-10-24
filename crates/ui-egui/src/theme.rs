@@ -1,5 +1,5 @@
-//! Colours, type and shapes, matching getartcraft.com: hard edges, hairline rules, Archivo
-//! display type, Inter body text and Geist Mono labels. Widgets read [`Tokens::get`]; nothing
+//! Colours, type and shapes in the NERDS look: NERDS blue (#0077C0) on navy or cool white, hard
+//! edges, hairline rules, Archivo display type, Inter body text and Geist Mono labels. Widgets read [`Tokens::get`]; nothing
 //! hard-codes a colour.
 
 use std::sync::Arc;
@@ -77,40 +77,41 @@ const fn hex(rgb: u32) -> Color32 {
 }
 
 impl Tokens {
+    /// NERDS dark: deep navy surfaces, NERDS blue (#0077C0) for actions and a lighter blue for text.
     pub const DARK: Self = Self {
         dark: true,
-        bg: hex(0x121316),
-        sunken: hex(0x060607),
-        ink: hex(0xf2f1ee),
+        bg: hex(0x0d1824),
+        sunken: hex(0x07101a),
+        ink: hex(0xe6eef5),
         ink_strong: hex(0xffffff),
-        muted: ink_alpha(0xf2f1ee, 153),
-        faint: ink_alpha(0xf2f1ee, 97),
-        line: ink_alpha(0xf2f1ee, 38),
-        line_strong: ink_alpha(0xf2f1ee, 102),
-        accent: hex(0x2d81ff),
-        accent_ink: hex(0x74aaff),
-        invert_bg: hex(0xffffff),
-        invert_fg: hex(0x0b0b0c),
-        // PdfCraft's and LightCraft's inks, so status colours come from the site's palette.
+        muted: ink_alpha(0xe6eef5, 153),
+        faint: ink_alpha(0xe6eef5, 97),
+        line: ink_alpha(0xe6eef5, 38),
+        line_strong: ink_alpha(0xe6eef5, 102),
+        accent: hex(0x1488d8),
+        accent_ink: hex(0x5cb6f2),
+        invert_bg: hex(0x0077c0),
+        invert_fg: hex(0xffffff),
         good: hex(0x3fd6b8),
         warn: hex(0xffc14d),
         bad: hex(0xff6259),
     };
 
+    /// NERDS light: cool white surfaces, navy ink, NERDS blue (#0077C0) for actions.
     pub const LIGHT: Self = Self {
         dark: false,
-        bg: hex(0xf2f1ee),
-        sunken: hex(0xe9e8e4),
-        ink: hex(0x101014),
+        bg: hex(0xf5f7fa),
+        sunken: hex(0xe7ecf2),
+        ink: hex(0x0b1520),
         ink_strong: hex(0x000000),
-        muted: ink_alpha(0x101014, 158),
-        faint: ink_alpha(0x101014, 107),
-        line: ink_alpha(0x101014, 41),
-        line_strong: ink_alpha(0x101014, 102),
-        accent: hex(0x2d81ff),
-        accent_ink: hex(0x1659c4),
-        invert_bg: hex(0x101014),
-        invert_fg: hex(0xf2f1ee),
+        muted: ink_alpha(0x0b1520, 158),
+        faint: ink_alpha(0x0b1520, 107),
+        line: ink_alpha(0x0b1520, 41),
+        line_strong: ink_alpha(0x0b1520, 102),
+        accent: hex(0x0077c0),
+        accent_ink: hex(0x005e99),
+        invert_bg: hex(0x0077c0),
+        invert_fg: hex(0xffffff),
         good: hex(0x0a7563),
         warn: hex(0x8a5800),
         bad: hex(0xb3261e),

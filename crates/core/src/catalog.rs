@@ -1,4 +1,5 @@
-//! The Craft App Suite: the thirteen apps the launcher knows about.
+//! The NERDS Suite: the thirteen apps the launcher knows about (the NERDS Suite's apps, shown
+//! under NERDS names and colours).
 //!
 //! The list is data so a later version can fetch it from an API; [`SUITE`] is the built-in copy.
 //!
@@ -10,11 +11,16 @@
 pub struct CraftApp {
     /// Machine name: repo, binary, package and asset stem (`photocraft`).
     pub id: &'static str,
-    /// Display name (`PhotoCraft`).
+    /// The name the app installs under: its macOS bundle, Windows Installer product and registry
+    /// key (`PhotoCraft`). Install and detection code matches on this, so it must be the name the
+    /// release's own installer uses.
     pub name: &'static str,
+    /// The NERDS name the launcher shows (`NERDS Photo`). While the launcher installs the
+    /// upstream builds this differs from [`CraftApp::name`]; once the NERDS builds ship, both match.
+    pub display: &'static str,
     /// What it's for, in a few words (English; the UI translates it by app id).
     pub tagline: &'static str,
-    /// Brand colour (sRGB), for surfaces: getartcraft.com's `--app`.
+    /// Brand colour (sRGB), for surfaces: NERDS blue for every app.
     pub color: [u8; 3],
     /// The brand colour for text on a light background (the site's light `--app-ink`).
     pub ink_light: [u8; 3],
@@ -42,9 +48,9 @@ impl CraftApp {
         format!("https://github.com/{}", self.repo)
     }
 
-    /// The app's page on getartcraft.com.
+    /// The app's page: its source repository until NERDS has a page per app.
     pub fn website(&self) -> String {
-        format!("https://getartcraft.com/apps/{}", self.id)
+        self.repo_url()
     }
 
     /// Asset stems this app's releases may use, current first.
@@ -62,129 +68,92 @@ impl CraftApp {
     }
 }
 
-const fn app(
-    id: &'static str,
-    name: &'static str,
-    tagline: &'static str,
-    [color, ink_light, ink_dark]: [[u8; 3]; 3],
-    repo: &'static str,
-) -> CraftApp {
-    CraftApp { id, name, tagline, color, ink_light, ink_dark, repo, former_ids: &[], former_names: &[] }
+const fn app(id: &'static str, name: &'static str, display: &'static str, tagline: &'static str, repo: &'static str) -> CraftApp {
+    CraftApp {
+        id,
+        name,
+        display,
+        tagline,
+        color: NERDS_BLUE,
+        ink_light: NERDS_INK_LIGHT,
+        ink_dark: NERDS_INK_DARK,
+        repo,
+        former_ids: &[],
+        former_names: &[],
+    }
 }
 
-/// The Craft App Suite, in display order matching getartcraft.com:
+/// NERDS blue (#0077C0), sampled from the NERDS logo: every app's surface colour.
+pub const NERDS_BLUE: [u8; 3] = [0x00, 0x77, 0xc0];
+/// NERDS blue darkened for text on a light background (6:1 on the light page).
+pub const NERDS_INK_LIGHT: [u8; 3] = [0x00, 0x5e, 0x99];
+/// NERDS blue lightened for text on a dark background (8:1 on the dark page).
+pub const NERDS_INK_DARK: [u8; 3] = [0x5c, 0xb6, 0xf2];
+
+/// The suite, in display order. `name` is what each upstream build installs as; `display` is the
+/// NERDS name shown everywhere in the launcher.
 pub const SUITE: [CraftApp; 13] = [
-    app("photocraft", "PhotoCraft", "Image editing", [[0x2f, 0x7b, 0xf5], [0x1a, 0x5b, 0xc4], [0x7f, 0xb0, 0xff]], "storytold/photocraft"),
-    app("vectorcraft", "VectorCraft", "Vector illustration", [[0xe8, 0x57, 0x3f], [0xb8, 0x3a, 0x24], [0xff, 0x8a, 0x70]], "storytold/vectorcraft"),
-    app(
-        "filmcraft",
-        "FilmCraft",
-        "Video editing, color and sound",
-        [[0x8b, 0x5c, 0xf6], [0x6a, 0x3f, 0xd6], [0xb6, 0x9c, 0xff]],
-        "storytold/filmcraft",
-    ),
-    app(
-        "lightcraft",
-        "LightCraft",
-        "Photo library and raw development",
-        [[0xf2, 0xa5, 0x16], [0x8a, 0x58, 0x00], [0xff, 0xc1, 0x4d]],
-        "storytold/lightcraft",
-    ),
+    app("photocraft", "PhotoCraft", "NERDS Photo", "Image editing", "storytold/photocraft"),
+    app("vectorcraft", "VectorCraft", "NERDS Vector", "Vector illustration", "storytold/vectorcraft"),
+    app("filmcraft", "FilmCraft", "NERDS Film", "Video editing, color and sound", "storytold/filmcraft"),
+    app("lightcraft", "LightCraft", "NERDS Light", "Photo library and raw development", "storytold/lightcraft"),
     CraftApp {
         former_ids: &["printcraft"],
         former_names: &["PrintCraft"],
-        ..app(
-            "pdfcraft",
-            "PdfCraft",
-            "Reading, organizing and protecting PDFs",
-            [[0x12, 0xa5, 0x8a], [0x0a, 0x75, 0x63], [0x3f, 0xd6, 0xb8]],
-            "storytold/pdfcraft",
-        )
+        ..app("pdfcraft", "PdfCraft", "NERDS PDF", "Reading, organizing and protecting PDFs", "storytold/pdfcraft")
     },
-    app(
-        "effectcraft",
-        "EffectCraft",
-        "Motion graphics and visual effects",
-        [[0xe0, 0x36, 0x8f], [0xb0, 0x20, 0x6c], [0xff, 0x7a, 0xb8]],
-        "storytold/effectcraft",
-    ),
-    app(
-        "designcraft",
-        "DesignCraft",
-        "Page layout and publishing",
-        [[0x7b, 0xb5, 0x1c], [0x45, 0x70, 0x08], [0xa6, 0xe0, 0x4a]],
-        "storytold/designcraft",
-    ),
-    app(
-        "figcraft",
-        "FigCraft",
-        "Interface design and prototyping",
-        [[0x02, 0xda, 0x96], [0x04, 0x7a, 0x56], [0x4f, 0xe8, 0xb6]],
-        "storytold/figcraft",
-    ),
-    app("wordcraft", "WordCraft", "Writing and document design", [[0x3f, 0x5f, 0xe0], [0x2a, 0x44, 0xb8], [0x8e, 0xa2, 0xff]], "storytold/wordcraft"),
-    app(
-        "soundcraft",
-        "SoundCraft",
-        "Recording, editing and mixing audio",
-        [[0x1f, 0xa5, 0xc9], [0x0e, 0x72, 0x90], [0x5f, 0xd0, 0xee]],
-        "storytold/soundcraft",
-    ),
-    app(
-        "deckcraft",
-        "DeckCraft",
-        "Presentations and slide shows",
-        [[0xf0, 0x7a, 0x1e], [0xa8, 0x4f, 0x0a], [0xff, 0xa0, 0x60]],
-        "storytold/deckcraft",
-    ),
-    app(
-        "cadcraft",
-        "CADCraft",
-        "Computer-aided design and drafting",
-        [[0x3e, 0xa6, 0xe8], [0x1a, 0x6f, 0xa8], [0x7c, 0xc8, 0xff]],
-        "storytold/cadcraft",
-    ),
-    app("gridcraft", "GridCraft", "Spreadsheets and data", [[0x1f, 0x9d, 0x55], [0x12, 0x70, 0x3a], [0x4f, 0xd6, 0x8a]], "storytold/gridcraft"),
+    app("effectcraft", "EffectCraft", "NERDS Effects", "Motion graphics and visual effects", "storytold/effectcraft"),
+    app("designcraft", "DesignCraft", "NERDS Layout", "Page layout and publishing", "storytold/designcraft"),
+    app("figcraft", "FigCraft", "NERDS Proto", "Interface design and prototyping", "storytold/figcraft"),
+    app("wordcraft", "WordCraft", "NERDS Word", "Writing and document design", "storytold/wordcraft"),
+    app("soundcraft", "SoundCraft", "NERDS Sound", "Recording, editing and mixing audio", "storytold/soundcraft"),
+    app("deckcraft", "DeckCraft", "NERDS Deck", "Presentations and slide shows", "storytold/deckcraft"),
+    app("cadcraft", "CADCraft", "NERDS CAD", "Computer-aided design and drafting", "storytold/cadcraft"),
+    app("gridcraft", "GridCraft", "NERDS Grid", "Spreadsheets and data", "storytold/gridcraft"),
 ];
 
-/// ArtCraft's website.
-pub const WEBSITE_URL: &str = "https://getartcraft.com";
-/// The GitHub account every Craft App's repository lives under: the only one the launcher
+// NERDS links. An empty URL hides that link everywhere (footer, Settings, tray menu); fill these
+// in once NERDS has them.
+
+/// The NERDS website.
+pub const WEBSITE_URL: &str = "";
+/// The GitHub account every app's repository lives under: the only one the launcher
 /// installs from, whatever the release feed says.
 pub const GITHUB_OWNER: &str = "storytold";
-/// ArtCraft on GitHub: every Craft App's source.
-pub const GITHUB_URL: &str = "https://github.com/storytold";
-/// ArtCraft's social accounts: (service, URL). Shown as small icons, less prominent than Discord.
-pub const SOCIAL: [(&str, &str); 5] = [
-    ("X", "https://x.com/get_artcraft"),
-    ("Instagram", "https://www.instagram.com/officialartcraftstudios"),
-    ("LinkedIn", "https://www.linkedin.com/company/artcraft-ai"),
-    ("YouTube", "https://www.youtube.com/@OfficialArtcraftStudios"),
-    ("TikTok", "https://www.tiktok.com/@artcraft.studios"),
-];
+/// NERDS on GitHub.
+pub const GITHUB_URL: &str = "";
+/// NERDS's social accounts: (service, URL), shown as small icons. The names pick the icon in
+/// `ui-egui`'s `icons::social` (X, Instagram, LinkedIn, YouTube, TikTok).
+pub const SOCIAL: [(&str, &str); 0] = [];
 
-/// The ArtCraft community on Discord.
-pub const DISCORD_URL: &str = "https://discord.gg/artcraft";
-/// Deep link into the Discord application for the ArtCraft server invite.
-pub const DISCORD_APP_URL: &str = "discord://-/invite/artcraft";
+/// Whether a NERDS link is set: an empty URL hides that link.
+pub fn has_link(url: &str) -> bool {
+    !url.is_empty()
+}
 
-/// ArtCraft Launcher itself, described like a Craft App so it can update itself with the same
+/// The NERDS community on Discord (empty: no Discord link).
+pub const DISCORD_URL: &str = "";
+/// Deep link into the Discord application for the same invite (empty with [`DISCORD_URL`]).
+pub const DISCORD_APP_URL: &str = "";
+
+/// NERDS Launcher itself, described like a Craft App so it can update itself with the same
 /// machinery (asset names `artcraft-launcher-<ver>-…`, bundle id `ai.storyteller.artcraft-launcher`,
-/// `ArtCraft Launcher.app`). Not part of [`SUITE`].
-pub const LAUNCHER: CraftApp = app(
-    "artcraft-launcher",
-    "ArtCraft Launcher",
-    "Installs and updates the Craft App Suite",
-    [[0x0b, 0x0b, 0x0c], [0x0b, 0x0b, 0x0c], [0xf2, 0xf1, 0xee]],
-    "storytold/craft-launcher",
-);
+/// `NERDS Launcher.app`). Not part of [`SUITE`].
+pub const LAUNCHER: CraftApp =
+    app("artcraft-launcher", "NERDS Launcher", "NERDS Launcher", "Installs and updates the NERDS Suite", "storytold/craft-launcher");
 
 /// The launcher's own repo, checked so it can say when a newer launcher is out.
 pub const LAUNCHER_REPO: &str = "storytold/craft-launcher";
+/// Whether to show the upstream release feed's announcements and alerts. Off: they are written by
+/// and about ArtCraft (its news, its links), not NERDS.
+pub const UPSTREAM_NOTICES: bool = false;
+/// Whether the launcher offers to update itself. Off until [`LAUNCHER_REPO`] points at the NERDS
+/// Launcher's own repository: until then a "newer launcher" would be the upstream ArtCraft one.
+pub const LAUNCHER_SELF_UPDATE: bool = false;
 /// The launcher's own asset stem.
 pub const LAUNCHER_ID: &str = "artcraft-launcher";
 
-/// A Craft App's 128 px icon (PNG), as copied from its repo into `assets/app-icons`: the UI
+/// An app's 128 px NERDS icon (PNG) in `assets/app-icons` (sources in `assets/app-icons/source`): the UI
 /// draws it, and the Linux install puts it in the desktop menu.
 pub fn app_icon_png(id: &str) -> Option<&'static [u8]> {
     Some(match id {
@@ -228,7 +197,13 @@ mod tests {
         for a in &SUITE {
             assert_eq!(a.repo, format!("storytold/{}", a.id));
             assert_eq!(a.name.to_lowercase(), a.id);
+            assert!(a.display.starts_with("NERDS "), "{} has no NERDS name", a.id);
+            assert_eq!((a.color, a.ink_light, a.ink_dark), (NERDS_BLUE, NERDS_INK_LIGHT, NERDS_INK_DARK));
         }
+        let mut shown: Vec<_> = SUITE.iter().map(|a| a.display).collect();
+        shown.sort_unstable();
+        shown.dedup();
+        assert_eq!(shown.len(), SUITE.len(), "two apps share a NERDS name");
     }
 
     #[test]
@@ -236,7 +211,7 @@ mod tests {
         let pdf = CraftApp::by_id("pdfcraft").unwrap();
         assert_eq!(pdf.stems().collect::<Vec<_>>(), ["pdfcraft", "printcraft"]);
         assert_eq!(pdf.names().collect::<Vec<_>>(), ["PdfCraft", "PrintCraft"]);
-        assert_eq!(pdf.website(), "https://getartcraft.com/apps/pdfcraft");
-        assert_eq!(CraftApp::by_id("wordcraft").unwrap().website(), "https://getartcraft.com/apps/wordcraft");
+        assert_eq!(pdf.website(), "https://github.com/storytold/pdfcraft");
+        assert_eq!(CraftApp::by_id("wordcraft").unwrap().website(), "https://github.com/storytold/wordcraft");
     }
 }

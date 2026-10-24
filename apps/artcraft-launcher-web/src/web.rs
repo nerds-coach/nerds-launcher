@@ -53,7 +53,7 @@ fn detect_language() {
 
     // Update loading text in the detected language.
     if let Some(el) = document.get_element_by_id("launcher_loading") {
-        el.set_text_content(Some(i18n::tr(i18n::system_lang(), "Loading ArtCraft Launcher…")));
+        el.set_text_content(Some(i18n::tr(i18n::system_lang(), "Loading NERDS Launcher…")));
     }
 }
 pub fn start() {
@@ -185,7 +185,8 @@ impl WebBackend {
                 events.borrow_mut().push(Event::Latest { app: app.id.to_string(), latest, from: Origin::GitHub });
                 ctx.request_repaint();
             }
-            if let Ok(LatestRelease::Found(r)) = latest(catalog::LAUNCHER_REPO, false).await
+            if catalog::LAUNCHER_SELF_UPDATE
+                && let Ok(LatestRelease::Found(r)) = latest(catalog::LAUNCHER_REPO, false).await
                 && let (Some(l), Some(c)) = (r.version.as_ref(), version::parse(env!("CARGO_PKG_VERSION")))
                 && version::is_newer(l, &c)
             {

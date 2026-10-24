@@ -5,16 +5,16 @@
   <id>ai.storyteller.artcraft-launcher</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT OR Apache-2.0</project_license>
-  <name>ArtCraft Launcher</name>
-  <summary>Install, update and launch the Craft App Suite</summary>
+  <name>NERDS Launcher</name>
+  <summary>Install, update and launch the NERDS Suite</summary>
   <developer id="ai.storyteller">
     <name>Learning Machines LLC</name>
   </developer>
   <description>
     <p>
-      ArtCraft Launcher lists every app in the Craft App Suite (PhotoCraft, LightCraft, FilmCraft,
-      DesignCraft, VectorCraft, PdfCraft, EffectCraft, WordCraft, DeckCraft, GridCraft, CADCraft,
-      SoundCraft and FigCraft), installs the right build for your computer, and keeps them up to date.
+      NERDS Launcher lists every app in the NERDS Suite (NERDS Photo, Light, Film,
+      Layout, Vector, PDF, Effects, Word, Deck, Grid, CAD,
+      Sound and Proto), installs the right build for your computer, and keeps them up to date.
     </p>
     <ul>
       <li>One place to find, install and open every Craft app</li>
@@ -25,10 +25,9 @@
   <launchable type="desktop-id">ai.storyteller.artcraft-launcher.desktop</launchable>
   <icon type="stock">ai.storyteller.artcraft-launcher</icon>
   <!-- Only url types known to appstream 0.15 (Ubuntu 22.04, where CI validates): no vcs-browser. -->
-  <url type="homepage">https://getartcraft.com/apps</url>
+  <url type="homepage">https://github.com/storytold/craft-launcher</url>
   <url type="bugtracker">https://github.com/storytold/craft-launcher/issues</url>
   <url type="help">https://github.com/storytold/craft-launcher</url>
-  <url type="contact">https://discord.gg/artcraft</url>
   <categories>
     <category>Utility</category>
     <category>PackageManager</category>

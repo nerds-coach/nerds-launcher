@@ -1,4 +1,4 @@
-# Hosting ArtCraft Launcher for the web
+# Hosting NERDS Launcher for the web
 
 `artcraft-launcher-web-<version>.zip` (from the GitHub release, or `packaging/web/package.sh`)
 holds a static site in `artcraft-launcher-web-<version>/`:
@@ -15,7 +15,7 @@ that serves static files.
 
 ## What the web version does
 
-In the browser the launcher can't install anything: it shows the Craft App Suite catalog, the
+In the browser the launcher can't install anything: it shows the NERDS Suite catalog, the
 latest release of each app and the right download for the visitor's platform, and links to the
 files on GitHub. Release data comes straight from the GitHub REST API (`api.github.com` allows
 cross-origin requests), so the page needs no backend. Unauthenticated visitors share GitHub's
@@ -63,7 +63,7 @@ Local test: `python3 -m http.server 8765` inside the folder, then open http://lo
 ```html
 <iframe
   src="https://example.com/launcher/"
-  title="ArtCraft Launcher"
+  title="NERDS Launcher"
   style="width: 100%; height: 640px; border: 0;"
   allow="fullscreen"
   allowfullscreen>

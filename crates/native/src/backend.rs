@@ -64,7 +64,7 @@ struct Shared {
     /// A detection pass is running; another request waits for the next one.
     detecting: AtomicBool,
     last_check: Mutex<Option<i64>>,
-    /// The newer ArtCraft Launcher release, once a check has found one.
+    /// The newer NERDS Launcher release, once a check has found one.
     launcher_release: Mutex<Option<Release>>,
     /// How this launcher is installed, when it can replace itself. Worked out on the check thread
     /// just before a newer launcher is announced: finding out can ask the host's Flatpak, which
@@ -197,7 +197,7 @@ impl NativeBackend {
                 self.shared.emit(Event::Latest { app: app.id.to_string(), latest, from });
             }
         }
-        if let Some(f) = feed {
+        if let Some(f) = feed.filter(|_| artcraft_launcher_core::catalog::UPSTREAM_NOTICES) {
             self.shared.emit(Event::Notices { announcements: f.announcements, alerts: f.alerts });
         }
     }
@@ -270,7 +270,7 @@ impl NativeBackend {
             let busy = busy;
             shared.emit(Event::CheckStarted);
             let (feed, fallback) = check_plan(&http, mirror.as_ref(), pre, &paths, &shared);
-            if let Some(f) = &feed {
+            if let Some(f) = feed.as_ref().filter(|_| artcraft_launcher_core::catalog::UPSTREAM_NOTICES) {
                 shared.emit(Event::Notices { announcements: f.announcements.clone(), alerts: f.alerts.clone() });
             }
             let now = crate::now();
@@ -314,7 +314,7 @@ impl NativeBackend {
             restarting
         };
         if restarting {
-            let result = Err("ArtCraft Launcher is restarting to finish its update. Try again once it's back.".into());
+            let result = Err("NERDS Launcher is restarting to finish its update. Try again once it's back.".into());
             self.shared.emit(Event::JobFinished { app: app.id.to_string(), result });
             return;
         }
@@ -396,7 +396,7 @@ impl NativeBackend {
         let (Some(install), Some(platform)) = (self.shared.self_install.get().cloned().flatten(), self.platform) else {
             self.shared.emit(Event::JobFinished {
                 app: id,
-                result: Err("this copy of ArtCraft Launcher can't update itself; download the new version instead".into()),
+                result: Err("this copy of NERDS Launcher can't update itself; download the new version instead".into()),
             });
             return;
         };
@@ -593,7 +593,7 @@ fn restart_blocked(mut busy: Vec<&str>) -> String {
         _ => (busy.join(", "), "were", "them"),
     };
     format!(
-        "ArtCraft Launcher didn't restart to update: {names} {were} still installing. Answer or close any password prompt, \
+        "NERDS Launcher didn't restart to update: {names} {were} still installing. Answer or close any password prompt, \
          let {them} finish or cancel {them}, then press Update and restart again."
     )
 }
@@ -716,6 +716,9 @@ fn check_app(app: &'static CraftApp, latest: Option<LatestRelease>, from: Origin
 
 /// Offers the launcher's own update when its answer is a newer release than the running one.
 fn launcher_update(paths: &Paths, latest: Option<LatestRelease>, shared: &Arc<Shared>) {
+    if !artcraft_launcher_core::catalog::LAUNCHER_SELF_UPDATE {
+        return;
+    }
     let Some(LatestRelease::Found(r)) = latest else { return };
     let (Some(newest), Some(current)) = (r.version.as_ref(), crate::self_update::current_version()) else { return };
     if version::is_newer(newest, &current) && !crate::self_update::just_updated_to(paths, &r) {

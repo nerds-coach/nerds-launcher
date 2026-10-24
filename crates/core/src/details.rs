@@ -124,7 +124,7 @@ pub fn screenshot_within_budget(bytes: &[u8]) -> bool {
     }
 }
 
-/// Where every Craft App runs (getartcraft.com lists the same for each of them).
+/// Where every app runs.
 const PLATFORMS: &str = "macOS, Windows, Linux, FreeBSD, web";
 
 pub const DETAILS: [AppDetails; 13] = [
@@ -133,7 +133,7 @@ pub const DETAILS: [AppDetails; 13] = [
         headline: "The image editor you already know how to use.",
         about: "Layers, masks, adjustment layers, layer styles, type, vectors and brushes in a native app \
             written in Rust. Open source, offline, and yours.\n\n\
-            PhotoCraft keeps the menus, shortcuts and panels your hands already know, so there is \
+            NERDS Photo keeps the menus, shortcuts and panels your hands already know, so there is \
             nothing to relearn.",
         features: &[
             feature("Native GPU canvas", "No Electron and no web view: a fast native compositor."),

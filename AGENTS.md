@@ -1,3 +1,9 @@
+> **NERDS edition.** This is ArtCraft Launcher reskinned for NERDS: read [`NERDS.md`](NERDS.md)
+> first. Where this guide says "ArtCraft Launcher", "Craft App Suite" or the ArtCraft brand files,
+> read NERDS Launcher, NERDS Suite and `docs/brand/nerds-*`; the user-facing app names are each
+> `CraftApp::display`. The rest of the guide (never crash, safe installs, tests, wasm) applies as
+> written.
+
 # AGENTS.md: guide for AI agents and contributors
 
 ArtCraft Launcher installs, updates and launches the **Craft App Suite** (PhotoCraft, LightCraft,

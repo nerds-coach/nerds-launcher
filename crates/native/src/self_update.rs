@@ -1,4 +1,4 @@
-//! ArtCraft Launcher updating itself.
+//! NERDS Launcher updating itself.
 //!
 //! The new version is downloaded and verified like any Craft App, then swapped in the way this
 //! copy was installed. A small helper process waits for this launcher to exit, finishes anything
@@ -10,7 +10,7 @@
 //! |---|---|
 //! | macOS `.app` | copy the new bundle from the DMG over this one (fine while running), reopen it |
 //! | Windows MSI (per-user, any folder) | after exit, run the new MSI (it reinstalls into the same folder), then start the exe |
-//! | Windows portable zip | after exit, unzip over this folder (settings in `ArtCraftLauncherData` stay) |
+//! | Windows portable zip | after exit, unzip over this folder (settings in `NERDSLauncherData` stay) |
 //! | Linux AppImage | rename the new AppImage over this one (fine while running), start it |
 //! | Linux `.deb` / `.rpm` | the system package manager, with the password prompt; then restart |
 //! | Linux Flatpak | reinstall the bundle with `--reinstall` via the host portal; then restart |
@@ -37,7 +37,7 @@ use crate::process;
 /// How this running launcher was installed.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Install {
-    /// The `ArtCraft Launcher.app` bundle.
+    /// The `NERDS Launcher.app` bundle.
     MacApp(PathBuf),
     /// The per-user Windows Installer package; the exe.
     Msi(PathBuf),
@@ -112,7 +112,7 @@ fn detect(exe: &Path) -> Option<Install> {
         return Some(Install::Portable(exe.to_path_buf()));
     }
     // The MSI installs per user, into the folder chosen in its wizard (which it records in the
-    // registry) or by default %LOCALAPPDATA%\Programs\ArtCraft Launcher.
+    // registry) or by default %LOCALAPPDATA%\Programs\NERDS Launcher.
     let canonical = |p: PathBuf| p.canonicalize().unwrap_or(p);
     let recorded = msi_install_dir().map(canonical);
     let default = dirs::data_local_dir().map(|d| canonical(d.join("Programs").join(LAUNCHER.name)));
@@ -124,7 +124,7 @@ fn detect(exe: &Path) -> Option<Install> {
 fn msi_install_dir() -> Option<PathBuf> {
     use winreg::RegKey;
     use winreg::enums::HKEY_CURRENT_USER;
-    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\Learning Machines LLC\ArtCraft Launcher").ok()?;
+    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\Learning Machines LLC\NERDS Launcher").ok()?;
     let dir: String = key.get_value("InstallDir").ok()?;
     let dir = dir.trim();
     (!dir.is_empty()).then(|| PathBuf::from(dir))
@@ -221,10 +221,10 @@ pub fn update(
     if let (Some(rel_v), Some(cur_v)) = (release.version.as_ref(), current_version().as_ref())
         && !version::is_newer(rel_v, cur_v)
     {
-        return Err(format!("ArtCraft Launcher {} is not newer than currently running version {}", release.version_label(), cur_v));
+        return Err(format!("NERDS Launcher {} is not newer than currently running version {}", release.version_label(), cur_v));
     }
     let (asset, _) = pick_asset(release, &[LAUNCHER.id], platform, &[install.kind()])
-        .ok_or_else(|| format!("ArtCraft Launcher {} has no {} for {}", release.version_label(), install.kind().label(), platform.label()))?;
+        .ok_or_else(|| format!("NERDS Launcher {} has no {} for {}", release.version_label(), install.kind().label(), platform.label()))?;
     let asset = asset.clone();
     let mut job = Job { http, paths, stop, phase, install_locations: &Default::default(), replace: false };
     let file = install::download(release, &asset, &mut job)?;
@@ -278,7 +278,7 @@ pub fn update(
             #[allow(unreachable_patterns)]
             _ => {
                 let _ = (pid, &file);
-                Err("this copy of ArtCraft Launcher can't update itself; download the new version instead".into())
+                Err("this copy of NERDS Launcher can't update itself; download the new version instead".into())
             }
         }
     })();
@@ -393,7 +393,7 @@ fn relaunch_flatpak_after_exit() -> Result<(), String> {
             id,
         ),
         // Without either, starting it again could only meet the old copy still running.
-        (None, None) => return Err("ArtCraft Launcher is updated; quit and reopen it to start the new version".into()),
+        (None, None) => return Err("NERDS Launcher is updated; quit and reopen it to start the new version".into()),
     };
     let script = format!("({wait_clause}) &");
     let app_id = LAUNCHER.bundle_id();
@@ -510,7 +510,7 @@ pub fn finish(args: &[OsString]) -> Option<Result<(), String>> {
 #[cfg_attr(not(windows), allow(dead_code))]
 fn launcher_paths(exe: &Path) -> Result<Paths, String> {
     match exe.parent() {
-        Some(dir) if dir.join("portable.txt").is_file() => Ok(Paths::under(&dir.join("ArtCraftLauncherData"))),
+        Some(dir) if dir.join("portable.txt").is_file() => Ok(Paths::under(&dir.join("NERDSLauncherData"))),
         _ => Paths::new(),
     }
 }
@@ -559,7 +559,7 @@ fn same_cache_as_helper(paths: &Paths, exe: &Path) -> Result<(), String> {
     if theirs.is_some() && theirs == canonical(&paths.cache) {
         Ok(())
     } else {
-        Err(format!("ArtCraft Launcher can't update itself while it keeps its files in {}; download the new version instead", paths.cache.display()))
+        Err(format!("NERDS Launcher can't update itself while it keeps its files in {}; download the new version instead", paths.cache.display()))
     }
 }
 
@@ -569,9 +569,9 @@ fn same_cache_as_helper(paths: &Paths, exe: &Path) -> Result<(), String> {
 #[cfg(windows)]
 fn signed_like(reference: &Path, file: &Path) -> Result<(), String> {
     let publisher = |path: &Path| verifysign::verify_file(path).map(|signature| signature.subject_name());
-    let ours = publisher(reference).map_err(|e| format!("this copy of ArtCraft Launcher isn't signed ({e}), so it doesn't install updates"))?;
+    let ours = publisher(reference).map_err(|e| format!("this copy of NERDS Launcher isn't signed ({e}), so it doesn't install updates"))?;
     let theirs = publisher(file).map_err(|e| format!("{} isn't signed ({e})", file.display()))?;
-    if ours == theirs { Ok(()) } else { Err(format!("{} isn't signed by ArtCraft Launcher's publisher", file.display())) }
+    if ours == theirs { Ok(()) } else { Err(format!("{} isn't signed by NERDS Launcher's publisher", file.display())) }
 }
 
 /// Whether `file` is a Windows program or library (it starts with the `MZ` header), whatever its
@@ -588,7 +588,7 @@ fn is_program(file: &Path) -> bool {
 /// that installation's cache. Anything else is refused before the helper runs or starts a file.
 #[cfg(windows)]
 fn check_helper(me: &Path, paths: &Paths, exe: &Path, step: &Finish) -> Result<(), String> {
-    let refused = || "the update helper only finishes ArtCraft Launcher's own update".to_string();
+    let refused = || "the update helper only finishes NERDS Launcher's own update".to_string();
     let canonical = |p: &Path| p.canonicalize().map_err(|_| refused());
     let cache = canonical(&paths.cache)?;
     if canonical(me.parent().ok_or_else(refused)?)? != cache.join(HELPER_DIR) {
@@ -626,7 +626,7 @@ fn run_step(reference: &Path, pid: u32, exe: &Path, step: &Finish, wait: std::ti
             },
         }
     } else {
-        Err("ArtCraft Launcher was still running after a minute, so the update wasn't installed".into())
+        Err("NERDS Launcher was still running after a minute, so the update wasn't installed".into())
     };
     match step {
         Finish::Msi(msi) => {
@@ -665,10 +665,10 @@ mod tests {
     /// apostrophes included, and nothing that is incomplete or unknown.
     #[test]
     fn the_update_helper_reads_back_its_arguments() {
-        let exe = Path::new(r"C:\Users\O'Brien\AppData\Local\Programs\ArtCraft Launcher\artcraft-launcher.exe");
-        let msi = Finish::Msi(PathBuf::from(r"C:\Users\O'Brien\AppData\Local\ArtCraft Launcher\cache\artcraft-launcher-0.7.0-windows-x64.msi"));
+        let exe = Path::new(r"C:\Users\O'Brien\AppData\Local\Programs\NERDS Launcher\artcraft-launcher.exe");
+        let msi = Finish::Msi(PathBuf::from(r"C:\Users\O'Brien\AppData\Local\NERDS Launcher\cache\artcraft-launcher-0.7.0-windows-x64.msi"));
         let portable =
-            Finish::Portable { zip: PathBuf::from(r"D:\Tools\x 1.zip"), tmp: PathBuf::from(r"D:\Tools\ArtCraftLauncherData\cache\launcher-update") };
+            Finish::Portable { zip: PathBuf::from(r"D:\Tools\x 1.zip"), tmp: PathBuf::from(r"D:\Tools\NERDSLauncherData\cache\launcher-update") };
         for finish in [msi, portable] {
             let args = helper_args(4242, exe, &finish);
             assert_eq!(args.first().map(OsString::as_os_str), Some(std::ffi::OsStr::new(FINISH_FLAG)));
@@ -706,11 +706,11 @@ mod tests {
     fn a_portable_update_replaces_the_launcher_after_it_exits() {
         use std::io::Write;
         let dir = tempfile::tempdir().unwrap();
-        let folder = dir.path().join("ArtCraft Launcher");
-        std::fs::create_dir_all(folder.join("ArtCraftLauncherData")).unwrap();
+        let folder = dir.path().join("NERDS Launcher");
+        std::fs::create_dir_all(folder.join("NERDSLauncherData")).unwrap();
         std::fs::write(folder.join("artcraft-launcher.exe"), "0.1.0").unwrap();
         std::fs::write(folder.join("portable.txt"), "").unwrap();
-        std::fs::write(folder.join("ArtCraftLauncherData").join("settings.json"), "{}").unwrap();
+        std::fs::write(folder.join("NERDSLauncherData").join("settings.json"), "{}").unwrap();
         let zip = dir.path().join("artcraft-launcher-0.2.0-windows-x64-portable.zip");
         let mut writer = zip::ZipWriter::new(std::fs::File::create(&zip).unwrap());
         let signed_exe = std::fs::read(system_program("cmd.exe")).unwrap();
@@ -736,7 +736,7 @@ mod tests {
         old.wait().unwrap();
         helper.join().unwrap().unwrap();
         assert_eq!(std::fs::read(&exe).unwrap(), signed_exe);
-        assert_eq!(std::fs::read_to_string(folder.join("ArtCraftLauncherData").join("settings.json")).unwrap(), "{}");
+        assert_eq!(std::fs::read_to_string(folder.join("NERDSLauncherData").join("settings.json")).unwrap(), "{}");
         assert!(!folder.join("artcraft-launcher-0.2.0-windows-x64-portable").exists(), "the zip's folder must not be nested in the launcher's");
         assert!(!zip.exists() && !tmp.exists(), "the download and the staging folder are removed");
     }
@@ -747,7 +747,7 @@ mod tests {
     #[test]
     fn the_update_helper_refuses_anything_but_the_launchers_own_update() {
         let dir = tempfile::tempdir().unwrap();
-        let folder = dir.path().join("ArtCraft Launcher");
+        let folder = dir.path().join("NERDS Launcher");
         std::fs::create_dir_all(&folder).unwrap();
         let exe = folder.join("artcraft-launcher.exe");
         std::fs::write(&exe, "0.1.0").unwrap();
@@ -791,8 +791,8 @@ mod tests {
         let exe = dir.path().join("artcraft-launcher.exe");
         std::fs::write(dir.path().join("portable.txt"), "").unwrap();
         let paths = launcher_paths(&exe).unwrap();
-        assert_eq!(paths.cache, dir.path().join("ArtCraftLauncherData").join("cache"));
-        assert_eq!(paths.data, dir.path().join("ArtCraftLauncherData").join("data"));
+        assert_eq!(paths.cache, dir.path().join("NERDSLauncherData").join("cache"));
+        assert_eq!(paths.data, dir.path().join("NERDSLauncherData").join("data"));
     }
 
     /// The launcher quits for an update only when the helper finds the cache the update was
@@ -802,11 +802,11 @@ mod tests {
     #[test]
     fn a_launcher_whose_helper_looks_in_other_folders_does_not_quit_for_an_update() {
         let dir = tempfile::tempdir().unwrap();
-        let folder = dir.path().join("ArtCraft Launcher");
+        let folder = dir.path().join("NERDS Launcher");
         std::fs::create_dir_all(&folder).unwrap();
         let exe = folder.join("artcraft-launcher.exe");
         std::fs::write(&exe, "0.1.0").unwrap();
-        let own = Paths::under(&folder.join("ArtCraftLauncherData"));
+        let own = Paths::under(&folder.join("NERDSLauncherData"));
         let temporary = Paths::under(&dir.path().join("Temp").join("artcraft-launcher"));
         for paths in [&own, &temporary] {
             std::fs::create_dir_all(paths.downloads()).unwrap();
@@ -834,7 +834,7 @@ mod tests {
         assert!(just_updated_to(&paths, &release));
         // The helper refuses before this process has finished scheduling it.
         mark_installed(&paths, &release);
-        record_failure(&paths, "the update helper only finishes ArtCraft Launcher's own update");
+        record_failure(&paths, "the update helper only finishes NERDS Launcher's own update");
         assert!(unmark_unless_scheduled(&paths, Ok(())).is_ok());
         assert!(!just_updated_to(&paths, &release), "a failure the helper recorded must stay recorded");
     }
@@ -935,14 +935,14 @@ mod tests {
     fn an_unsigned_program_in_the_portable_zip_is_not_installed() {
         use std::io::Write;
         let dir = tempfile::tempdir().unwrap();
-        let folder = dir.path().join("ArtCraft Launcher");
+        let folder = dir.path().join("NERDS Launcher");
         std::fs::create_dir_all(&folder).unwrap();
         let exe = folder.join("artcraft-launcher.exe");
         std::fs::write(&exe, "0.1.0").unwrap();
         let zip = dir.path().join("artcraft-launcher-0.2.0-windows-x64-portable.zip");
         let mut writer = zip::ZipWriter::new(std::fs::File::create(&zip).unwrap());
         writer.start_file("artcraft-launcher-0.2.0-windows-x64-portable/README.md", zip::write::SimpleFileOptions::default()).unwrap();
-        writer.write_all(b"# ArtCraft Launcher").unwrap();
+        writer.write_all(b"# NERDS Launcher").unwrap();
         writer.start_file("artcraft-launcher-0.2.0-windows-x64-portable/artcraft-launcher.exe", zip::write::SimpleFileOptions::default()).unwrap();
         writer.write_all(&std::fs::read(system_program("cmd.exe")).unwrap()).unwrap();
         // An unsigned program under a harmless name.
@@ -965,11 +965,11 @@ mod tests {
         use std::io::Write;
         for launcher in [None, Some(b"not a Windows program".as_slice()), Some(b"".as_slice())] {
             let dir = tempfile::tempdir().unwrap();
-            let folder = dir.path().join("ArtCraft Launcher");
-            std::fs::create_dir_all(folder.join("ArtCraftLauncherData")).unwrap();
+            let folder = dir.path().join("NERDS Launcher");
+            std::fs::create_dir_all(folder.join("NERDSLauncherData")).unwrap();
             let exe = folder.join("artcraft-launcher.exe");
             std::fs::write(&exe, "old launcher").unwrap();
-            let settings = folder.join("ArtCraftLauncherData/settings.json");
+            let settings = folder.join("NERDSLauncherData/settings.json");
             std::fs::write(&settings, "settings").unwrap();
             let zip = dir.path().join("update.zip");
             let mut writer = zip::ZipWriter::new(std::fs::File::create(&zip).unwrap());
@@ -998,7 +998,7 @@ mod tests {
     fn a_portable_update_that_fails_part_way_puts_the_old_files_back() {
         use std::io::Write;
         let dir = tempfile::tempdir().unwrap();
-        let folder = dir.path().join("ArtCraft Launcher");
+        let folder = dir.path().join("NERDS Launcher");
         // A folder where the zip has a file: copying it there fails after the exe was replaced.
         std::fs::create_dir_all(folder.join("NOTICE")).unwrap();
         let exe = folder.join("artcraft-launcher.exe");
@@ -1008,7 +1008,7 @@ mod tests {
         let signed_exe = std::fs::read(system_program("cmd.exe")).unwrap();
         for (name, body) in [
             ("artcraft-launcher-0.2.0-windows-x64-portable/artcraft-launcher.exe", signed_exe.as_slice()),
-            ("artcraft-launcher-0.2.0-windows-x64-portable/README.md", b"# ArtCraft Launcher".as_slice()),
+            ("artcraft-launcher-0.2.0-windows-x64-portable/README.md", b"# NERDS Launcher".as_slice()),
             ("artcraft-launcher-0.2.0-windows-x64-portable/NOTICE", b"notice".as_slice()),
         ] {
             writer.start_file(name, zip::write::SimpleFileOptions::default()).unwrap();
@@ -1084,12 +1084,12 @@ mod tests {
         assert!(marker.exists(), "never started after the old launcher exited");
     }
 
-    /// A real disk image: the new `ArtCraft Launcher.app` replaces the old one in place.
+    /// A real disk image: the new `NERDS Launcher.app` replaces the old one in place.
     #[cfg(target_os = "macos")]
     #[test]
     fn the_new_bundle_replaces_the_running_one() {
         fn bundle(at: &Path, version: &str) {
-            let contents = at.join("ArtCraft Launcher.app/Contents");
+            let contents = at.join("NERDS Launcher.app/Contents");
             std::fs::create_dir_all(contents.join("MacOS")).unwrap();
             std::fs::write(
                 contents.join("Info.plist"),
@@ -1100,7 +1100,7 @@ mod tests {
                 ),
             )
             .unwrap();
-            std::fs::write(contents.join("MacOS/ArtCraft Launcher"), version).unwrap();
+            std::fs::write(contents.join("MacOS/NERDS Launcher"), version).unwrap();
         }
         let dir = tempfile::tempdir().unwrap();
         let apps = dir.path().join("Applications");
@@ -1110,7 +1110,7 @@ mod tests {
         let dmg = dir.path().join("artcraft-launcher-0.2.0-macos-universal.dmg");
         let one_at_a_time = install::macos::DISK_IMAGES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
         let ok = std::process::Command::new("hdiutil")
-            .args(["create", "-quiet", "-format", "UDZO", "-volname", "ArtCraft Launcher 0.2.0", "-srcfolder"])
+            .args(["create", "-quiet", "-format", "UDZO", "-volname", "NERDS Launcher 0.2.0", "-srcfolder"])
             .arg(&src)
             .arg(&dmg)
             .status()
@@ -1118,16 +1118,16 @@ mod tests {
             .success();
         assert!(ok, "hdiutil create failed");
         drop(one_at_a_time);
-        let current = apps.join("ArtCraft Launcher.app");
+        let current = apps.join("NERDS Launcher.app");
         let existing = Installed { version: None, source: InstallSource::MacApp, location: current.display().to_string(), package: None };
         // An unsigned test bundle: the signature check has its own tests in `install`.
         let expect = install::macos::Expect { team: None, version: None };
         let placed = install::macos::install_dmg(&LAUNCHER, &dmg, Some(&existing), None, false, &Paths::under(dir.path()), &expect).unwrap();
         assert_eq!(placed, current);
-        assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/ArtCraft Launcher")).unwrap(), "0.2.0");
+        assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/NERDS Launcher")).unwrap(), "0.2.0");
         assert_eq!(
             std::fs::read_dir(&apps).unwrap().map(|e| e.unwrap().file_name()).collect::<Vec<_>>(),
-            [std::ffi::OsString::from("ArtCraft Launcher.app")]
+            [std::ffi::OsString::from("NERDS Launcher.app")]
         );
     }
 

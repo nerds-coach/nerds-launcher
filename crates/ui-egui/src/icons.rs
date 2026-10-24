@@ -44,18 +44,18 @@ fn desaturate(pixels: &mut [u8]) {
     }
 }
 
-/// The ArtCraft wordmark, as supplied: dark ink for light backgrounds, white for dark ones.
-/// An ArtCraft trademark, not covered by the MIT/Apache license (`docs/brand/LICENSE-brand.txt`).
-pub fn artcraft_logo(dark_background: bool) -> ImageSource<'static> {
+/// The NERDS logo, side by side (the N mark, then N.E.R.D.S.): all NERDS blue for light
+/// backgrounds; on dark ones, the mark in NERDS blue and the letters in white. A NERDS trademark (`docs/brand/LICENSE-brand.txt`).
+pub fn nerds_logo(dark_background: bool) -> ImageSource<'static> {
     if dark_background {
-        egui::include_image!("../../../docs/brand/artcraft-logo-white.svg")
+        egui::include_image!("../../../docs/brand/nerds-logo-horizontal-dark.svg")
     } else {
-        egui::include_image!("../../../docs/brand/artcraft-logo.svg")
+        egui::include_image!("../../../docs/brand/nerds-logo-horizontal.svg")
     }
 }
 
-/// The ArtCraft wordmark's width / height (its SVG view box: 1038.05 × 108).
-pub const ARTCRAFT_LOGO_ASPECT: f32 = 1038.05 / 108.0;
+/// The side-by-side NERDS logo's width / height (its SVG view box: 7654.8 × 2115).
+pub const NERDS_LOGO_ASPECT: f32 = 7654.8 / 2115.0;
 
 /// A social service's logo (Simple Icons, white, for tinting), by its name in `catalog::SOCIAL`.
 pub fn social(service: &str) -> Option<ImageSource<'static>> {
@@ -72,9 +72,9 @@ pub fn social(service: &str) -> Option<ImageSource<'static>> {
     })
 }
 
-/// The ArtCraft "A" mark in blue, as supplied: the launcher's app icon and getartcraft.com's favicon.
-pub fn artcraft_mark() -> ImageSource<'static> {
-    egui::include_image!("../../../docs/brand/artcraft-mark.svg")
+/// The NERDS Launcher's app icon: the white N mark on a NERDS-blue tile.
+pub fn nerds_mark() -> ImageSource<'static> {
+    egui::include_image!("../../../docs/brand/nerds-app-icon.svg")
 }
 
 #[cfg(test)]

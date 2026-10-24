@@ -181,7 +181,7 @@ fn japanese_switches_persists_and_keeps_install_actions() {
     h.get_by_label("完了").click();
     h.run_steps(3);
     h.get_by_label("画像編集");
-    h.get_by_label_contains("最終確認: 3 分前 · 取得元: ArtCraft API");
+    h.get_by_label_contains("最終確認: 3 分前 · 取得元: Release API");
     h.get_by_label("0.5.0 に更新");
     // Product names stay in English.
     assert!(h.query_by_label("Launcher").is_none());

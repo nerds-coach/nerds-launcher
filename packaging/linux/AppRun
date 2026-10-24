@@ -1,5 +1,5 @@
 #!/bin/sh
-# ArtCraft Launcher AppImage entry point (packaging/linux/AppRun; installed by package.sh).
+# NERDS Launcher AppImage entry point (packaging/linux/AppRun; installed by package.sh).
 #
 # On Wayland the compositor resolves a window's dock icon by taking the window's
 # app_id (ai.storyteller.artcraft-launcher) and looking up an installed .desktop file.

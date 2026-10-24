@@ -523,7 +523,7 @@ pub fn more_menu<R>(ui: &mut Ui, add_contents: impl FnOnce(&mut Ui) -> R) {
 pub fn social_icons(ui: &mut Ui, size: f32) {
     let links: Vec<IconLink> = artcraft_launcher_core::catalog::SOCIAL
         .iter()
-        .map(|(name, url)| IconLink { name, label: (*name).to_string(), tip: crate::i18n::fmt(tl!("ArtCraft on {name}"), &[("name", name)]), url })
+        .map(|(name, url)| IconLink { name, label: (*name).to_string(), tip: crate::i18n::fmt(tl!("NERDS on {name}"), &[("name", name)]), url })
         .collect();
     icon_links(ui, size, &links);
 }
@@ -573,15 +573,15 @@ fn icon_link(ui: &mut Ui, size: f32, link: &IconLink<'_>) {
     }
 }
 
-/// An app's name as the site sets it: Archivo, with "Craft" in the app's colour.
+/// An app's NERDS name: Archivo, with "NERDS" in NERDS blue and the rest in ink.
 pub fn wordmark(ui: &mut Ui, app: &artcraft_launcher_core::CraftApp, size: f32) -> Response {
     wordmark_in(ui, app, size, true)
 }
 
-/// [`wordmark`], with "Craft" in the app's colour or, when `in_colour` is false, in grey.
+/// [`wordmark`], with "NERDS" in the app's colour or, when `in_colour` is false, in grey.
 pub fn wordmark_in(ui: &mut Ui, app: &artcraft_launcher_core::CraftApp, size: f32, in_colour: bool) -> Response {
     let t = Tokens::get(ui.ctx());
-    let (prefix, craft) = app.name.strip_suffix("Craft").map_or((app.name, ""), |p| (p, "Craft"));
+    let (brand, rest) = app.display.strip_prefix("NERDS").map_or(("", app.display), |r| ("NERDS", r));
     let mut job = egui::text::LayoutJob::default();
     let format = |color| egui::TextFormat {
         font_id: egui::FontId::new(size, theme::display()),
@@ -589,8 +589,8 @@ pub fn wordmark_in(ui: &mut Ui, app: &artcraft_launcher_core::CraftApp, size: f3
         extra_letter_spacing: -0.03 * size,
         ..Default::default()
     };
-    job.append(prefix, 0.0, format(t.ink_strong));
-    job.append(craft, 0.0, format(if in_colour { t.app_ink(app) } else { t.muted }));
+    job.append(brand, 0.0, format(if in_colour { t.app_ink(app) } else { t.muted }));
+    job.append(rest, 0.0, format(t.ink_strong));
     ui.add(egui::Label::new(job).selectable(false))
 }
 

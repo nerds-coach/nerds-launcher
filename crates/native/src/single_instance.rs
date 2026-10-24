@@ -45,7 +45,7 @@ const MAX_GREETING: usize = 128;
 fn token() -> Option<String> {
     use std::io::Read;
     let dir =
-        dirs::data_local_dir()?.join(if cfg!(any(target_os = "macos", target_os = "windows")) { "ArtCraft Launcher" } else { "artcraft-launcher" });
+        dirs::data_local_dir()?.join(if cfg!(any(target_os = "macos", target_os = "windows")) { "NERDS Launcher" } else { "artcraft-launcher" });
     let path = dir.join(".instance-token");
     if let Ok(mut f) = std::fs::File::open(&path) {
         let mut s = String::new();
@@ -145,7 +145,7 @@ pub fn claim(wake: Wake) -> Instance {
             Instance::Secondary
         }
         Ok(Answer::Legacy) => {
-            log::warn!("an older ArtCraft Launcher is running and can't be asked to quit; starting anyway");
+            log::warn!("an older NERDS Launcher is running and can't be asked to quit; starting anyway");
             Instance::Primary(channel().1)
         }
         // The port is taken by something else: run anyway rather than refuse to start.

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Check MSI icon references without building or installing ArtCraft Launcher.
+  Check MSI icon references without building or installing NERDS Launcher.
 
 .DESCRIPTION
   Windows Installer caches each <Icon> under %APPDATA%\Microsoft\Installer\{ProductCode}, which

@@ -508,8 +508,9 @@ fn grid_shows_every_status_and_installs_on_click() {
     assert!(updated.iter().all(|l| l.starts_with("Last updated: Oct ") && l.ends_with(", 2026")), "{updated:?}");
     // The window has no title bar of its own here (the web build, and the tests).
     assert!(h.query_by_label("Close").is_none());
-    assert!(h.query_all_by_label_contains("Discord").count() >= 1); // the footer icon (the header has none)
-    assert!(h.query_by_label("Join the ArtCraft community on Discord").is_none(), "no Discord link in the header");
+    let discord = artcraft_launcher_core::catalog::has_link(artcraft_launcher_core::catalog::DISCORD_URL);
+    assert_eq!(h.query_all_by_label_contains("Discord").count() >= 1, discord); // the footer icon (the header has none)
+    assert!(h.query_by_label("Join the NERDS community on Discord").is_none(), "no Discord link in the header");
     assert!(h.query_all_by_label("Coming soon").count() >= 1);
     h.get_by_label_contains("48 MB of 131 MB");
     h.get_by_label("Update all (2)").click();
@@ -613,7 +614,7 @@ fn a_kept_update_names_its_version_and_an_up_to_date_app_is_not_downloaded_again
     h.run_steps(2);
     assert_eq!(*sent.borrow(), [Command::Install { app: "effectcraft".into() }]);
     // WordCraft is up to date: its menu offers Reinstall, which uses the kept file.
-    let row = h.get_all_by_label("WordCraft").next().unwrap().rect().center().y;
+    let row = h.get_all_by_label("NERDS Word").next().unwrap().rect().center().y;
     h.get_all_by_label("…").find(|n| (n.rect().center().y - row).abs() < 25.0).unwrap().click();
     h.run_steps(3);
     h.get_by_label("Reinstall");
@@ -691,23 +692,23 @@ fn table_view_and_light_theme() {
 fn hiding_an_app_removes_it_until_it_is_unhidden() {
     let (mut h, _) = harness(ViewMode::Table, egui::Theme::Dark, true);
     h.run_steps(6);
-    let row = h.get_all_by_label("PhotoCraft").next().unwrap().rect().center().y;
+    let row = h.get_all_by_label("NERDS Photo").next().unwrap().rect().center().y;
     h.get_all_by_label("…").find(|n| (n.rect().center().y - row).abs() < 25.0).unwrap().click();
     h.run_steps(3);
     h.get_by_label("Hide App").click();
     h.run_steps(4);
-    assert!(h.query_by_label("PhotoCraft").is_none());
+    assert!(h.query_by_label("NERDS Photo").is_none());
     assert!(h.state().as_ref().unwrap().settings.hidden.contains("photocraft"));
     h.get_by_label("Hidden Apps 1").click();
     h.run_steps(4);
-    h.get_by_label("PhotoCraft");
-    assert!(h.query_by_label("WordCraft").is_none());
-    let row = h.get_all_by_label("PhotoCraft").next().unwrap().rect().center().y;
+    h.get_by_label("NERDS Photo");
+    assert!(h.query_by_label("NERDS Word").is_none());
+    let row = h.get_all_by_label("NERDS Photo").next().unwrap().rect().center().y;
     h.get_all_by_label("…").find(|n| (n.rect().center().y - row).abs() < 25.0).unwrap().click();
     h.run_steps(3);
     h.get_by_label("Unhide App").click();
     h.run_steps(4);
-    h.get_by_label("PhotoCraft");
+    h.get_by_label("NERDS Photo");
     assert!(h.query_by_label("Hidden Apps 1").is_none());
     assert!(h.state().as_ref().unwrap().settings.hidden.is_empty());
     assert_eq!(h.state().as_ref().unwrap().settings.filter, artcraft_launcher_ui_egui::settings::Filter::All);
@@ -720,8 +721,8 @@ fn switching_views() {
     h.get_by_label("Show apps as a table").click();
     h.run_steps(4);
     assert_eq!(h.state().as_ref().unwrap().settings.view, ViewMode::Table);
-    h.get_by_label("PhotoCraft");
-    h.get_by_label("WordCraft");
+    h.get_by_label("NERDS Photo");
+    h.get_by_label("NERDS Word");
 }
 
 /// How far the middle of these lines of text is below the middle of the app icon beside them, in points.
@@ -743,19 +744,19 @@ fn name_and_tagline_are_centred_on_the_icon() {
         let (mut h, _) = harness_at(ViewMode::Grid, egui::Theme::Dark, true, scale);
         h.run_steps(8);
         snapshot(&mut h, &format!("grid-dark{suffix}"));
-        let off = below_icon_centre(&h, &["PhotoCraft", "Image editing"]);
+        let off = below_icon_centre(&h, &["NERDS Photo", "Image editing"]);
         assert!(off.abs() < 0.25, "grid at {scale}x: {off}");
         let (mut h, _) = harness_at(ViewMode::Table, egui::Theme::Light, true, scale);
         h.run_steps(8);
         snapshot(&mut h, &format!("table-light{suffix}"));
-        let off = below_icon_centre(&h, &["PhotoCraft", "Image editing"]);
+        let off = below_icon_centre(&h, &["NERDS Photo", "Image editing"]);
         assert!(off.abs() < 0.25, "table at {scale}x: {off}");
     }
 }
 
 /// The app names in the order the table shows them.
 fn order(h: &Harness<'_, Option<LauncherUi>>) -> Vec<String> {
-    let names: Vec<&str> = SUITE.iter().map(|a| a.name).collect();
+    let names: Vec<&str> = SUITE.iter().map(|a| a.display).collect();
     let mut found: Vec<(f32, String)> = h
         .query_all(egui_kittest::kittest::by())
         .filter_map(|n| {
@@ -779,13 +780,13 @@ fn every_table_column_sorts_both_ways() {
     h.get_by_label("Status").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(&o[..4], ["PhotoCraft", "EffectCraft", "LightCraft", "WordCraft"], "{o:?}");
+    assert_eq!(&o[..4], ["NERDS Photo", "NERDS Effects", "NERDS Light", "NERDS Word"], "{o:?}");
     // Reversed: the apps not installed first, then up to date, then the updates last. The table
     // keeps its column's order; only the grid puts installed apps above the rest.
     h.get_by_label("Status").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(&o[o.len().saturating_sub(4)..], ["LightCraft", "WordCraft", "PhotoCraft", "EffectCraft"], "{o:?}");
+    assert_eq!(&o[o.len().saturating_sub(4)..], ["NERDS Light", "NERDS Word", "NERDS Photo", "NERDS Effects"], "{o:?}");
     // The old Installed and Latest columns are gone; Version shows the number, and from and to for an update.
     assert!(h.query_by_label("Latest").is_none());
     h.get_by_label("Version");
@@ -799,7 +800,7 @@ fn every_table_column_sorts_both_ways() {
     h.get_by_label("App").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(o.first().map(String::as_str), Some("WordCraft"), "{o:?}");
+    assert_eq!(o.first().map(String::as_str), Some("NERDS Word"), "{o:?}");
 }
 
 /// The first close to the tray is explained once, by a system notification (#45, #215).
@@ -820,7 +821,7 @@ fn the_first_close_to_the_tray_is_explained_once() {
     l.hidden_to_tray(&mut host);
     assert!(l.settings.tray_hint_shown);
     assert_eq!(host.0.len(), 1, "{:?}", host.0);
-    assert_eq!(host.0[0].0, "ArtCraft Launcher is still running");
+    assert_eq!(host.0[0].0, "NERDS Launcher is still running");
     assert!(host.0[0].1.contains("tray icon"), "{}", host.0[0].1);
 }
 
@@ -831,9 +832,13 @@ fn settings_link_to_discord() {
     h.get_by_label("Settings").click();
     h.run_steps(4);
     snapshot(&mut h, "settings-dark");
-    h.get_by_label("Questions, ideas and news from the ArtCraft team");
-    // The footer icon and the button in Settings.
-    assert!(h.query_all_by_label_contains("Discord").count() >= 2);
+    if artcraft_launcher_core::catalog::has_link(artcraft_launcher_core::catalog::DISCORD_URL) {
+        h.get_by_label("Questions, ideas and news from the NERDS team");
+        // The footer icon and the button in Settings.
+        assert!(h.query_all_by_label_contains("Discord").count() >= 2);
+    } else {
+        assert_eq!(h.query_all_by_label_contains("Discord").count(), 0, "no NERDS Discord yet");
+    }
 }
 
 #[test]
@@ -865,13 +870,14 @@ fn the_uninstall_prompt_keeps_its_own_size_after_a_taller_dialog() {
 fn links_to_the_website_github_and_each_apps_pages() {
     let (mut h, _) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(6);
-    // Footer: website, GitHub and Discord.
-    for label in ["Website", "GitHub", "Discord"] {
-        assert!(h.query_all_by_label(label).count() >= 1, "{label}");
+    use artcraft_launcher_core::catalog::{DISCORD_URL, GITHUB_URL, WEBSITE_URL, has_link};
+    // Footer: website, GitHub and Discord, each once it is set.
+    for (label, url) in [("Website", WEBSITE_URL), ("GitHub", GITHUB_URL), ("Discord", DISCORD_URL)] {
+        assert_eq!(h.query_all_by_label(label).count() >= 1, has_link(url) || label == "GitHub", "{label}");
     }
-    // Cards: every app links to its repo and to its own page on getartcraft.com (plus the footer's).
-    let shown_cards = h.query_all_by_label("GitHub").count() - 1;
-    let shown_sites = h.query_all_by_label("Website").count() - 1;
+    // Cards: every app links to its repo (plus the footer's links, when set).
+    let shown_cards = h.query_all_by_label("GitHub").count() - usize::from(has_link(GITHUB_URL));
+    let shown_sites = h.query_all_by_label("Website").count() - usize::from(has_link(WEBSITE_URL));
     assert!(shown_cards >= 13, "{shown_cards}");
     assert_eq!(shown_sites, 0, "the cards only link to GitHub; the website is the footer's icon");
     // The table's … menu has the app's website and GitHub repo.
@@ -880,8 +886,8 @@ fn links_to_the_website_github_and_each_apps_pages() {
     h.get_all_by_label("…").nth(8).unwrap().click(); // WordCraft
     h.run_steps(3);
     h.get_by_label("GitHub repository");
-    // The footer's Website link and WordCraft's now-live one in the menu.
-    assert!(h.query_all_by_label_contains("Website").count() >= 2);
+    // The footer's Website link (when set) and the app's own one in the menu.
+    assert!(h.query_all_by_label_contains("Website").count() > usize::from(has_link(WEBSITE_URL)));
 }
 
 /// Clicks the `n`th widget labelled `label` and returns the URL the app asked to open.
@@ -914,20 +920,23 @@ fn all_opened(h: &mut Harness<'_, Option<LauncherUi>>, label: &str) -> Vec<Strin
 fn links_open_the_right_pages() {
     let (mut h, _) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(6);
-    assert_eq!(click_opens(&mut h, "Discord").as_deref(), Some("https://discord.gg/artcraft"));
-    // The footer's ArtCraft links and each card's own pages.
+    use artcraft_launcher_core::catalog::{DISCORD_URL, GITHUB_URL, SOCIAL, WEBSITE_URL, has_link};
+    if has_link(DISCORD_URL) {
+        assert_eq!(click_opens(&mut h, "Discord").as_deref(), Some(DISCORD_URL));
+    } else {
+        assert!(h.query_by_label("Discord").is_none());
+    }
+    // The footer's NERDS links (once set) and each card's own pages.
     let github = all_opened(&mut h, "GitHub");
-    assert!(github.contains(&"https://github.com/storytold".to_string()), "{github:?}");
+    assert_eq!(github.contains(&GITHUB_URL.to_string()), has_link(GITHUB_URL), "{github:?}");
     assert!(github.contains(&"https://github.com/storytold/photocraft".to_string()), "{github:?}");
     let sites = all_opened(&mut h, "Website");
-    assert!(sites.contains(&"https://getartcraft.com".to_string()), "{sites:?}");
-    assert_eq!(sites, vec!["https://getartcraft.com".to_string()], "{sites:?}");
+    let expected: Vec<String> = [WEBSITE_URL].into_iter().filter(|u| has_link(u)).map(String::from).collect();
+    assert_eq!(sites, expected, "{sites:?}");
     // Social icons in the footer.
-    assert_eq!(click_opens(&mut h, "X").as_deref(), Some("https://x.com/get_artcraft"));
-    assert_eq!(click_opens(&mut h, "YouTube").as_deref(), Some("https://www.youtube.com/@OfficialArtcraftStudios"));
-    assert_eq!(click_opens(&mut h, "TikTok").as_deref(), Some("https://www.tiktok.com/@artcraft.studios"));
-    assert_eq!(click_opens(&mut h, "Instagram").as_deref(), Some("https://www.instagram.com/officialartcraftstudios"));
-    assert_eq!(click_opens(&mut h, "LinkedIn").as_deref(), Some("https://www.linkedin.com/company/artcraft-ai"));
+    for (name, url) in SOCIAL {
+        assert_eq!(click_opens(&mut h, name).as_deref(), Some(url));
+    }
     // The … menu.
     h.get_all_by_label("…").next().unwrap().click();
     h.run_steps(3);
@@ -938,9 +947,12 @@ fn links_open_the_right_pages() {
 
 #[test]
 fn discord_link_opens_app_when_discord_is_installed() {
+    if !artcraft_launcher_core::catalog::has_link(artcraft_launcher_core::catalog::DISCORD_URL) {
+        return; // no NERDS Discord yet
+    }
     let (mut h, _) = harness_with_discord(Some(artcraft_launcher_core::catalog::DISCORD_APP_URL));
     h.run_steps(6);
-    assert_eq!(click_opens(&mut h, "Discord").as_deref(), Some("discord://-/invite/artcraft"));
+    assert_eq!(click_opens(&mut h, "Discord").as_deref(), Some(artcraft_launcher_core::catalog::DISCORD_APP_URL));
 }
 
 #[test]
@@ -1030,7 +1042,7 @@ fn the_launcher_updates_itself_and_quits_to_restart() {
         None,
     );
     h.run_steps(6);
-    h.get_by_label_contains("ArtCraft Launcher 0.2.0 is available");
+    h.get_by_label_contains("NERDS Launcher 0.2.0 is available");
     h.get_by_label("Update and restart").click();
     h.run_steps(2);
     assert!(sent.borrow().contains(&Command::UpdateLauncher));
@@ -1054,7 +1066,7 @@ fn launcher_update_prompts_to_relaunch_with_updated_version() {
     let (mut h, _) = harness_with(ev, ViewMode::Grid, egui::Theme::Dark, true, 1.0);
     h.run_steps(6);
     // Dialog pops up on launch with the update prompt
-    h.get_by_label_contains("ArtCraft Launcher 0.2.0 is available");
+    h.get_by_label_contains("NERDS Launcher 0.2.0 is available");
     h.get_by_label("A new version is available. Would you like to relaunch with the updated version?");
     h.get_by_label("What's new");
     // Clicking "Later" dismisses the modal dialog
@@ -1217,10 +1229,10 @@ fn the_footer_names_the_services_behind_what_is_on_screen() {
             h.get_by_label_contains("Checked ").accesskit_node().label().or_else(|| h.get_by_label_contains("Checked ").accesskit_node().value());
         label.unwrap_or_default()
     };
-    assert_eq!(footer(Vec::new()), "Checked 3 min ago · using ArtCraft API");
+    assert_eq!(footer(Vec::new()), "Checked 3 min ago · using Release API");
     let from_github =
         vec![Event::Latest { app: "wordcraft".into(), latest: LatestRelease::Found(release("wordcraft", "0.3.1", NOW)), from: Origin::GitHub }];
-    assert_eq!(footer(from_github), "Checked 3 min ago · using ArtCraft API and GitHub");
+    assert_eq!(footer(from_github), "Checked 3 min ago · using Release API and GitHub");
 }
 
 #[test]
@@ -1318,9 +1330,9 @@ fn clicking_a_card_opens_its_details_drawer() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
     // Every app has a page: a card of each generation opens one.
-    h.get_by_label("VectorCraft details");
-    h.get_by_label("WordCraft details");
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Vector details");
+    h.get_by_label("NERDS Word details");
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-dark");
     h.get_all_by_label_contains("The image editor you already know how to use").last().unwrap();
@@ -1347,7 +1359,7 @@ fn clicking_a_card_opens_its_details_drawer() {
 fn details_drawer_in_the_light_theme() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Light, true);
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-light");
     h.get_all_by_label_contains("The image editor you already know how to use").last().unwrap();
@@ -1362,30 +1374,30 @@ fn opening_a_page_asks_for_its_pictures_once_and_only_while_it_lacks_some() {
     let (mut h, sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
     assert_eq!(fetches(&sent, "photocraft"), 0, "nothing is fetched before a page is opened");
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     assert_eq!(fetches(&sent, "photocraft"), 1);
     h.get_by_label("Enlarge picture");
     // Closed and opened again: the pictures are in hand, so nothing is asked.
     h.key_press(egui::Key::Escape);
     h.run_steps(10);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     assert_eq!(fetches(&sent, "photocraft"), 1);
     h.get_by_label("Enlarge picture");
     // Another page asks for its own, and a page without pictures asks for nothing.
     h.key_press(egui::Key::Escape);
     h.run_steps(10);
-    h.get_by_label("VectorCraft details").scroll_to_me();
+    h.get_by_label("NERDS Vector details").scroll_to_me();
     h.run_steps(3);
-    h.get_by_label("VectorCraft details").click();
+    h.get_by_label("NERDS Vector details").click();
     h.run_steps(10);
     assert_eq!(fetches(&sent, "vectorcraft"), 1);
     h.key_press(egui::Key::Escape);
     h.run_steps(10);
-    h.get_by_label("PdfCraft details").scroll_to_me();
+    h.get_by_label("NERDS PDF details").scroll_to_me();
     h.run_steps(3);
-    h.get_by_label("PdfCraft details").click();
+    h.get_by_label("NERDS PDF details").click();
     h.run_steps(10);
     assert_eq!(fetches(&sent, "pdfcraft"), 0);
 }
@@ -1395,7 +1407,7 @@ fn a_frame_stands_in_for_the_pictures_until_they_arrive() {
     let pictures = Rc::new(Cell::new(Pictures::Silent));
     let (mut h, sent) = harness_pictures(events(), ViewMode::Grid, egui::Theme::Dark, true, 1.0, pictures.clone());
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-loading-dark");
     h.get_by_label("Loading pictures…");
@@ -1418,7 +1430,7 @@ fn offline_the_frame_says_so_and_opening_the_page_again_retries() {
     let pictures = Rc::new(Cell::new(Pictures::Offline));
     let (mut h, sent) = harness_pictures(events(), ViewMode::Grid, egui::Theme::Light, true, 1.0, pictures.clone());
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-offline-light");
     h.get_by_label("Pictures couldn't be loaded. Reopen this page to try again.");
@@ -1429,7 +1441,7 @@ fn offline_the_frame_says_so_and_opening_the_page_again_retries() {
     pictures.set(Pictures::Online);
     h.key_press(egui::Key::Escape);
     h.run_steps(10);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     assert_eq!(fetches(&sent, "photocraft"), 2);
     h.get_by_label("Enlarge picture");
@@ -1441,7 +1453,7 @@ fn the_enlarged_view_shows_a_frame_for_a_picture_still_missing() {
     let pictures = Rc::new(Cell::new(Pictures::SecondFails));
     let (mut h, _sent) = harness_pictures(events(), ViewMode::Grid, egui::Theme::Dark, true, 1.0, pictures);
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     h.get_by_label("Enlarge picture").click();
     h.run_steps(3);
@@ -1461,9 +1473,9 @@ fn a_page_without_pictures_has_no_gallery() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
     // PdfCraft's screenshots still show its old name (PrintCraft), so its page has none for now.
-    h.get_by_label("PdfCraft details").scroll_to_me();
+    h.get_by_label("NERDS PDF details").scroll_to_me();
     h.run_steps(3);
-    h.get_by_label("PdfCraft details").click();
+    h.get_by_label("NERDS PDF details").click();
     h.run_steps(10);
     snapshot(&mut h, "details-no-pictures-dark");
     h.get_all_by_label_contains("The open-source PDF workbench.").last().unwrap();
@@ -1476,7 +1488,7 @@ fn a_page_without_pictures_has_no_gallery() {
 fn the_lead_picture_can_be_enlarged() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     // The drawer has one "Close (Esc)"; the enlarged view adds its own.
     assert_eq!(h.query_all_by_label("Close (Esc)").count(), 1);
@@ -1509,7 +1521,7 @@ fn every_page_opens_and_pages_through_its_pictures() {
     h.set_size(egui::vec2(1180.0, 3000.0));
     h.run_steps(8);
     for d in &artcraft_launcher_core::details::DETAILS {
-        let name = SUITE.iter().find(|a| a.id == d.id).map(|a| a.name).unwrap_or(d.id);
+        let name = SUITE.iter().find(|a| a.id == d.id).map(|a| a.display).unwrap_or(d.id);
         h.get_by_label(&format!("{name} details")).scroll_to_me();
         h.run_steps(3);
         h.get_by_label(&format!("{name} details")).click();
@@ -1554,7 +1566,7 @@ fn every_page_opens_and_pages_through_its_pictures() {
 fn the_drawer_and_the_enlarged_picture_survive_any_window_size() {
     let (mut h, _sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(8);
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     let sizes = [(1180.0, 900.0), (720.0, 500.0), (480.0, 320.0), (320.0, 200.0), (120.0, 90.0), (40.0, 30.0), (4000.0, 2400.0)];
     for zoom in [false, true] {
@@ -1689,8 +1701,8 @@ fn assert_header_at_width(h: &mut Harness<'_, Option<LauncherUi>>, bar: artcraft
     for label in ["Show apps as cards", "Show apps as a table", "Settings", "Check for updates"] {
         let rect = h.get_by_label(label).rect();
         assert!(rect.left() >= 0.0 && rect.right() <= width, "{bar:?} {width}: {label} {rect:?}");
-        if let Some(text) = h.query_by_label("Craft App Suite") {
-            assert!(!rect.intersects(text.rect()), "{bar:?} {width}: Craft App Suite overlaps {label} {rect:?}");
+        if let Some(text) = h.query_by_label("NERDS Suite") {
+            assert!(!rect.intersects(text.rect()), "{bar:?} {width}: NERDS Suite overlaps {label} {rect:?}");
         }
     }
     if bar == artcraft_launcher_ui_egui::TitleBar::Custom {
@@ -1701,7 +1713,7 @@ fn assert_header_at_width(h: &mut Harness<'_, Option<LauncherUi>>, bar: artcraft
     }
     if width == 1180.0 {
         assert!(h.query_by_label("Launcher").is_none());
-        h.get_by_label("Craft App Suite");
+        h.get_by_label("NERDS Suite");
     }
     if [720.0, 800.0, 1180.0].contains(&width) {
         snapshot(h, &format!("header-{theme:?}-{bar:?}-{width}"));
@@ -1942,7 +1954,7 @@ fn an_occupied_folder_asks_before_replacing_it() {
     ev.push(Event::JobFinished { app: "photocraft".into(), result: Err(format!("{path} already exists")) });
     let (mut h, sent) = harness_with(ev, ViewMode::Grid, egui::Theme::Dark, true, 1.0);
     h.run_steps(6);
-    h.get_by_label(&format!("{path} already exists. Installing PhotoCraft will overwrite it."));
+    h.get_by_label(&format!("{path} already exists. Installing NERDS Photo will overwrite it."));
     assert!(h.query_by_label(&format!("{path} already exists")).is_none());
     sent.borrow_mut().clear();
     h.get_by_label("Replace").click();
@@ -1956,7 +1968,7 @@ fn a_not_installed_card_is_grey_until_the_pointer_is_over_it() {
     let (mut h, _) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.set_size(egui::vec2(1180.0, 1100.0));
     h.run_steps(8);
-    let icon = h.get_by_label("CADCraft icon").rect();
+    let icon = h.get_by_label("NERDS CAD icon").rect();
     // The most colourful pixel in the icon: how far apart its red, green and blue are.
     let colour = |h: &mut Harness<'_, Option<LauncherUi>>| {
         let image = h.render().unwrap();
@@ -2025,8 +2037,8 @@ fn opening_an_app_counts_and_frequently_used_puts_the_most_opened_first() {
     assert!(sent.borrow().contains(&Command::Launch { app: "wordcraft".into() }));
     assert_eq!(h.state().as_ref().unwrap().settings.launches.get("wordcraft"), Some(&1));
     h.run_steps(4);
-    let word = h.get_by_label("WordCraft details").rect();
-    let light = h.get_by_label("LightCraft details").rect();
+    let word = h.get_by_label("NERDS Word details").rect();
+    let light = h.get_by_label("NERDS Light details").rect();
     assert!(word.min.y < light.min.y || (word.min.y == light.min.y && word.min.x < light.min.x), "{word:?} {light:?}");
 }
 
@@ -2037,7 +2049,7 @@ fn an_apps_page_is_a_card_in_the_middle_with_next_and_previous_arrows_and_closes
     h.run_steps(6);
     let headline = |id: &str| AppDetails::by_id(id).unwrap().headline;
     let showing = |h: &Harness<'_, Option<LauncherUi>>, id: &str| h.query_all_by_label_contains(headline(id)).count() >= 2;
-    h.get_by_label("PhotoCraft details").click();
+    h.get_by_label("NERDS Photo details").click();
     h.run_steps(12);
     assert!(showing(&h, "photocraft"));
     // A card with a margin of window all round, not a panel against one edge.

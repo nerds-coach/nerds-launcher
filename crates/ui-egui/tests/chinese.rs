@@ -180,7 +180,7 @@ fn simplified_chinese_switches_persists_and_keeps_install_actions() {
     h.get_by_label("完成").click();
     h.run_steps(3);
     h.get_by_label("图像编辑");
-    h.get_by_label_contains("上次检查：3 分钟前 · 来源：ArtCraft API");
+    h.get_by_label_contains("上次检查：3 分钟前 · 来源：Release API");
     h.get_by_label("更新至 0.5.0");
     // Product names stay in English.
     assert!(h.query_by_label("Launcher").is_none());

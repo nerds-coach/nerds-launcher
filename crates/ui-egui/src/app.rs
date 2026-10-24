@@ -496,7 +496,7 @@ impl LauncherUi {
             }
             let Some(v) = e.latest_label() else { continue };
             if self.settings.notified.get(e.app.id) != Some(&v) {
-                fresh.push((e.app.id, e.app.name, v));
+                fresh.push((e.app.id, e.app.display, v));
             }
         }
         if fresh.is_empty() {
@@ -505,7 +505,7 @@ impl LauncherUi {
         if self.settings.notify {
             let (title, body) = match fresh.as_slice() {
                 [(_, name, v)] => {
-                    let body: String = tl!("Open ArtCraft Launcher to update.").to_string();
+                    let body: String = tl!("Open NERDS Launcher to update.").to_string();
                     (crate::i18n::fmt(tl!("{name} {v} is available"), &[("name", name), ("v", v)]), body)
                 }
                 many => {
@@ -529,7 +529,7 @@ impl LauncherUi {
         }
         self.settings.tray_hint_shown = true;
         host.notify(
-            tl!("ArtCraft Launcher is still running"),
+            tl!("NERDS Launcher is still running"),
             tl!("It's in the tray: open it or quit it from the tray icon, or turn this off in the settings."),
         );
     }
@@ -684,7 +684,10 @@ impl LauncherUi {
             .enumerate()
             .filter(|(_, e)| {
                 self.in_filter(e, self.settings.filter)
-                    && (needle.is_empty() || e.app.name.to_lowercase().contains(&needle) || e.app.tagline.to_lowercase().contains(&needle))
+                    && (needle.is_empty()
+                        || e.app.display.to_lowercase().contains(&needle)
+                        || e.app.name.to_lowercase().contains(&needle)
+                        || e.app.tagline.to_lowercase().contains(&needle))
             })
             .collect();
         let platform = self.platform;
@@ -705,7 +708,7 @@ impl LauncherUi {
         list.sort_by(|(ia, a), (ib, b)| {
             let ord = match sort {
                 SortKey::Suite => dir(ia.cmp(ib)),
-                SortKey::Name => dir(a.app.name.cmp(b.app.name)),
+                SortKey::Name => dir(a.app.display.cmp(b.app.display)),
                 SortKey::Status => {
                     dir(crate::model::status_rank(&a.status(platform, manage)).cmp(&crate::model::status_rank(&b.status(platform, manage))))
                 }

@@ -166,7 +166,7 @@ fn german_switches_persists_and_keeps_install_actions() {
     h.get_by_label("Fertig").click();
     h.run_steps(3);
     h.get_by_label("Bildbearbeitung");
-    h.get_by_label_contains("Zuletzt geprüft: vor 3 Min. · über ArtCraft API");
+    h.get_by_label_contains("Zuletzt geprüft: vor 3 Min. · über Release API");
     h.get_by_label("Auf 0.5.0 aktualisieren");
     // Product names stay in English.
     assert!(h.query_by_label("Launcher").is_none());
@@ -190,8 +190,8 @@ fn german_switches_persists_and_keeps_install_actions() {
         for label in ["Show apps as cards", "Show apps as a table", "Settings", "Check for updates"] {
             let rect = web.get_by_label(artcraft_launcher_ui_egui::i18n::t(label)).rect();
             assert!(rect.left() >= 0.0 && rect.right() <= width, "{width}: {label} {rect:?}");
-            if let Some(text) = web.query_by_label("Craft App Suite") {
-                assert!(!rect.intersects(text.rect()), "{width}: Craft App Suite overlaps {label} {rect:?}");
+            if let Some(text) = web.query_by_label("NERDS Suite") {
+                assert!(!rect.intersects(text.rect()), "{width}: NERDS Suite overlaps {label} {rect:?}");
             }
         }
     }
