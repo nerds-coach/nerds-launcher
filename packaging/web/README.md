@@ -15,7 +15,7 @@ that serves static files.
 
 ## What the web version does
 
-In the browser the launcher can't install anything: it shows the NERDS Suite catalog, the
+In the browser the launcher can't install anything: it shows the NerdsCraft Suite catalog, the
 latest release of each app and the right download for the visitor's platform, and links to the
 files on GitHub. Release data comes straight from the GitHub REST API (`api.github.com` allows
 cross-origin requests), so the page needs no backend. Unauthenticated visitors share GitHub's

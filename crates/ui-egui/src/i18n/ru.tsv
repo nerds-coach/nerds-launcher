@@ -11,7 +11,7 @@
 #
 # Coverage: the whole interface — every menu string and tl! literal (complete_menus = true).
 # Left in English on purpose: product name "NERDS Launcher" (and its "Launcher" tag), suite
-# name "NERDS Suite",
+# name "NerdsCraft Suite",
 # app names (PhotoCraft, LightCraft, FilmCraft, DesignCraft, VectorCraft, PdfCraft, EffectCraft,
 # WordCraft, DeckCraft, GridCraft, CADCraft, SoundCraft, FigCraft), "GitHub", "Discord", "Website".
 # Shortcut keys keep their key-cap names (Shift, Alt, Ctrl, Cmd, Esc).
@@ -19,7 +19,7 @@
 # {what}, {unit}, {real}, {e} must appear in translation.
 
 	Launcher	Launcher
-	NERDS Suite	NERDS Suite
+	NerdsCraft Suite	NerdsCraft Suite
 	Open Source Tools for Creatives, Makers, and Builders	Инструменты с открытым кодом для творцов, мастеров и создателей
 	Settings	Настройки
 	Check for updates	Проверить обновления

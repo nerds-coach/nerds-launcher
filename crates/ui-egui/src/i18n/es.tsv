@@ -12,7 +12,7 @@
 #
 # Coverage: the whole interface: every menu string and tl! literal (complete_menus = true).
 # Left in English on purpose: product name "NERDS Launcher" (and its "Launcher" tag), suite
-# name "NERDS Suite", app names (PhotoCraft, LightCraft, FilmCraft,
+# name "NerdsCraft Suite", app names (PhotoCraft, LightCraft, FilmCraft,
 # DesignCraft, VectorCraft, PdfCraft, EffectCraft, WordCraft, DeckCraft, GridCraft, CADCraft,
 # SoundCraft, FigCraft), "GitHub", "Discord", "Finder", "makers".
 # Trailing "…" (U+2026) must be preserved. Placeholders must appear in the translation:
@@ -20,7 +20,7 @@
 # {month}, {name}, {n}, {os}, {platform}, {sources}, {total}, {version}, {v}, {year}.
 
 	Launcher	Launcher
-	NERDS Suite	NERDS Suite
+	NerdsCraft Suite	NerdsCraft Suite
 	Open Source Tools for Creatives, Makers, and Builders	Herramientas de código abierto para creativos, makers y constructores
 	Settings	Ajustes
 	Check for updates	Buscar actualizaciones

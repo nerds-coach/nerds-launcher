@@ -126,7 +126,7 @@ fn hungarian_ui_translates_labels_dates_and_messages() {
     snapshot(&mut h, "grid-hu-dark");
     // Product names stay in English.
     assert!(h.query_by_label("Launcher").is_none());
-    h.get_by_label("NERDS Suite");
+    h.get_by_label("NerdsCraft Suite");
     h.get_by_label("Képszerkesztés");
     h.get_by_label("Frissítés: 0.5.0");
     h.get_by_label_contains("Ellenőrzőösszeg ellenőrzése…");

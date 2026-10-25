@@ -1,4 +1,4 @@
-//! NERDS Launcher: install, update and open the NERDS Suite.
+//! NERDS Launcher: install, update and open the NerdsCraft Suite.
 //!
 //! The window can close to the tray (menu bar) and keep checking for updates, or quit entirely.
 

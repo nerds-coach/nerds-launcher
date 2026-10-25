@@ -34,7 +34,7 @@
       Scope="perUser"
       Compressed="yes"
       Language="1033">
-    <SummaryInformation Description="NERDS Launcher: install and update the NERDS Suite" Manufacturer="NERDS Craft" />
+    <SummaryInformation Description="NERDS Launcher: install and update the NerdsCraft Suite" Manufacturer="NERDS Craft" />
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
     <MajorUpgrade AllowSameVersionUpgrades="yes"
@@ -135,7 +135,7 @@
     <Property Id="ArtCraftLauncherVersion" Value="$(var.DisplayVersion)" />
 
     <!-- Finish page: say where to find the launcher, and offer to start it (ticked by default). -->
-    <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="NERDS Launcher $(var.DisplayVersion) is installed. Start it any time from the Start menu to install and update the NERDS Suite." />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="NERDS Launcher $(var.DisplayVersion) is installed. Start it any time from the Start menu to install and update the NerdsCraft Suite." />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch NERDS Launcher" />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
     <Property Id="WixShellExecTarget" Value="[#ArtCraftLauncherExe]" />
@@ -158,7 +158,7 @@
 
       <Component Id="ArtCraftLauncherShortcut" Directory="ProgramMenuFolder" Guid="47FEA008-C676-4BCD-9022-76AD5BA9F8A0">
         <Shortcut Id="StartMenuShortcut" Name="NERDS Launcher"
-            Description="Install and update the NERDS Suite"
+            Description="Install and update the NerdsCraft Suite"
             Target="[#ArtCraftLauncherExe]" WorkingDirectory="INSTALLFOLDER">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="ai.storyteller.artcraft-launcher" />
         </Shortcut>
@@ -169,7 +169,7 @@
       <Component Id="ArtCraftLauncherDesktopShortcut" Directory="DesktopFolder" Guid="966A954B-A944-494C-89FE-759742DCBB3A"
           Condition="INSTALLDESKTOPSHORTCUT = &quot;1&quot;">
         <Shortcut Id="DesktopShortcut" Name="NERDS Launcher"
-            Description="Install and update the NERDS Suite"
+            Description="Install and update the NerdsCraft Suite"
             Target="[#ArtCraftLauncherExe]" WorkingDirectory="INSTALLFOLDER">
           <ShortcutProperty Key="System.AppUserModel.ID" Value="ai.storyteller.artcraft-launcher" />
         </Shortcut>

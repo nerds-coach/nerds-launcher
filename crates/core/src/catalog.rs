@@ -1,4 +1,4 @@
-//! The NERDS Suite: the thirteen apps the launcher knows about (the NERDS Suite's apps, shown
+//! The NerdsCraft Suite: the thirteen apps the launcher knows about (the NerdsCraft Suite's apps, shown
 //! under NERDS names and colours).
 //!
 //! The list is data so a later version can fetch it from an API; [`SUITE`] is the built-in copy.
@@ -146,7 +146,7 @@ pub const DISCORD_APP_URL: &str = "";
 /// machinery (asset names `artcraft-launcher-<ver>-…`, bundle id `ai.storyteller.artcraft-launcher`,
 /// `NERDS Launcher.app`). Not part of [`SUITE`].
 pub const LAUNCHER: CraftApp =
-    app("artcraft-launcher", "NERDS Launcher", "NERDS Launcher", "Installs and updates the NERDS Suite", "nerds-coach/nerds-launcher");
+    app("artcraft-launcher", "NERDS Launcher", "NERDS Launcher", "Installs and updates the NerdsCraft Suite", "nerds-coach/nerds-launcher");
 
 /// The launcher's own repo, checked so it can say when a newer launcher is out.
 pub const LAUNCHER_REPO: &str = "nerds-coach/nerds-launcher";

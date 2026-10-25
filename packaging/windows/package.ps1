@@ -110,7 +110,7 @@ function New-InstallerArt([string] $BannerOut, [string] $DialogOut) {
   $accent = [System.Drawing.ColorTranslator]::FromHtml('#0077c0')
   $muted = [System.Drawing.Color]::FromArgb(153, 230, 238, 245)
   $line = [System.Drawing.Color]::FromArgb(38, 230, 238, 245)
-  # The NERDS Suite, in the launcher's order (crates/core/src/catalog.rs).
+  # The NerdsCraft Suite, in the launcher's order (crates/core/src/catalog.rs).
   $apps = 'photocraft', 'vectorcraft', 'filmcraft', 'lightcraft', 'pdfcraft', 'effectcraft',
     'designcraft', 'figcraft', 'wordcraft', 'soundcraft', 'deckcraft', 'cadcraft', 'gridcraft'
   $mark = [System.Drawing.Image]::FromFile((Join-Path $Root 'assets\app-icon\hicolor\256x256\apps\ai.storyteller.artcraft-launcher.png'))

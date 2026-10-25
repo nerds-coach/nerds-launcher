@@ -102,7 +102,7 @@ fn portuguese_ui_translates_labels_dates_and_messages() {
     let mut h = harness(ViewMode::Grid);
     h.run_steps(8);
     assert!(h.query_by_label("Launcher").is_none());
-    h.get_by_label("NERDS Suite");
+    h.get_by_label("NerdsCraft Suite");
     h.get_by_label("Edição de imagens");
     h.get_by_label("Atualizar para 0.5.0");
     h.get_by_label_contains("Conferindo a soma de verificação…");

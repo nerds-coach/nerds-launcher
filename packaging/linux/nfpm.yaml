@@ -17,7 +17,7 @@ vendor: NERDS Craft
 homepage: https://github.com/nerds-coach/nerds-launcher
 license: MIT OR Apache-2.0
 description: |-
-  Install, update and launch the NERDS Suite.
+  Install, update and launch the NerdsCraft Suite.
   NERDS Launcher lists NERDS Photo, Light, Film, Layout,
   Vector, PDF, Effects, Word, Deck, Grid, CAD,
   Sound and Proto, installs the right build for this computer and keeps

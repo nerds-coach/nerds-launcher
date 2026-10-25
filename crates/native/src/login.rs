@@ -90,7 +90,7 @@ pub fn set_enabled(on: bool) -> Result<(), String> {
         // introduce a second Exec= key that the desktop runs at login instead of us) (CWE-74).
         let exec = crate::desktop_entry::exec_quote(&program()?).ok_or("this program's path can't be used in a startup entry")?;
         let entry = format!(
-            "[Desktop Entry]\nType=Application\nName=NERDS Launcher\nComment=Install and update the NERDS Suite\nExec={exec} {HIDDEN_FLAG}\nIcon={ID}\nTerminal=false\nX-GNOME-Autostart-enabled=true\n"
+            "[Desktop Entry]\nType=Application\nName=NERDS Launcher\nComment=Install and update the NerdsCraft Suite\nExec={exec} {HIDDEN_FLAG}\nIcon={ID}\nTerminal=false\nX-GNOME-Autostart-enabled=true\n"
         );
         crate::paths::write_atomic(&path, entry.as_bytes())
     }

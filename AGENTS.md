@@ -1,6 +1,6 @@
 > **NERDS edition.** This is ArtCraft Launcher reskinned for NERDS: read [`NERDS.md`](NERDS.md)
 > first. Where this guide says "ArtCraft Launcher", "Craft App Suite" or the ArtCraft brand files,
-> read NERDS Launcher, NERDS Suite and `docs/brand/nerds-*`; the user-facing app names are each
+> read NERDS Launcher, NerdsCraft Suite and `docs/brand/nerds-*`; the user-facing app names are each
 > `CraftApp::display`. The rest of the guide (never crash, safe installs, tests, wasm) applies as
 > written.
 

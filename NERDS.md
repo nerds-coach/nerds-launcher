@@ -17,7 +17,7 @@ file lists the changes, as the Apache License asks of modified files.
   (`assets/app-icons/source/*.svg`, rendered by `packaging/icons.sh`).
 
 **Names**
-- NERDS Launcher, the NERDS Suite, and each app as "NERDS" + what it does
+- NERDS Launcher, the NerdsCraft Suite, and each app as "NERDS" + what it does
   (`crates/core/src/catalog.rs`, field `display`). The app's original name stays in `name`,
   because the install and detection code must match what the app's installer calls itself.
 - All user-facing text, in all eleven languages, and the packaging (MSI, DMG, .deb/.rpm, Flatpak)
@@ -69,17 +69,15 @@ file lists the changes, as the Apache License asks of modified files.
 
 ## Stage 2: NERDS-branded apps
 
-1. Fork the 13 app repositories and this one to the NERDS GitHub account or organization.
+1. Fork the 13 app repositories to nerds-coach.
 2. In each app: product name "NERDS <X>" (window title, menus, About, installer metadata, bundle
    id, Windows product name), the NERDS icon from `assets/app-icons/source/`, and a NERDS colour
-   theme as the default. Releases built by each fork's own GitHub Actions workflow.
+   theme as the default. Releases built by each fork's own copy of this repo's `release.yml`.
 3. Here: `GITHUB_OWNER` and every `repo` → nerds-coach; `name` → the NERDS name, with the
-   upstream name kept in `former_names` so existing installs are still found; the release feed
-   off (it only knows the upstream releases).
-4. Identity: the publisher (`Learning Machines LLC` in `build.rs`, the `.wxs`, `nfpm.yaml`,
-   the metainfo and `self_update.rs`), the `ai.storyteller.*` bundle ids, and the
-   `artcraft-launcher` machine names (binary, crates, files) → NERDS ones.
-5. macOS: regenerate `packaging/macos/dmg/background.tiff` and `dmg-layout.DS_Store` with
-   `packaging/macos/dmg/generate.py` (the volume is now "NERDS Launcher").
-6. Code signing (Apple Developer ID, a Windows certificate), or recipients click through a
-   one-time "unidentified developer" warning.
+   upstream name kept in `former_names` so existing installs are still found; the apps'
+   publisher in `detect.rs` → NERDS Craft; the release feed off (it only knows the upstream
+   releases).
+4. Identity: the `ai.storyteller.*` bundle ids and the `artcraft-launcher` machine names
+   (binary, crates, files) → NERDS ones.
+5. Code signing (Apple Developer ID, a Windows certificate), or recipients keep clicking through a
+   one-time "unidentified developer" warning, and the Windows launcher can't update itself.

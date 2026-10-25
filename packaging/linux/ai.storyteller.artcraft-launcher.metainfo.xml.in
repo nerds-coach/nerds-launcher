@@ -6,13 +6,13 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT OR Apache-2.0</project_license>
   <name>NERDS Launcher</name>
-  <summary>Install, update and launch the NERDS Suite</summary>
+  <summary>Install, update and launch the NerdsCraft Suite</summary>
   <developer id="ai.storyteller">
     <name>NERDS Craft</name>
   </developer>
   <description>
     <p>
-      NERDS Launcher lists every app in the NERDS Suite (NERDS Photo, Light, Film,
+      NERDS Launcher lists every app in the NerdsCraft Suite (NERDS Photo, Light, Film,
       Layout, Vector, PDF, Effects, Word, Deck, Grid, CAD,
       Sound and Proto), installs the right build for your computer, and keeps them up to date.
     </p>

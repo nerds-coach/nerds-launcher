@@ -5,7 +5,7 @@
 <h1 align="center">NERDS Launcher</h1>
 
 <p align="center">
-  <b>One place to install, update and open every app in the NERDS Suite.</b><br>
+  <b>One place to install, update and open every app in the NerdsCraft Suite.</b><br>
   NERDS Photo, Vector, Film, Light, PDF, Effects, Layout, Proto, Word, Sound, Deck, CAD and Grid:<br>
   the right build for your computer, kept up to date.
 </p>

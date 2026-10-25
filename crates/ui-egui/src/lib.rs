@@ -1,4 +1,4 @@
-//! NERDS Launcher's interface: the NERDS Suite as a grid of cards or a table, with
+//! NERDS Launcher's interface: the NerdsCraft Suite as a grid of cards or a table, with
 //! install, update, open and remove, shared by the desktop and web builds.
 //!
 //! The UI is thin: it draws [`model::AppEntry`]s and sends

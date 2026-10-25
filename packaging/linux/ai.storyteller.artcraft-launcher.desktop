@@ -2,7 +2,7 @@
 Type=Application
 Name=NERDS Launcher
 GenericName=App Launcher
-Comment=Install, update and launch the NERDS Suite
+Comment=Install, update and launch the NerdsCraft Suite
 Exec=artcraft-launcher
 TryExec=artcraft-launcher
 Icon=ai.storyteller.artcraft-launcher

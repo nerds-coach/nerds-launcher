@@ -1,12 +1,12 @@
 # Simplified Chinese (zh-CN) catalog for NERDS Launcher.
 # Format: context<TAB>English source<TAB>translation.
 # Original translations from the English UI. Product and app names (NERDS Launcher and its
-# "Launcher" tag, NERDS Suite, PhotoCraft…) and third-party names stay unchanged.
+# "Launcher" tag, NerdsCraft Suite, PhotoCraft…) and third-party names stay unchanged.
 # Shown with the system's Chinese font (PingFang, Microsoft YaHei, Noto Sans CJK…): see cjk_font.rs.
 # Chinese has one plural form. Placeholders and trailing ellipses are preserved.
 
 	Launcher	Launcher
-	NERDS Suite	NERDS Suite
+	NerdsCraft Suite	NerdsCraft Suite
 	Open Source Tools for Creatives, Makers, and Builders	为创作者和开发者打造的开源工具
 	Settings	设置
 	Check for updates	检查更新

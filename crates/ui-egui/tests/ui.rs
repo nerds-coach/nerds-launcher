@@ -1708,8 +1708,8 @@ fn assert_header_at_width(h: &mut Harness<'_, Option<LauncherUi>>, bar: artcraft
     for label in ["Show apps as cards", "Show apps as a table", "Settings", "Check for updates"] {
         let rect = h.get_by_label(label).rect();
         assert!(rect.left() >= 0.0 && rect.right() <= width, "{bar:?} {width}: {label} {rect:?}");
-        if let Some(text) = h.query_by_label("NERDS Suite") {
-            assert!(!rect.intersects(text.rect()), "{bar:?} {width}: NERDS Suite overlaps {label} {rect:?}");
+        if let Some(text) = h.query_by_label("NerdsCraft Suite") {
+            assert!(!rect.intersects(text.rect()), "{bar:?} {width}: NerdsCraft Suite overlaps {label} {rect:?}");
         }
     }
     if bar == artcraft_launcher_ui_egui::TitleBar::Custom {
@@ -1720,7 +1720,7 @@ fn assert_header_at_width(h: &mut Harness<'_, Option<LauncherUi>>, bar: artcraft
     }
     if width == 1180.0 {
         assert!(h.query_by_label("Launcher").is_none());
-        h.get_by_label("NERDS Suite");
+        h.get_by_label("NerdsCraft Suite");
     }
     if [720.0, 800.0, 1180.0].contains(&width) {
         snapshot(h, &format!("header-{theme:?}-{bar:?}-{width}"));
