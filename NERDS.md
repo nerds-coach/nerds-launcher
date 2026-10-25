@@ -32,7 +32,10 @@ file lists the changes, as the Apache License asks of modified files.
 - Publisher: NERDS Craft (Windows exe and installer, registry key `HKCU\Software\NERDS Craft\NERDS
   Launcher`, Linux package metadata). App detection still looks for the upstream apps' publisher.
 - Release files are named `nerds-launcher-<version>-…` (`catalog::LAUNCHER_ASSET_STEM`); self-update
-  looks for those first. The binary and cargo packages keep the upstream `artcraft-launcher` name.
+  looks for those first. In the Windows zip the program is `NERDS Launcher.exe`; elsewhere the
+  binary and cargo packages keep the upstream `artcraft-launcher` name.
+- Each app's Website link is left out while it would only repeat its GitHub link
+  (`CraftApp::has_own_website`).
 - The macOS DMG window (`packaging/macos/dmg/background.svg`) says NERDS Launcher; its text is
   outlined with `docs/brand/source/outline_text.py`, and the release workflow redraws
   `background.tiff` and `dmg-layout.DS_Store` from it.
@@ -43,7 +46,9 @@ file lists the changes, as the Apache License asks of modified files.
   Run it from the Actions tab (Release → Run workflow) after bumping the version in `Cargo.toml`
   (`cargo xtask version set X.Y.Z`). Signing secrets are optional (listed at the top of the file).
 - `ci.yml` runs fmt, clippy and the tests on Linux, Windows and macOS, and draws screenshots of
-  the launcher (artifact "screenshots").
+  the launcher. Each job publishes its logs (and the screenshots) to a `ci-output/<job>` branch,
+  and the release publishes the redrawn DMG window files to `ci-output/dmg-layout`, so they can
+  be read with plain git (`git fetch origin 'refs/heads/ci-output/*:refs/remotes/origin/ci-output/*'`).
 - Removed: the upstream FreeBSD, Nix, SonarCloud and Windows-on-Arm workflows (they need
   ArtCraft's paid runners or accounts). Linux and FreeBSD packaging scripts are kept, unused.
 - Unsigned builds: Windows asks "More info → Run anyway" and macOS "Privacy & Security → Open
