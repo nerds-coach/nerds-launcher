@@ -89,6 +89,8 @@ jobs:
     name: macOS universal
     needs: version
     runs-on: macos-15
+    permissions:
+      contents: write
     timeout-minutes: 90
     env:
       ARTCRAFT_LAUNCHER_VERSION: ${{ needs.version.outputs.version }}
@@ -105,19 +107,20 @@ jobs:
         with:
           key: release-macos-universal
       # The DMG window's background and layout name the volume, so they are drawn here from
-      # packaging/macos/dmg/background.svg (and uploaded, to be committed).
+      # packaging/macos/dmg/background.svg (and published to ci-output/dmg-layout, to be committed).
       - name: Draw the DMG window
         run: |
           brew install resvg
           python3 -m venv "$RUNNER_TEMP/venv"
           "$RUNNER_TEMP/venv/bin/pip" install --quiet 'pillow>=12' ds_store==1.3.3 mac_alias==2.2.3
           "$RUNNER_TEMP/venv/bin/python" packaging/macos/dmg/generate.py
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: dmg-layout
-          path: |
-            packaging/macos/dmg/background.tiff
-            packaging/macos/dmg/dmg-layout.DS_Store
+      - name: Publish the DMG window files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/dmg"
+          cp packaging/macos/dmg/background.tiff packaging/macos/dmg/dmg-layout.DS_Store "$RUNNER_TEMP/dmg/"
+          .github/scripts/publish-ci-output.sh dmg-layout "$RUNNER_TEMP/dmg"
       - name: Import the signing certificate
         if: env.HAS_APPLE_CERTIFICATE == 'true'
         env:
