@@ -5,7 +5,7 @@
 .DESCRIPTION
   Produces, in $env:DIST (default: dist/release):
     nerds-launcher-<version>-windows-<arch>.msi            per-user installer with a setup wizard (WiX v5)
-    nerds-launcher-<version>-windows-<arch>-portable.zip   artcraft-launcher.exe + portable.txt
+    nerds-launcher-<version>-windows-<arch>-portable.zip   NERDS Launcher.exe + portable.txt
 
   The binary links the C runtime statically (+crt-static), so neither the MSI nor the portable
   zip needs the Visual C++ redistributable. Signing is delegated to sign.ps1 (skipped with a
@@ -194,12 +194,13 @@ Remove-Item -Force -ErrorAction SilentlyContinue ([IO.Path]::ChangeExtension($Ms
 $Portable = Join-Path $TargetDir "windows-package\$Stem-$Version-windows-$Arch-portable"
 Remove-Item -Recurse -Force $Portable -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Portable | Out-Null
-Copy-Item (Join-Path $Stage $Exe) $Portable
+# The exe carries the product name here, where people see it (the MSI keeps the binary's name).
+Copy-Item (Join-Path $Stage $Exe) (Join-Path $Portable 'NERDS Launcher.exe')
 foreach ($f in 'README.md', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md') {
   $p = Join-Path $Root $f
   if (Test-Path $p) { Copy-Item $p $Portable }
 }
-# portable.txt beside artcraft-launcher.exe switches on portable mode: settings and the download
+# portable.txt beside NERDS Launcher.exe switches on portable mode: settings and the download
 # cache go to NERDSLauncherData\ next to the exe instead of %APPDATA%.
 Copy-Item (Join-Path $PSScriptRoot 'portable.txt') $Portable
 $Zip = Join-Path $Dist "$Stem-$Version-windows-$Arch-portable.zip"
