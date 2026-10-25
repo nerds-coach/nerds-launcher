@@ -11,6 +11,10 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/nerds-coach/nerds-launcher/releases/latest"><b>Download NERDS Launcher</b></a> (Windows and Mac)
+</p>
+
+<p align="center">
   <img src="assets/app-icons/photocraft.png" width="48" alt="NERDS Photo">
   <img src="assets/app-icons/vectorcraft.png" width="48" alt="NERDS Vector">
   <img src="assets/app-icons/filmcraft.png" width="48" alt="NERDS Film">

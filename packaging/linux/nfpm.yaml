@@ -14,7 +14,7 @@ section: utils
 priority: optional
 maintainer: ${ARTCRAFT_LAUNCHER_MAINTAINER}
 vendor: NERDS Craft
-homepage: https://github.com/storytold/craft-launcher
+homepage: https://github.com/nerds-coach/nerds-launcher
 license: MIT OR Apache-2.0
 description: |-
   Install, update and launch the NERDS Suite.

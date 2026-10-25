@@ -184,7 +184,7 @@ if has appimage; then
   # next to each AppImage on GitHub Releases. `latest` is the newest published release that is
   # not a pre-release. A fork's builds point at its own releases through GITHUB_REPOSITORY.
   # The repo is craft-launcher while the files are artcraft-launcher-*.
-  REPO="${GITHUB_REPOSITORY:-storytold/craft-launcher}"
+  REPO="${GITHUB_REPOSITORY:-nerds-coach/nerds-launcher}"
   UPDATE_INFO="gh-releases-zsync|${REPO%%/*}|${REPO#*/}|latest|$PKG-*-linux-$ARCH.AppImage.zsync"
   # Extract-and-run: works without FUSE (containers, CI). The output embeds the static runtime,
   # so users don't need libfuse2 either. With zsyncmake on the host (CI installs the zsync

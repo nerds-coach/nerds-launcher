@@ -24,6 +24,10 @@ file lists the changes, as the Apache License asks of modified files.
   say NERDS Launcher. The Windows installer has its own upgrade code and component IDs, so it
   never replaces or clashes with an ArtCraft Launcher install.
 
+**Home and updates**
+- The launcher's repository is github.com/nerds-coach/nerds-launcher (`LAUNCHER_REPO`): it looks
+  for its own new versions there, never at the upstream ArtCraft Launcher.
+
 **Publisher and files**
 - Publisher: NERDS Craft (Windows exe and installer, registry key `HKCU\Software\NERDS Craft\NERDS
   Launcher`, Linux package metadata). App detection still looks for the upstream apps' publisher.
@@ -47,10 +51,8 @@ file lists the changes, as the Apache License asks of modified files.
   checks the publisher's signature); it still says when a new version is out, and links to it.
 
 **Switched off until NERDS has its own**
-- Website, GitHub, Discord and social links: empty in `catalog.rs`; an empty link is hidden in
-  the footer, Settings and the tray menu. Fill them in to show them.
-- Self-update (`LAUNCHER_SELF_UPDATE`): off, or it would offer the upstream ArtCraft Launcher as
-  an update. Turn it on once `LAUNCHER_REPO` points at the NERDS Launcher's own repository.
+- Website, Discord and social links: empty in `catalog.rs`; an empty link is hidden in the
+  footer, Settings and the tray menu. Fill them in to show them. (GitHub: github.com/nerds-coach.)
 - The upstream release feed's announcements and alerts (`UPSTREAM_NOTICES`): off, as they are
   ArtCraft's news. Release information from the feed is still used.
 
@@ -66,10 +68,9 @@ file lists the changes, as the Apache License asks of modified files.
 2. In each app: product name "NERDS <X>" (window title, menus, About, installer metadata, bundle
    id, Windows product name), the NERDS icon from `assets/app-icons/source/`, and a NERDS colour
    theme as the default. Releases built by each fork's own GitHub Actions workflow.
-3. Here: `GITHUB_OWNER` and every `repo` → the NERDS account; `name` → the NERDS name, with the
+3. Here: `GITHUB_OWNER` and every `repo` → nerds-coach; `name` → the NERDS name, with the
    upstream name kept in `former_names` so existing installs are still found; the release feed
-   off (it only knows the upstream releases); `LAUNCHER_REPO` → the NERDS fork and
-   `LAUNCHER_SELF_UPDATE` on.
+   off (it only knows the upstream releases).
 4. Identity: the publisher (`Learning Machines LLC` in `build.rs`, the `.wxs`, `nfpm.yaml`,
    the metainfo and `self_update.rs`), the `ai.storyteller.*` bundle ids, and the
    `artcraft-launcher` machine names (binary, crates, files) → NERDS ones.

@@ -121,7 +121,7 @@ pub const WEBSITE_URL: &str = "";
 /// installs from, whatever the release feed says.
 pub const GITHUB_OWNER: &str = "storytold";
 /// NERDS on GitHub.
-pub const GITHUB_URL: &str = "";
+pub const GITHUB_URL: &str = "https://github.com/nerds-coach";
 /// NERDS's social accounts: (service, URL), shown as small icons. The names pick the icon in
 /// `ui-egui`'s `icons::social` (X, Instagram, LinkedIn, YouTube, TikTok).
 pub const SOCIAL: [(&str, &str); 0] = [];
@@ -140,16 +140,16 @@ pub const DISCORD_APP_URL: &str = "";
 /// machinery (asset names `artcraft-launcher-<ver>-…`, bundle id `ai.storyteller.artcraft-launcher`,
 /// `NERDS Launcher.app`). Not part of [`SUITE`].
 pub const LAUNCHER: CraftApp =
-    app("artcraft-launcher", "NERDS Launcher", "NERDS Launcher", "Installs and updates the NERDS Suite", "storytold/craft-launcher");
+    app("artcraft-launcher", "NERDS Launcher", "NERDS Launcher", "Installs and updates the NERDS Suite", "nerds-coach/nerds-launcher");
 
 /// The launcher's own repo, checked so it can say when a newer launcher is out.
-pub const LAUNCHER_REPO: &str = "storytold/craft-launcher";
+pub const LAUNCHER_REPO: &str = "nerds-coach/nerds-launcher";
 /// Whether to show the upstream release feed's announcements and alerts. Off: they are written by
 /// and about ArtCraft (its news, its links), not NERDS.
 pub const UPSTREAM_NOTICES: bool = false;
-/// Whether the launcher offers to update itself. Off until [`LAUNCHER_REPO`] points at the NERDS
-/// Launcher's own repository: until then a "newer launcher" would be the upstream ArtCraft one.
-pub const LAUNCHER_SELF_UPDATE: bool = false;
+/// Whether the launcher looks for newer versions of itself, in [`LAUNCHER_REPO`] (the NERDS
+/// Launcher's own releases, never the upstream ArtCraft Launcher's).
+pub const LAUNCHER_SELF_UPDATE: bool = true;
 /// The launcher's own asset stem.
 pub const LAUNCHER_ID: &str = "artcraft-launcher";
 /// The stem of the NERDS Launcher's release files (`nerds-launcher-<version>-windows-x64.msi`…;

@@ -94,6 +94,13 @@ fn marker(paths: &Paths) -> PathBuf {
 pub fn current() -> Option<Install> {
     let exe = std::env::current_exe().ok()?;
     let exe = exe.canonicalize().unwrap_or(exe);
+    // An unsigned Windows build can't install its own updates (`signed_like` refuses them), so it
+    // offers the download instead of an update that would fail.
+    #[cfg(windows)]
+    if verifysign::verify_file(&exe).is_err() {
+        log::info!("this copy isn't signed: new versions are offered as a download");
+        return None;
+    }
     detect(&exe)
 }
 
