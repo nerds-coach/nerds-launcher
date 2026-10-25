@@ -4,8 +4,8 @@
 
 .DESCRIPTION
   Produces, in $env:DIST (default: dist/release):
-    artcraft-launcher-<version>-windows-<arch>.msi            per-user installer with a setup wizard (WiX v5)
-    artcraft-launcher-<version>-windows-<arch>-portable.zip   artcraft-launcher.exe + portable.txt
+    nerds-launcher-<version>-windows-<arch>.msi            per-user installer with a setup wizard (WiX v5)
+    nerds-launcher-<version>-windows-<arch>-portable.zip   artcraft-launcher.exe + portable.txt
 
   The binary links the C runtime statically (+crt-static), so neither the MSI nor the portable
   zip needs the Visual C++ redistributable. Signing is delegated to sign.ps1 (skipped with a
@@ -29,6 +29,7 @@ $Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 
 # ---- app-specific values ----------------------------------------------------------------------
 $Pkg = 'artcraft-launcher'          # cargo package and binary
+$Stem = 'nerds-launcher'            # release file names (catalog::LAUNCHER_ASSET_STEM)
 $AppName = 'NERDS Launcher'      # display name
 
 function Invoke-Native([string] $What, [scriptblock] $Block) {
@@ -172,7 +173,7 @@ $Banner = Join-Path $Stage 'installer-banner.bmp'
 $Dialog = Join-Path $Stage 'installer-dialog.bmp'
 New-InstallerArt $Banner $Dialog
 
-$Msi = Join-Path $Dist "$Pkg-$Version-windows-$Arch.msi"
+$Msi = Join-Path $Dist "$Stem-$Version-windows-$Arch.msi"
 & (Join-Path $PSScriptRoot 'check-icons.ps1')
 Invoke-Native 'wix build' {
   wix build (Join-Path $PSScriptRoot "$Pkg.wxs") -arch $Arch `
@@ -190,7 +191,7 @@ Remove-Item -Force -ErrorAction SilentlyContinue ([IO.Path]::ChangeExtension($Ms
 & (Join-Path $PSScriptRoot 'sign.ps1') $Msi
 
 # ---- portable zip ------------------------------------------------------------------------------
-$Portable = Join-Path $TargetDir "windows-package\$Pkg-$Version-windows-$Arch-portable"
+$Portable = Join-Path $TargetDir "windows-package\$Stem-$Version-windows-$Arch-portable"
 Remove-Item -Recurse -Force $Portable -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Portable | Out-Null
 Copy-Item (Join-Path $Stage $Exe) $Portable
@@ -201,7 +202,7 @@ foreach ($f in 'README.md', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUT
 # portable.txt beside artcraft-launcher.exe switches on portable mode: settings and the download
 # cache go to NERDSLauncherData\ next to the exe instead of %APPDATA%.
 Copy-Item (Join-Path $PSScriptRoot 'portable.txt') $Portable
-$Zip = Join-Path $Dist "$Pkg-$Version-windows-$Arch-portable.zip"
+$Zip = Join-Path $Dist "$Stem-$Version-windows-$Arch-portable.zip"
 Remove-Item -Force $Zip -ErrorAction SilentlyContinue
 Compress-Archive -Path $Portable -DestinationPath $Zip
 

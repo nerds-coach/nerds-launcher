@@ -124,7 +124,7 @@ fn detect(exe: &Path) -> Option<Install> {
 fn msi_install_dir() -> Option<PathBuf> {
     use winreg::RegKey;
     use winreg::enums::HKEY_CURRENT_USER;
-    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\Learning Machines LLC\NERDS Launcher").ok()?;
+    let key = RegKey::predef(HKEY_CURRENT_USER).open_subkey(r"Software\NERDS Craft\NERDS Launcher").ok()?;
     let dir: String = key.get_value("InstallDir").ok()?;
     let dir = dir.trim();
     (!dir.is_empty()).then(|| PathBuf::from(dir))
@@ -223,7 +223,7 @@ pub fn update(
     {
         return Err(format!("NERDS Launcher {} is not newer than currently running version {}", release.version_label(), cur_v));
     }
-    let (asset, _) = pick_asset(release, &[LAUNCHER.id], platform, &[install.kind()])
+    let (asset, _) = pick_asset(release, &[artcraft_launcher_core::catalog::LAUNCHER_ASSET_STEM, LAUNCHER.id], platform, &[install.kind()])
         .ok_or_else(|| format!("NERDS Launcher {} has no {} for {}", release.version_label(), install.kind().label(), platform.label()))?;
     let asset = asset.clone();
     let mut job = Job { http, paths, stop, phase, install_locations: &Default::default(), replace: false };
@@ -1165,6 +1165,27 @@ mod tests {
         assert_eq!(pick(Os::Linux, Install::Package(PackageKind::Deb, PathBuf::new()).kind()).as_deref(), Some(names[4]));
         assert_eq!(pick(Os::Linux, Install::Flatpak.kind()).as_deref(), Some(names[5]));
         assert_eq!(pick(Os::Linux, Install::Package(PackageKind::ArchPkg, PathBuf::new()).kind()).as_deref(), Some(names[6]));
+    }
+
+    #[test]
+    fn picks_the_nerds_launcher_files() {
+        let names =
+            ["nerds-launcher-0.8.0-macos-universal.dmg", "nerds-launcher-0.8.0-windows-x64.msi", "nerds-launcher-0.8.0-windows-x64-portable.zip"];
+        let release = Release {
+            assets: names
+                .iter()
+                .map(|n| artcraft_launcher_core::release::Asset { name: (*n).into(), size: 1, url: String::new(), sha256: None })
+                .collect(),
+            ..Release::default()
+        };
+        use artcraft_launcher_core::catalog::LAUNCHER_ASSET_STEM;
+        use artcraft_launcher_core::{Arch, Os};
+        let pick = |os, kind| {
+            pick_asset(&release, &[LAUNCHER_ASSET_STEM, LAUNCHER.id], Platform { os, arch: Arch::X64 }, &[kind]).map(|(a, _)| a.name.clone())
+        };
+        assert_eq!(pick(Os::MacOs, Install::MacApp(PathBuf::new()).kind()).as_deref(), Some(names[0]));
+        assert_eq!(pick(Os::Windows, Install::Msi(PathBuf::new()).kind()).as_deref(), Some(names[1]));
+        assert_eq!(pick(Os::Windows, Install::Portable(PathBuf::new()).kind()).as_deref(), Some(names[2]));
     }
 
     #[test]

@@ -24,6 +24,28 @@ file lists the changes, as the Apache License asks of modified files.
   say NERDS Launcher. The Windows installer has its own upgrade code and component IDs, so it
   never replaces or clashes with an ArtCraft Launcher install.
 
+**Publisher and files**
+- Publisher: NERDS Craft (Windows exe and installer, registry key `HKCU\Software\NERDS Craft\NERDS
+  Launcher`, Linux package metadata). App detection still looks for the upstream apps' publisher.
+- Release files are named `nerds-launcher-<version>-…` (`catalog::LAUNCHER_ASSET_STEM`); self-update
+  looks for those first. The binary and cargo packages keep the upstream `artcraft-launcher` name.
+- The macOS DMG window (`packaging/macos/dmg/background.svg`) says NERDS Launcher; its text is
+  outlined with `docs/brand/source/outline_text.py`, and the release workflow redraws
+  `background.tiff` and `dmg-layout.DS_Store` from it.
+
+**Building and releasing** (`.github/workflows/`)
+- `release.yml` builds the Windows installer and portable zip and the macOS universal DMG on
+  GitHub's free runners, writes `SHA256SUMS.txt` and publishes the GitHub Release `v<version>`.
+  Run it from the Actions tab (Release → Run workflow) after bumping the version in `Cargo.toml`
+  (`cargo xtask version set X.Y.Z`). Signing secrets are optional (listed at the top of the file).
+- `ci.yml` runs fmt, clippy and the tests on Linux, Windows and macOS, and draws screenshots of
+  the launcher (artifact "screenshots").
+- Removed: the upstream FreeBSD, Nix, SonarCloud and Windows-on-Arm workflows (they need
+  ArtCraft's paid runners or accounts). Linux and FreeBSD packaging scripts are kept, unused.
+- Unsigned builds: Windows asks "More info → Run anyway" and macOS "Privacy & Security → Open
+  Anyway" on first launch. On Windows an unsigned launcher can't install its own updates (it
+  checks the publisher's signature); it still says when a new version is out, and links to it.
+
 **Switched off until NERDS has its own**
 - Website, GitHub, Discord and social links: empty in `catalog.rs`; an empty link is hidden in
   the footer, Settings and the tray menu. Fill them in to show them.

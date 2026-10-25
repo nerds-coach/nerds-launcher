@@ -152,6 +152,10 @@ pub const UPSTREAM_NOTICES: bool = false;
 pub const LAUNCHER_SELF_UPDATE: bool = false;
 /// The launcher's own asset stem.
 pub const LAUNCHER_ID: &str = "artcraft-launcher";
+/// The stem of the NERDS Launcher's release files (`nerds-launcher-<version>-windows-x64.msi`…;
+/// `packaging/windows/package.ps1`, `packaging/macos/package.sh`). Self-update looks for these
+/// first, then for the upstream `artcraft-launcher-…` names.
+pub const LAUNCHER_ASSET_STEM: &str = "nerds-launcher";
 
 /// An app's 128 px NERDS icon (PNG) in `assets/app-icons` (sources in `assets/app-icons/source`): the UI
 /// draws it, and the Linux install puts it in the desktop menu.

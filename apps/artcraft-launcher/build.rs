@@ -15,7 +15,7 @@ fn main() {
     res.set_icon("../../assets/app-icon/artcraft-launcher.ico")
         .set("ProductName", "NERDS Launcher")
         .set("FileDescription", "NERDS Launcher")
-        .set("CompanyName", "Learning Machines LLC")
+        .set("CompanyName", "NERDS Craft")
         .set("LegalCopyright", "Copyright (c) the NERDS Launcher authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "artcraft-launcher.exe")
         .set("InternalName", "artcraft-launcher");

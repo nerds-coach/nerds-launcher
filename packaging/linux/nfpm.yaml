@@ -13,7 +13,7 @@ release: 1
 section: utils
 priority: optional
 maintainer: ${ARTCRAFT_LAUNCHER_MAINTAINER}
-vendor: Learning Machines LLC
+vendor: NERDS Craft
 homepage: https://github.com/storytold/craft-launcher
 license: MIT OR Apache-2.0
 description: |-
