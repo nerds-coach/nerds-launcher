@@ -987,7 +987,9 @@ impl LauncherUi {
                         ui.close();
                     }
                 };
-                link(ui, tl!("Website"), entry.app.website());
+                if entry.app.has_own_website() {
+                    link(ui, tl!("Website"), entry.app.website());
+                }
                 link(ui, tl!("GitHub repository"), entry.app.repo_url());
                 link(ui, tl!("All releases"), entry.app.releases_url());
             }

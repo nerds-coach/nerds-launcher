@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/out"
-          cargo test --workspace --locked 2>&1 | tee "$RUNNER_TEMP/out/test.txt"
+          cargo test --workspace --locked --no-fail-fast 2>&1 | tee "$RUNNER_TEMP/out/test.txt"
           exit "${PIPESTATUS[0]}"
 
       - name: Publish the logs

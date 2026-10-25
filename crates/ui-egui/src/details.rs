@@ -571,9 +571,10 @@ fn step_button(ui: &mut Ui, left: bool, tip: &str, t: &Tokens) -> bool {
 /// browser, like the links on the cards.
 fn link_buttons(ui: &mut Ui, app: &CraftApp) {
     let links = [(tl!("Website"), app.website()), (tl!("GitHub"), app.repo_url()), (tl!("Releases"), app.releases_url())];
+    let own_site = app.has_own_website();
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 8.0;
-        for (label, url) in links {
+        for (label, url) in links.into_iter().skip(usize::from(!own_site)) {
             if widgets::button(ui, &format!("{label} ↗"), Kind::Secondary, 0.0).on_hover_text(url.as_str()).clicked() {
                 ui.ctx().open_url(egui::OpenUrl::new_tab(url));
             }

@@ -53,6 +53,12 @@ impl CraftApp {
         self.repo_url()
     }
 
+    /// Whether the app has a page of its own, apart from its repository (the UI leaves out a
+    /// Website link that would only repeat the GitHub one).
+    pub fn has_own_website(&self) -> bool {
+        self.website() != self.repo_url()
+    }
+
     /// Asset stems this app's releases may use, current first.
     pub fn stems(&self) -> impl Iterator<Item = &'static str> + '_ {
         std::iter::once(self.id).chain(self.former_ids.iter().copied())

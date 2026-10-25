@@ -886,8 +886,10 @@ fn links_to_the_website_github_and_each_apps_pages() {
     h.get_all_by_label("…").nth(8).unwrap().click(); // WordCraft
     h.run_steps(3);
     h.get_by_label("GitHub repository");
-    // The footer's Website link (when set) and the app's own one in the menu.
-    assert!(h.query_all_by_label_contains("Website").count() > usize::from(has_link(WEBSITE_URL)));
+    // The footer's Website link (when set); the app has no page apart from its repository yet, so
+    // its menu has no Website link of its own.
+    let own_site = usize::from(SUITE.iter().any(artcraft_launcher_core::CraftApp::has_own_website));
+    assert_eq!(h.query_all_by_label_contains("Website").count(), usize::from(has_link(WEBSITE_URL)) + own_site);
 }
 
 /// Clicks the `n`th widget labelled `label` and returns the URL the app asked to open.
@@ -1337,8 +1339,10 @@ fn clicking_a_card_opens_its_details_drawer() {
     snapshot(&mut h, "details-dark");
     h.get_all_by_label_contains("The image editor you already know how to use").last().unwrap();
     h.get_by_label_contains("Curves and type layers · 1/4");
-    // The links the page offers as buttons of their own.
-    h.get_by_label("Website ↗");
+    // The links the page offers as buttons of their own (Website only for an app with a page apart
+    // from its repository).
+    let photo = artcraft_launcher_core::CraftApp::by_id("photocraft").unwrap();
+    assert_eq!(h.query_by_label("Website ↗").is_some(), photo.has_own_website());
     h.get_by_label("GitHub ↗");
     h.get_by_label("Releases ↗");
     // The picture arrows wrap around, and the thumbnails jump.
@@ -1623,12 +1627,15 @@ fn the_rate_limit_notice_never_runs_under_the_footer_links() {
         let checked = h.get_by_label_contains("Checked ").rect();
         // Cut short in a narrow window, but enough of it left to read.
         assert!(notice.width() >= 120.0 && notice.right() <= width, "{width}: notice {notice:?}");
-        // Everything on the footer's right: the website, GitHub and Discord icons and the social icons.
+        // Everything on the footer's right: the website, GitHub and Discord icons and the social
+        // icons, those that are set (catalog.rs).
+        use artcraft_launcher_core::catalog::{DISCORD_URL, GITHUB_URL, SOCIAL, WEBSITE_URL, has_link};
         let mut right = Vec::new();
         for label in ["Website", "GitHub", "Discord", "X", "YouTube", "TikTok", "Instagram", "LinkedIn"] {
             right.extend(h.query_all_by_label(label).map(|n| n.rect()).filter(|r| (r.center().y - notice.center().y).abs() < 12.0));
         }
-        assert_eq!(right.len(), 8, "{width}: {right:?}");
+        let shown = [WEBSITE_URL, GITHUB_URL, DISCORD_URL].into_iter().filter(|u| has_link(u)).count() + SOCIAL.len();
+        assert_eq!(right.len(), shown, "{width}: {right:?}");
         assert!(h.query_by_label_contains("Installing for").is_none(), "{width}: the footer no longer names the platform");
         for r in right {
             assert!(!r.intersects(notice), "{width}: notice {notice:?} overlaps {r:?}");
@@ -1973,8 +1980,10 @@ fn a_not_installed_card_is_grey_until_the_pointer_is_over_it() {
     let colour = |h: &mut Harness<'_, Option<LauncherUi>>| {
         let image = h.render().unwrap();
         let mut most = 0_i32;
-        for y in icon.top() as u32..icon.bottom() as u32 {
-            for x in icon.left() as u32..icon.right() as u32 {
+        // The tile's middle: its rounded corners show the (blue-tinted) page behind it.
+        let tile = icon.shrink(icon.width() * 0.2);
+        for y in tile.top() as u32..tile.bottom() as u32 {
+            for x in tile.left() as u32..tile.right() as u32 {
                 let p = image.get_pixel(x, y).0;
                 let (hi, lo) = (p[0].max(p[1]).max(p[2]), p[0].min(p[1]).min(p[2]));
                 most = most.max(i32::from(hi) - i32::from(lo));

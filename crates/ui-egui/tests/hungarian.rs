@@ -164,18 +164,26 @@ fn check_settings_layout() {
         h.run_steps(8);
         let theme = h.get_by_label("Rendszerbeállítás szerint").rect();
         assert!(theme.bottom() < done.top(), "appearance controls must scroll above the fixed actions");
-        h.get_by_label("Csatlakozás a Discordhoz").scroll_to_me();
+        // The community links that are set (catalog.rs): Discord, Webhely and GitHub buttons (34px),
+        // then the social icons (24px). The footer has the same services, and the cards behind the
+        // modal have Webhely and GitHub links as one 14px line of text.
+        use artcraft_launcher_core::catalog::{DISCORD_URL, GITHUB_URL, SOCIAL, WEBSITE_URL, has_link};
+        let buttons: Vec<&str> = [("Csatlakozás a Discordhoz", DISCORD_URL), ("Webhely", WEBSITE_URL), ("GitHub", GITHUB_URL)]
+            .into_iter()
+            .filter(|(_, url)| has_link(url))
+            .map(|(label, _)| label)
+            .collect();
+        let first = buttons[0];
+        h.query_all_by_label(first).find(|n| n.rect().height() > 30.0).unwrap().scroll_to_me();
         h.run_steps(8);
-        // The footer has the same services, and the cards behind the modal have Webhely and GitHub
-        // links as one 14px line of text; keep only the settings body's buttons (34px) and icons (24px).
-        let discord = h.get_by_label("Csatlakozás a Discordhoz").rect();
-        assert!(screen.contains_rect(discord), "community links must be reachable by scrolling");
-        let mut links = vec![discord];
-        for label in ["Webhely", "GitHub", "X", "Instagram", "LinkedIn", "YouTube", "TikTok"] {
+        let anchor = h.query_all_by_label(first).map(|n| n.rect()).find(|r| r.height() > 30.0).unwrap();
+        assert!(screen.contains_rect(anchor), "community links must be reachable by scrolling");
+        let mut links = Vec::new();
+        for label in buttons.iter().copied().chain(SOCIAL.iter().map(|(name, _)| *name)) {
             let candidates: Vec<_> = h
                 .query_all_by_label(label)
                 .map(|n| n.rect())
-                .filter(|r| r.top() >= discord.top() - 1.0 && r.bottom() < done.top() && r.height() > 20.0)
+                .filter(|r| r.top() >= anchor.top() - 1.0 && r.bottom() < done.top() && r.height() > 20.0)
                 .collect();
             assert_eq!(candidates.len(), 1, "{width}x{height}: settings link {label}: {candidates:?}");
             links.extend(candidates);
