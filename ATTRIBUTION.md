@@ -24,8 +24,8 @@ next to them.
 
 ### App icons
 
-The launcher shows each app with a NERDS icon: a NERDS-blue tile with a white symbol for what
-the app does. They were drawn for NERDS (`docs/brand/source/make_icons.py`); the SVG sources
+The launcher shows each app with a NERDS icon: a tile in the Craft app's colour with a white
+symbol for what the app does. They were drawn for NERDS (`docs/brand/source/make_icons.py`); the SVG sources
 are in `assets/app-icons/source/` and `packaging/icons.sh` renders the 128 px PNGs from them.
 
 | Path | Title | Author | Source | License |

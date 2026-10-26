@@ -931,7 +931,8 @@ fn links_open_the_right_pages() {
     // The footer's NERDS links (once set) and each card's own pages.
     let github = all_opened(&mut h, "GitHub");
     assert_eq!(github.contains(&GITHUB_URL.to_string()), has_link(GITHUB_URL), "{github:?}");
-    assert!(github.contains(&"https://github.com/storytold/photocraft".to_string()), "{github:?}");
+    let photo = artcraft_launcher_core::CraftApp::by_id("photocraft").unwrap().repo_url();
+    assert!(github.contains(&photo), "{github:?}");
     let sites = all_opened(&mut h, "Website");
     let expected: Vec<String> = [WEBSITE_URL].into_iter().filter(|u| has_link(u)).map(String::from).collect();
     assert_eq!(sites, expected, "{sites:?}");
@@ -944,7 +945,8 @@ fn links_open_the_right_pages() {
     h.run_steps(3);
     // The first card is the first installed app by name.
     let url = click_opens(&mut h, "All releases").unwrap_or_default();
-    assert!(url.starts_with("https://github.com/storytold/") && url.ends_with("/releases"), "{url}");
+    let owner = format!("https://github.com/{}/", artcraft_launcher_core::catalog::NERDS_OWNER);
+    assert!(url.starts_with(&owner) && url.ends_with("/releases"), "{url}");
 }
 
 #[test]

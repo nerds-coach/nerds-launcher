@@ -654,8 +654,9 @@ fn check_plan(http: &Http, mirror: Option<&String>, pre: bool, paths: &Paths, sh
     if let Some(base) = mirror {
         // A local mirror answers for everything: GitHub is never asked.
         (local_feed(http, base), Fallback { trust_feed: true, github_every: GITHUB_FALLBACK_EVERY })
-    } else if pre {
-        // The feed serves stable releases only; with pre-releases on, GitHub decides.
+    } else if pre || !artcraft_launcher_core::catalog::USE_RELEASE_FEED {
+        // The feed serves stable releases only, of the upstream apps; with pre-releases on, or
+        // for the NERDS builds, GitHub decides.
         (None, Fallback { trust_feed: false, github_every: EARLY_GITHUB_EVERY })
     } else {
         feed_and_fallback(http, paths, shared)
@@ -1258,11 +1259,13 @@ mod tests {
     const LOADED: Fallback = Fallback { trust_feed: true, github_every: GITHUB_FALLBACK_EVERY };
 
     fn feed() -> Feed {
-        Feed::parse(
-            r#"{"release_info": {"apps": {
-            "photocraft": {"repo": "storytold/photocraft", "latest_release": {"tag": "v0.6.0"}, "app_last_fetched": "2026-10-09T13:00:00Z"}
-        }}}"#,
-        )
+        // Describes the catalog's photocraft repository, whichever account that is.
+        let repo = CraftApp::by_id("photocraft").unwrap().repo;
+        Feed::parse(&format!(
+            r#"{{"release_info": {{"apps": {{
+            "photocraft": {{"repo": "{repo}", "latest_release": {{"tag": "v0.6.0"}}, "app_last_fetched": "2026-10-09T13:00:00Z"}}
+        }}}}}}"#
+        ))
         .unwrap()
     }
 

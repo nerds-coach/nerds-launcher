@@ -13,8 +13,9 @@ file lists the changes, as the Apache License asks of modified files.
   (`apps/artcraft-launcher-web/index.html`) matches.
 - Header logo: the NERDS N mark and N.E.R.D.S. side by side (`docs/brand/nerds-logo-horizontal*.svg`).
 - App icon, tray icon, Windows installer art and the macOS DMG background: NERDS.
-- App icons: one NERDS-blue tile per app with a white symbol for what it does
-  (`assets/app-icons/source/*.svg`, rendered by `packaging/icons.sh`).
+- App icons: one tile per app in its Craft app's colour, with a white symbol for what it does
+  (`assets/app-icons/source/*.svg`, drawn by `docs/brand/source/make_icons.py`, rendered by
+  `packaging/icons.sh`). Each app's accent in the launcher is its Craft colour too.
 
 **Names**
 - NERDS Launcher, the NerdsCraft Suite, and each app as "NERDS" + what it does
@@ -61,23 +62,28 @@ file lists the changes, as the Apache License asks of modified files.
 - The upstream release feed's announcements and alerts (`UPSTREAM_NOTICES`): off, as they are
   ArtCraft's news. Release information from the feed is still used.
 
-**Still upstream in stage 1**
-- The launcher installs the official ArtCraft builds from `github.com/storytold/<app>`. They open
-  under their own names (PhotoCraft, …) and icons; the launcher shows them as NERDS apps.
+**The apps: NERDS builds** (`nerds-coach/nerds-photo` … `nerds-grid`)
+- Each app is installed from its own NERDS repository (`CraftApp::repo`). That repository holds no
+  app code: its build workflow takes the latest official release of the upstream app, lays the
+  NERDS icon over the app's `assets/app-icon/` (every file, same names and sizes, made by
+  `docs/brand/source/make_icon_set.py`), builds Windows x64 (MSI, portable zip) and macOS
+  universal (DMG) on free runners, and publishes them with the upstream tag, file names and
+  release notes. It checks for a new upstream release every six hours.
+- So an app shows its NERDS icon everywhere: taskbar, Start menu, Dock, window and in-app mark.
+  Its name inside the app (title bar, menus, About) is still the upstream one.
+- The ArtCraft release feed is off (`USE_RELEASE_FEED`): it only knows the upstream builds.
+- NERDS builds are ad-hoc signed on macOS: the launcher accepts a Mac app, or its own update,
+  when its signature is intact (`APP_SIGNING_TEAM` is `None`; `install::macos::check`).
 - Messages from the install code ("PhotoCraft is running. Quit it…") name the app as installed.
 - The pictures on each app's page are the upstream screenshots.
 
-## Stage 2: NERDS-branded apps
+## Next: NERDS names inside the apps
 
-1. Fork the 13 app repositories to nerds-coach.
-2. In each app: product name "NERDS <X>" (window title, menus, About, installer metadata, bundle
-   id, Windows product name), the NERDS icon from `assets/app-icons/source/`, and a NERDS colour
-   theme as the default. Releases built by each fork's own copy of this repo's `release.yml`.
-3. Here: `GITHUB_OWNER` and every `repo` → nerds-coach; `name` → the NERDS name, with the
-   upstream name kept in `former_names` so existing installs are still found; the apps'
-   publisher in `detect.rs` → NERDS Craft; the release feed off (it only knows the upstream
-   releases).
-4. Identity: the `ai.storyteller.*` bundle ids and the `artcraft-launcher` machine names
+1. In each app build: product name "NERDS <X>" in the window title, menus, About and installer
+   metadata, as a patch the build workflow applies, like the icon.
+2. Here: `name` → the NERDS name, with the upstream name kept in `former_names` so existing
+   installs are still found; the apps' publisher in `detect.rs` → NERDS Craft.
+3. Identity: the `ai.storyteller.*` bundle ids and the `artcraft-launcher` machine names
    (binary, crates, files) → NERDS ones.
-5. Code signing (Apple Developer ID, a Windows certificate), or recipients keep clicking through a
+4. Code signing (Apple Developer ID, a Windows certificate), or recipients keep clicking through a
    one-time "unidentified developer" warning, and the Windows launcher can't update itself.

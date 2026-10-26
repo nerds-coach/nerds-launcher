@@ -473,8 +473,11 @@ mod tests {
         )
     }
 
+    /// The upstream app, in ArtCraft's account: the one the feed describes (the catalog's own
+    /// `repo` is the NERDS build).
     fn app(id: &str) -> &'static CraftApp {
-        CraftApp::by_id(id).unwrap()
+        let ours = CraftApp::by_id(id).unwrap();
+        Box::leak(Box::new(CraftApp { repo: Box::leak(format!("storytold/{id}").into_boxed_str()), ..*ours }))
     }
 
     #[test]

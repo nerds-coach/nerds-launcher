@@ -1231,16 +1231,19 @@ pub mod macos {
     /// What a new copy must prove before it replaces anything. The checksum shows the download is
     /// the file the release lists; these show the app inside is the one the release promises.
     pub struct Expect<'a> {
-        /// The team whose Developer ID signature the bundle must carry. `None` only in tests,
-        /// which build unsigned bundles.
+        /// The team whose Developer ID signature the bundle must carry, if any
+        /// (`catalog::APP_SIGNING_TEAM`).
         pub team: Option<&'a str>,
+        /// With no team: whether the bundle's signature (ad-hoc included) must still be intact, so
+        /// nothing in it changed after it was built. Off only in tests, which build unsigned bundles.
+        pub intact: bool,
         /// The release's version, which the bundle must report. `None` when the tag isn't one.
         pub version: Option<&'a Version>,
     }
 
     impl<'a> Expect<'a> {
         pub fn release(release: &'a Release) -> Self {
-            Self { team: Some(TEAM_ID), version: release.version.as_ref() }
+            Self { team: artcraft_launcher_core::catalog::APP_SIGNING_TEAM, intact: true, version: release.version.as_ref() }
         }
     }
 
@@ -1350,6 +1353,9 @@ pub mod macos {
         {
             return Err("the app isn't signed by its developer, so it wasn't installed".into());
         }
+        if expect.team.is_none() && expect.intact && !signature_intact(bundle) {
+            return Err("the app's signature is missing or damaged, so it wasn't installed".into());
+        }
         if let Some(want) = expect.version
             && !found.version.as_ref().is_some_and(|v| same_release(v, want))
         {
@@ -1368,6 +1374,13 @@ pub mod macos {
         }
         let requirement = format!("=anchor apple generic and certificate leaf[subject.OU] = \"{team}\"");
         process::capture(CODESIGN, &["--verify", "--deep", "-R", &requirement, path], Duration::from_secs(120)).is_some()
+    }
+
+    /// Whether `bundle` carries a valid code signature, nested code included, from any signer (an
+    /// ad-hoc one too): nothing in it changed after it was signed. Needs no network.
+    pub fn signature_intact(bundle: &Path) -> bool {
+        let Some(path) = bundle.to_str() else { return false };
+        process::capture(CODESIGN, &["--verify", "--deep", "--strict", path], Duration::from_secs(120)).is_some()
     }
 
     /// Whether a bundle's version is the release's. A bundle that reports only the numbers
@@ -2577,7 +2590,7 @@ mod tests {
             std::fs::create_dir(&apps).unwrap();
             let paths = Paths::under(dir.path());
             let image = dmg(dir.path(), "0.6.0");
-            let expect = Expect { team: None, version: None };
+            let expect = Expect { team: None, intact: false, version: None };
             let placed = install_dmg(photocraft(), &image, None, Some(&apps), false, &paths, &expect).unwrap();
             assert_eq!(placed, apps.join("PhotoCraft.app"));
             let mut manifest = crate::manifest::Manifest::default();
@@ -2609,8 +2622,15 @@ mod tests {
             let unrelated = std::fs::read_to_string(&plist).unwrap().replace("ai.storyteller.photocraft", "com.example.other");
             std::fs::write(&plist, &unrelated).unwrap();
             let image = dmg(dir.path(), "0.6.0");
-            let result =
-                install_dmg(photocraft(), &image, None, Some(dir.path()), false, &Paths::under(dir.path()), &Expect { team: None, version: None });
+            let result = install_dmg(
+                photocraft(),
+                &image,
+                None,
+                Some(dir.path()),
+                false,
+                &Paths::under(dir.path()),
+                &Expect { team: None, intact: false, version: None },
+            );
             assert!(result.unwrap_err().contains("already exists"));
             assert_eq!(std::fs::read_to_string(plist).unwrap(), unrelated);
             assert_eq!(std::fs::read(placed.join("Contents/MacOS/PhotoCraft")).unwrap(), b"0.5.0");
@@ -2644,7 +2664,7 @@ mod tests {
             for (release, ok) in [("0.6.0", true), ("0.7.0", false), ("0.6.0-rc.1", true), ("0.5.0", false)] {
                 std::fs::write(current.join("Contents/MacOS/PhotoCraft"), "0.5.0").unwrap();
                 let want = version::parse(release).unwrap();
-                let expect = Expect { team: None, version: Some(&want) };
+                let expect = Expect { team: None, intact: false, version: Some(&want) };
                 let result = install_dmg(photocraft(), &image, Some(&existing), None, false, &paths, &expect);
                 assert_eq!(result.is_ok(), ok, "release {release}: {result:?}");
                 let now = std::fs::read_to_string(current.join("Contents/MacOS/PhotoCraft")).unwrap();
@@ -2661,7 +2681,7 @@ mod tests {
             // A bundle that names a pre-release must name the release's.
             let rc = dmg(dir.path(), "0.8.0-rc.2");
             let want = version::parse("0.8.0-rc.1").unwrap();
-            let expect = Expect { team: None, version: Some(&want) };
+            let expect = Expect { team: None, intact: false, version: Some(&want) };
             assert!(install_dmg(photocraft(), &rc, Some(&existing), None, false, &paths, &expect).is_err());
         }
 
@@ -2675,7 +2695,12 @@ mod tests {
             let release = Release { tag: "v0.6.0".into(), version: version::parse("0.6.0"), ..Release::default() };
 
             let result = install_dmg(photocraft(), &image, Some(&existing), None, false, &Paths::under(dir.path()), &Expect::release(&release));
-            assert_eq!(result, Err("the app isn't signed by its developer, so it wasn't installed".into()));
+            let refused = if artcraft_launcher_core::catalog::APP_SIGNING_TEAM.is_some() {
+                "the app isn't signed by its developer, so it wasn't installed"
+            } else {
+                "the app's signature is missing or damaged, so it wasn't installed"
+            };
+            assert_eq!(result, Err(refused.into()));
             assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/PhotoCraft")).unwrap(), "0.5.0");
             assert_eq!(
                 std::fs::read_dir(&apps).unwrap().map(|e| e.unwrap().file_name()).collect::<Vec<_>>(),

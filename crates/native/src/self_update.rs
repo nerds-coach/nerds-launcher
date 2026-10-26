@@ -1128,7 +1128,7 @@ mod tests {
         let current = apps.join("NERDS Launcher.app");
         let existing = Installed { version: None, source: InstallSource::MacApp, location: current.display().to_string(), package: None };
         // An unsigned test bundle: the signature check has its own tests in `install`.
-        let expect = install::macos::Expect { team: None, version: None };
+        let expect = install::macos::Expect { team: None, intact: false, version: None };
         let placed = install::macos::install_dmg(&LAUNCHER, &dmg, Some(&existing), None, false, &Paths::under(dir.path()), &expect).unwrap();
         assert_eq!(placed, current);
         assert_eq!(std::fs::read_to_string(current.join("Contents/MacOS/NERDS Launcher")).unwrap(), "0.2.0");
