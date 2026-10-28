@@ -19,8 +19,10 @@ file lists the changes, as the Apache License asks of modified files.
 
 **Names**
 - NERDS Launcher, the NerdsCraft Suite, and each app as "NERDS" + what it does
-  (`crates/core/src/catalog.rs`, field `display`). The app's original name stays in `name`,
-  because the install and detection code must match what the app's installer calls itself.
+  (`crates/core/src/catalog.rs`). The NERDS builds of the apps install under these names too, so
+  `name` (what install and detection match) and `display` are the same. The upstream name is the
+  first of `former_names`: earlier NERDS builds installed under it, and the apps' data folders,
+  Windows registry key and Mac `<Name>Version` key keep it.
 - All user-facing text, in all eleven languages, and the packaging (MSI, DMG, .deb/.rpm, Flatpak)
   say NERDS Launcher. The Windows installer has its own upgrade code and component IDs, so it
   never replaces or clashes with an ArtCraft Launcher install.
@@ -31,7 +33,8 @@ file lists the changes, as the Apache License asks of modified files.
 
 **Publisher and files**
 - Publisher: NERDS Craft (Windows exe and installer, registry key `HKCU\Software\NERDS Craft\NERDS
-  Launcher`, Linux package metadata). App detection still looks for the upstream apps' publisher.
+  Launcher`, Linux package metadata). App detection accepts the apps' NERDS Craft and their
+  earlier Learning Machines LLC (`detect.rs`, `PUBLISHERS`).
 - Release files are named `nerds-launcher-<version>-…` (`catalog::LAUNCHER_ASSET_STEM`); self-update
   looks for those first. In the Windows zip the program is `NERDS Launcher.exe`; elsewhere the
   binary and cargo packages keep the upstream `artcraft-launcher` name.
@@ -66,24 +69,30 @@ file lists the changes, as the Apache License asks of modified files.
 - Each app is installed from its own NERDS repository (`CraftApp::repo`). That repository holds no
   app code: its build workflow takes the latest official release of the upstream app, lays the
   NERDS icon over the app's `assets/app-icon/` (every file, same names and sizes, made by
-  `docs/brand/source/make_icon_set.py`), builds Windows x64 (MSI, portable zip) and macOS
-  universal (DMG) on free runners, and publishes them with the upstream tag, file names and
-  release notes. It checks for a new upstream release every six hours.
-- So an app shows its NERDS icon everywhere: taskbar, Start menu, Dock, window and in-app mark.
-  Its name inside the app (title bar, menus, About) is still the upstream one.
+  `docs/brand/source/make_icon_set.py`), gives it its NERDS names, builds Windows x64 (MSI,
+  portable zip) and macOS universal (DMG) on free runners, and publishes them with the upstream
+  tag, file names and release notes. It checks for a new upstream release every six hours.
+- So an app shows its NERDS icon everywhere (taskbar, Start menu, Dock, window, in-app mark) and
+  its NERDS name everywhere people read it: title bar, menus, About, messages and translations,
+  the Windows installer, Start menu and Apps list, the Mac app's name in Finder and the Dock, and
+  its disk image. The renaming (`.github/nerds-rename.py` in each app repository) changes words
+  people read and leaves identifiers alone (data folders, file formats, registry keys, bundle
+  ids), so settings and documents carry over. The apps that show ArtCraft's logo show NERDS's.
+  Their Help menus still link to ArtCraft's website and Discord, the community behind the apps.
+- An app's own update check (PhotoCraft and PdfCraft have one) looks at its NERDS repository.
+- A Mac app installed under its upstream name (`PhotoCraft.app`) is replaced by the NERDS-named
+  bundle on its next update or reinstall; the old copy goes to the Trash (`install::macos`).
 - The ArtCraft release feed is off (`USE_RELEASE_FEED`): it only knows the upstream builds.
 - NERDS builds are ad-hoc signed on macOS: the launcher accepts a Mac app, or its own update,
   when its signature is intact (`APP_SIGNING_TEAM` is `None`; `install::macos::check`).
-- Messages from the install code ("PhotoCraft is running. Quit it…") name the app as installed.
+- Messages from the install code ("NERDS Photo is running. Quit it…") name the app as installed.
 - The pictures on each app's page are the upstream screenshots.
 
-## Next: NERDS names inside the apps
+## Next
 
-1. In each app build: product name "NERDS <X>" in the window title, menus, About and installer
-   metadata, as a patch the build workflow applies, like the icon.
-2. Here: `name` → the NERDS name, with the upstream name kept in `former_names` so existing
-   installs are still found; the apps' publisher in `detect.rs` → NERDS Craft.
-3. Identity: the `ai.storyteller.*` bundle ids and the `artcraft-launcher` machine names
+1. Identity: the `ai.storyteller.*` bundle ids and the `artcraft-launcher` machine names
    (binary, crates, files) → NERDS ones.
-4. Code signing (Apple Developer ID, a Windows certificate), or recipients keep clicking through a
+2. Code signing (Apple Developer ID, a Windows certificate), or recipients keep clicking through a
    one-time "unidentified developer" warning, and the Windows launcher can't update itself.
+3. NERDS's own website and Discord: fill in the links in `catalog.rs`, and point the apps' Help
+   menus at them (a patch in each app repository's `nerds.json`).

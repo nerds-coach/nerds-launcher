@@ -1318,11 +1318,22 @@ pub mod macos {
         replace: bool,
         expect: &Expect<'_>,
     ) -> Result<PathBuf, String> {
-        let bundle = format!("{}.app", app.name);
-        let src = mount.join(&bundle);
-        crate::detect::macos::read_bundle(app, &src).ok_or("the disk image doesn't contain the app")?;
+        // The disk image holds the app under its name, or a name it had (`PhotoCraft.app` in the
+        // NERDS builds before they took their NERDS names).
+        let (bundle, src) = app
+            .names()
+            .map(|n| (format!("{n}.app"), mount.join(format!("{n}.app"))))
+            .find(|(_, p)| crate::detect::macos::read_bundle(app, p).is_some())
+            .ok_or("the disk image doesn't contain the app")?;
         let dir = applications_dir(existing, destination)?;
-        let dest = existing.filter(|i| i.source == InstallSource::MacApp).map_or_else(|| dir.join(&bundle), |i| PathBuf::from(&i.location));
+        let previous = existing.filter(|i| i.source == InstallSource::MacApp).map(|i| PathBuf::from(&i.location));
+        // An update replaces the copy where it is. One installed under another name goes beside it
+        // under the new name, and the old copy then goes to the Trash.
+        let dest = match &previous {
+            Some(p) if p.file_name().is_some_and(|f| f == bundle.as_str()) => p.clone(),
+            Some(p) => p.parent().map_or_else(|| dir.join(&bundle), |d| d.join(&bundle)),
+            None => dir.join(&bundle),
+        };
         if !replace
             && std::fs::symlink_metadata(&dest).is_ok()
             && (std::fs::symlink_metadata(&dest).is_ok_and(|m| m.file_type().is_symlink()) || crate::detect::macos::read_bundle(app, &dest).is_none())
@@ -1343,6 +1354,11 @@ pub mod macos {
             .and_then(|found| check(&staged, &found, expect));
         checked?;
         swap_into_place(&staged, &dest)?;
+        if let Some(old) = previous.filter(|p| *p != dest && p.exists())
+            && let Err(e) = move_to_trash(&old)
+        {
+            log::warn!("{}: installed as {}, but {e}", app.name, dest.display());
+        }
         Ok(dest)
     }
 
@@ -2535,9 +2551,15 @@ mod tests {
             SUITE.iter().find(|a| a.id == "photocraft").unwrap()
         }
 
-        /// A minimal `PhotoCraft.app` at `dir`, reporting `version`.
+        /// A minimal `PhotoCraft.app` at `dir`, reporting `version`: PhotoCraft as the NERDS builds
+        /// installed it before they took their NERDS names.
         fn bundle(dir: &Path, version: &str) -> PathBuf {
-            let app = dir.join("PhotoCraft.app");
+            bundle_named(dir, "PhotoCraft", version)
+        }
+
+        /// A minimal `<name>.app` of PhotoCraft at `dir`, reporting `version`.
+        fn bundle_named(dir: &Path, name: &str, version: &str) -> PathBuf {
+            let app = dir.join(format!("{name}.app"));
             let contents = app.join("Contents");
             std::fs::create_dir_all(contents.join("MacOS")).unwrap();
             std::fs::write(
@@ -2559,9 +2581,14 @@ mod tests {
         /// reason), so `hdiutil create` is tried a few times, and what it said is kept for the
         /// failure message.
         fn dmg(dir: &Path, version: &str) -> PathBuf {
-            let src = dir.join(format!("src-{version}"));
-            bundle(&src, version);
-            let dmg = dir.join(format!("photocraft-{version}-macos-universal.dmg"));
+            dmg_named(dir, "PhotoCraft", version)
+        }
+
+        /// The same, with the app and the volume called `name`.
+        fn dmg_named(dir: &Path, name: &str, version: &str) -> PathBuf {
+            let src = dir.join(format!("src-{name}-{version}"));
+            bundle_named(&src, name, version);
+            let dmg = dir.join(format!("photocraft-{name}-{version}-macos-universal.dmg"));
             let _one_at_a_time = super::macos::DISK_IMAGES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
             let mut said = String::new();
             for attempt in 0..5u64 {
@@ -2570,7 +2597,7 @@ mod tests {
                     let _ = std::fs::remove_file(&dmg);
                 }
                 let output = std::process::Command::new("hdiutil")
-                    .args(["create", "-quiet", "-format", "UDZO", "-volname", "PhotoCraft", "-srcfolder"])
+                    .args(["create", "-quiet", "-format", "UDZO", "-volname", name, "-srcfolder"])
                     .arg(&src)
                     .arg(&dmg)
                     .output()
@@ -2612,6 +2639,25 @@ mod tests {
                 crate::detect::detect(photocraft(), &manifest, &crate::detect::Snapshot::default()).map(|i| i.source),
                 Some(InstallSource::Launcher)
             );
+        }
+
+        #[test]
+        fn a_copy_under_the_old_name_is_replaced_by_one_under_the_new_name() {
+            let dir = tempfile::tempdir().unwrap();
+            let apps = dir.path().join("Applications");
+            let current = bundle(&apps, "0.5.0");
+            let existing = Installed { version: None, source: InstallSource::MacApp, location: current.display().to_string(), package: None };
+            let image = dmg_named(dir.path(), "NERDS Photo", "0.6.0");
+            let expect = Expect { team: None, intact: false, version: None };
+            let placed = install_dmg(photocraft(), &image, Some(&existing), None, false, &Paths::under(dir.path()), &expect).unwrap();
+            assert_eq!(placed, apps.join("NERDS Photo.app"));
+            let found = crate::detect::macos::read_bundle(photocraft(), &placed).unwrap();
+            assert_eq!(found.version.unwrap().to_string(), "0.6.0");
+            // The old copy went to the Trash (where the test may move it) or, failing that, stayed.
+            assert!(std::fs::read_dir(&apps).unwrap().all(|e| {
+                let name = e.unwrap().file_name();
+                name == "NERDS Photo.app" || name == "PhotoCraft.app"
+            }));
         }
 
         #[test]

@@ -88,16 +88,16 @@ pub(crate) fn appimage_version(name: &str, stems: &[&str]) -> Option<Option<Stri
     (parsed.kind == artcraft_launcher_core::PackageKind::AppImage && parsed.token.starts_with("linux-")).then_some(Some(parsed.version))
 }
 
-/// Who the apps' Windows Installer packages name as their publisher: the upstream ArtCraft builds
-/// (NERDS.md, stage 2, changes this with the NERDS builds of the apps).
+/// Who the apps' Windows Installer packages name as their publisher: NERDS Craft for the NERDS
+/// builds, and Learning Machines LLC for earlier NERDS builds and the upstream ArtCraft ones.
 #[cfg_attr(not(windows), allow(dead_code))]
-const PUBLISHER: &str = "Learning Machines LLC";
+const PUBLISHERS: [&str; 2] = ["NERDS Craft", "Learning Machines LLC"];
 
 /// Whether an uninstall entry's `DisplayName` and `Publisher` are `app`'s, under any name its
 /// installers have registered.
 #[cfg_attr(not(windows), allow(dead_code))]
 fn is_installer_entry(app: &CraftApp, display_name: &str, publisher: &str) -> bool {
-    publisher == PUBLISHER && app.names().any(|n| n == display_name)
+    PUBLISHERS.contains(&publisher) && app.names().any(|n| n == display_name)
 }
 
 /// Where a Windows install of `app` may keep its exe, in the order to try: the entry's
@@ -111,11 +111,12 @@ fn exe_candidates(app: &CraftApp, location: Option<&Path>, program_files: &[Path
 }
 
 /// Version from `<app> --version` output. Binaries print the machine id (`photocraft 0.7.0`),
-/// the display name (`SoundCraft 0.5.0`), or a former id (`printcraft 0.2.1` for PdfCraft).
+/// the app's name (`NERDS Sound 0.13.1`, or upstream's `SoundCraft 0.5.0`), or a former id
+/// (`printcraft 0.2.1` for PdfCraft).
 #[cfg_attr(not(any(target_os = "linux", target_os = "freebsd")), allow(dead_code))]
 fn parse_cli_version(line: &str, app: &CraftApp) -> Option<version::Version> {
     let line = line.trim();
-    for prefix in app.stems().chain(std::iter::once(app.name)) {
+    for prefix in app.stems().chain(app.names()) {
         if let Some(rest) = strip_cli_prefix(line, prefix)
             && let Some(tok) = rest.split_whitespace().next()
             && let Some(v) = version::parse(tok)
@@ -144,14 +145,12 @@ pub mod macos {
 
     use super::{CraftApp, InstallSource, Installed, version};
 
-    /// Where a `.app` might be: the system and the user's Applications folders.
+    /// Where a `.app` might be: the system and the user's Applications folders, under the app's
+    /// name and then the names it had (`NERDS Photo.app`, then `PhotoCraft.app`).
     pub fn candidates(app: &CraftApp) -> Vec<PathBuf> {
-        let bundle = format!("{}.app", app.name);
-        let mut out = vec![Path::new("/Applications").join(&bundle)];
-        if let Some(home) = dirs::home_dir() {
-            out.push(home.join("Applications").join(&bundle));
-        }
-        out
+        let home = dirs::home_dir().map(|h| h.join("Applications"));
+        let folders: Vec<PathBuf> = std::iter::once(PathBuf::from("/Applications")).chain(home).collect();
+        app.names().flat_map(|n| folders.iter().map(move |d| d.join(format!("{n}.app")))).collect()
     }
 
     pub fn detect(app: &CraftApp) -> Option<Installed> {
@@ -166,10 +165,14 @@ pub mod macos {
             return None;
         }
         // `<App>Version` carries the full version including a pre-release suffix;
-        // CFBundleShortVersionString only has the numbers.
-        let full_key = format!("{}Version", app.name);
-        let text =
-            [full_key.as_str(), "CFBundleShortVersionString", "CFBundleVersion"].iter().find_map(|k| dict.get(k).and_then(plist::Value::as_string));
+        // CFBundleShortVersionString only has the numbers. The key keeps the upstream name
+        // (`PhotoCraftVersion`) in the NERDS builds, so each name the app has had is tried.
+        let full_keys: Vec<String> = app.names().map(|n| format!("{n}Version")).collect();
+        let text = full_keys
+            .iter()
+            .map(String::as_str)
+            .chain(["CFBundleShortVersionString", "CFBundleVersion"])
+            .find_map(|k| dict.get(k).and_then(plist::Value::as_string));
         Some(Installed { version: text.and_then(version::parse), source: InstallSource::MacApp, location: path.display().to_string(), package: None })
     }
 }
@@ -241,9 +244,12 @@ pub mod windows {
     /// The folder the app's MSI remembers for its next upgrade, which is where it went when the
     /// launcher chose the folder.
     fn install_dir(app: &CraftApp) -> Option<PathBuf> {
-        [KEY_WOW64_64KEY, KEY_WOW64_32KEY].into_iter().find_map(|flags| {
-            let key = RegKey::predef(HKEY_LOCAL_MACHINE).open_subkey_with_flags(format!(r"SOFTWARE\{}", app.name), KEY_READ | flags).ok()?;
-            key.get_value::<String, _>("InstallDir").ok().filter(|d| !d.is_empty()).map(PathBuf::from)
+        // The NERDS builds keep the upstream key (`SOFTWARE\PhotoCraft`), so every name is tried.
+        app.names().find_map(|name| {
+            [KEY_WOW64_64KEY, KEY_WOW64_32KEY].into_iter().find_map(|flags| {
+                let key = RegKey::predef(HKEY_LOCAL_MACHINE).open_subkey_with_flags(format!(r"SOFTWARE\{name}"), KEY_READ | flags).ok()?;
+                key.get_value::<String, _>("InstallDir").ok().filter(|d| !d.is_empty()).map(PathBuf::from)
+            })
         })
     }
 
@@ -686,6 +692,7 @@ mod tests {
         let pdf = CraftApp::by_id("pdfcraft").unwrap();
         assert_eq!(parse_cli_version("photocraft 0.7.0 (dev build)", photo).unwrap().to_string(), "0.7.0");
         assert_eq!(parse_cli_version("SoundCraft 0.5.0", sound).unwrap().to_string(), "0.5.0");
+        assert_eq!(parse_cli_version("NERDS Sound 0.13.1", sound).unwrap().to_string(), "0.13.1");
         assert_eq!(parse_cli_version("printcraft 0.2.1", pdf).unwrap().to_string(), "0.2.1");
         assert_eq!(parse_cli_version("PdfCraft 0.6.0", pdf).unwrap().to_string(), "0.6.0");
         assert!(strip_cli_prefix("photocraft-cli 1.0.0", "photocraft").is_none());
@@ -718,6 +725,7 @@ mod tests {
     }
 
     const LEARNING_MACHINES: &str = "Learning Machines LLC";
+    const NERDS_CRAFT: &str = "NERDS Craft";
 
     fn roots() -> Vec<PathBuf> {
         vec![PathBuf::from(r"C:\Program Files"), PathBuf::from(r"C:\Program Files (x86)")]
@@ -746,13 +754,28 @@ mod tests {
     }
 
     #[test]
+    fn nerds_builds_match_under_their_nerds_name_and_publisher() {
+        for a in &SUITE {
+            assert!(is_installer_entry(a, a.name, NERDS_CRAFT), "{}", a.name);
+            // Earlier NERDS builds installed under the upstream name and publisher.
+            assert!(is_installer_entry(a, a.former_names[0], LEARNING_MACHINES), "{}", a.name);
+            assert!(is_installer_entry(a, a.former_names[0], NERDS_CRAFT), "{}", a.name);
+            assert!(!is_installer_entry(a, a.name, "Some Other Publisher"), "{}", a.name);
+            assert!(!is_installer_entry(a, &a.name.to_lowercase(), NERDS_CRAFT), "{}", a.name);
+            for b in SUITE.iter().filter(|b| b.id != a.id) {
+                assert!(!is_installer_entry(a, b.name, NERDS_CRAFT), "{} matched {}", b.name, a.name);
+            }
+        }
+    }
+
+    #[test]
     fn pdfcraft_exe_is_sought_under_every_name_it_has_shipped_as() {
         let pdf = CraftApp::by_id("pdfcraft").unwrap();
         let location = PathBuf::from(r"D:\Apps\PrintCraft");
         let roots = roots();
         let mut want = vec![location.join("pdfcraft.exe"), location.join("printcraft.exe")];
         for root in &roots {
-            for dir in ["PdfCraft", "PrintCraft"] {
+            for dir in ["NERDS PDF", "PdfCraft", "PrintCraft"] {
                 want.push(root.join(dir).join("pdfcraft.exe"));
                 want.push(root.join(dir).join("printcraft.exe"));
             }
@@ -761,15 +784,13 @@ mod tests {
     }
 
     #[test]
-    fn apps_without_former_names_match_and_find_their_exe_as_before() {
+    fn apps_find_their_exe_under_their_nerds_and_upstream_folders() {
         let roots = roots();
         let location = PathBuf::from(r"D:\Apps\Somewhere");
-        for a in SUITE.iter().filter(|a| a.former_ids.is_empty() && a.former_names.is_empty()) {
-            assert!(is_installer_entry(a, a.name, LEARNING_MACHINES), "{}", a.name);
-            assert!(!is_installer_entry(a, a.name, "Some Other Publisher"), "{}", a.name);
-            assert!(!is_installer_entry(a, &a.name.to_lowercase(), LEARNING_MACHINES), "{}", a.name);
+        for a in SUITE.iter().filter(|a| a.former_ids.is_empty()) {
             let exe = format!("{}.exe", a.id);
-            let in_program_files: Vec<PathBuf> = roots.iter().map(|r| r.join(a.name).join(&exe)).collect();
+            let in_program_files: Vec<PathBuf> = roots.iter().flat_map(|r| a.names().map(|n| r.join(n).join(&exe))).collect();
+            assert_eq!(in_program_files.len(), 4, "{}: NERDS and upstream folder under each root", a.name);
             assert_eq!(exe_candidates(a, None, &roots), in_program_files);
             let with_location: Vec<PathBuf> = std::iter::once(location.join(&exe)).chain(in_program_files).collect();
             assert_eq!(exe_candidates(a, Some(&location), &roots), with_location);

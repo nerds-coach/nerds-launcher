@@ -11,12 +11,12 @@
 pub struct CraftApp {
     /// Machine name: repo, binary, package and asset stem (`photocraft`).
     pub id: &'static str,
-    /// The name the app installs under: its macOS bundle, Windows Installer product and registry
-    /// key (`PhotoCraft`). Install and detection code matches on this, so it must be the name the
-    /// release's own installer uses.
+    /// The name the app installs under: its macOS bundle (`NERDS Photo.app`) and Windows Installer
+    /// product (`NERDS Photo`). Install and detection code matches on this (and on
+    /// [`CraftApp::former_names`]), so it must be the name the release's own installer uses.
     pub name: &'static str,
-    /// The NERDS name the launcher shows (`NERDS Photo`). While the launcher installs the
-    /// upstream builds this differs from [`CraftApp::name`]; once the NERDS builds ship, both match.
+    /// The name the launcher shows: the NERDS name, the same as [`CraftApp::name`] now that the
+    /// NERDS builds install under it.
     pub display: &'static str,
     /// What it's for, in a few words (English; the UI translates it by app id).
     pub tagline: &'static str,
@@ -30,7 +30,9 @@ pub struct CraftApp {
     pub repo: &'static str,
     /// Older names its release assets may carry (PdfCraft shipped as PrintCraft until 0.2.1).
     pub former_ids: &'static [&'static str],
-    /// Older display names its installers registered (PdfCraft's MSI said PrintCraft until 0.2.1).
+    /// Older names it installed under: the upstream name the NERDS builds used until they took
+    /// their NERDS names (`PhotoCraft`), which is also the name its data folders, Windows registry
+    /// key and Mac `<Name>Version` key keep, and PdfCraft's PrintCraft.
     pub former_names: &'static [&'static str],
 }
 
@@ -64,7 +66,7 @@ impl CraftApp {
         std::iter::once(self.id).chain(self.former_ids.iter().copied())
     }
 
-    /// Display names this app's installers may have registered, current first.
+    /// Names this app's installers may have registered, current (NERDS) first.
     pub fn names(&self) -> impl Iterator<Item = &'static str> + '_ {
         std::iter::once(self.name).chain(self.former_names.iter().copied())
     }
@@ -77,12 +79,12 @@ impl CraftApp {
 const fn app(
     id: &'static str,
     name: &'static str,
-    display: &'static str,
+    former_names: &'static [&'static str],
     tagline: &'static str,
     [color, ink_light, ink_dark]: [[u8; 3]; 3],
     repo: &'static str,
 ) -> CraftApp {
-    CraftApp { id, name, display, tagline, color, ink_light, ink_dark, repo, former_ids: &[], former_names: &[] }
+    CraftApp { id, name, display: name, tagline, color, ink_light, ink_dark, repo, former_ids: &[], former_names }
 }
 
 /// NERDS blue (#0077C0), sampled from the NERDS logo: the launcher's own colour.
@@ -92,50 +94,50 @@ pub const NERDS_INK_LIGHT: [u8; 3] = [0x00, 0x5e, 0x99];
 /// NERDS blue lightened for text on a dark background (8:1 on the dark page).
 pub const NERDS_INK_DARK: [u8; 3] = [0x5c, 0xb6, 0xf2];
 
-/// The suite, in display order. `name` is what each build installs as (the upstream app's name);
-/// `display` is the NERDS name shown everywhere in the launcher. Each app keeps its Craft app's
-/// colour (`[surface, ink on light, ink on dark]`), as its NERDS icon does. `repo` is the NERDS
-/// build of the app: the upstream release with the NERDS icon (`nerds-coach/nerds-*`).
+/// The suite, in display order. `name` is the NERDS name each build installs as and the launcher
+/// shows; `former_names` starts with the upstream app's name, which earlier NERDS builds installed
+/// as. Each app keeps its Craft app's colour (`[surface, ink on light, ink on dark]`), as its NERDS
+/// icon does. `repo` is the NERDS build of the app: the upstream release with the NERDS icon and
+/// names (`nerds-coach/nerds-*`).
 pub const SUITE: [CraftApp; 13] = [
     app(
         "photocraft",
-        "PhotoCraft",
         "NERDS Photo",
+        &["PhotoCraft"],
         "Image editing",
         [[0x2f, 0x7b, 0xf5], [0x1a, 0x5b, 0xc4], [0x7f, 0xb0, 0xff]],
         "nerds-coach/nerds-photo",
     ),
     app(
         "vectorcraft",
-        "VectorCraft",
         "NERDS Vector",
+        &["VectorCraft"],
         "Vector illustration",
         [[0xe8, 0x57, 0x3f], [0xb8, 0x3a, 0x24], [0xff, 0x8a, 0x70]],
         "nerds-coach/nerds-vector",
     ),
     app(
         "filmcraft",
-        "FilmCraft",
         "NERDS Film",
+        &["FilmCraft"],
         "Video editing, color and sound",
         [[0x8b, 0x5c, 0xf6], [0x6a, 0x3f, 0xd6], [0xb6, 0x9c, 0xff]],
         "nerds-coach/nerds-film",
     ),
     app(
         "lightcraft",
-        "LightCraft",
         "NERDS Light",
+        &["LightCraft"],
         "Photo library and raw development",
         [[0xf2, 0xa5, 0x16], [0x8a, 0x58, 0x00], [0xff, 0xc1, 0x4d]],
         "nerds-coach/nerds-light",
     ),
     CraftApp {
         former_ids: &["printcraft"],
-        former_names: &["PrintCraft"],
         ..app(
             "pdfcraft",
-            "PdfCraft",
             "NERDS PDF",
+            &["PdfCraft", "PrintCraft"],
             "Reading, organizing and protecting PDFs",
             [[0x12, 0xa5, 0x8a], [0x0a, 0x75, 0x63], [0x3f, 0xd6, 0xb8]],
             "nerds-coach/nerds-pdf",
@@ -143,64 +145,64 @@ pub const SUITE: [CraftApp; 13] = [
     },
     app(
         "effectcraft",
-        "EffectCraft",
         "NERDS Effects",
+        &["EffectCraft"],
         "Motion graphics and visual effects",
         [[0xe0, 0x36, 0x8f], [0xb0, 0x20, 0x6c], [0xff, 0x7a, 0xb8]],
         "nerds-coach/nerds-effects",
     ),
     app(
         "designcraft",
-        "DesignCraft",
         "NERDS Layout",
+        &["DesignCraft"],
         "Page layout and publishing",
         [[0x7b, 0xb5, 0x1c], [0x45, 0x70, 0x08], [0xa6, 0xe0, 0x4a]],
         "nerds-coach/nerds-layout",
     ),
     app(
         "figcraft",
-        "FigCraft",
         "NERDS Proto",
+        &["FigCraft"],
         "Interface design and prototyping",
         [[0x02, 0xda, 0x96], [0x04, 0x7a, 0x56], [0x4f, 0xe8, 0xb6]],
         "nerds-coach/nerds-proto",
     ),
     app(
         "wordcraft",
-        "WordCraft",
         "NERDS Word",
+        &["WordCraft"],
         "Writing and document design",
         [[0x3f, 0x5f, 0xe0], [0x2a, 0x44, 0xb8], [0x8e, 0xa2, 0xff]],
         "nerds-coach/nerds-word",
     ),
     app(
         "soundcraft",
-        "SoundCraft",
         "NERDS Sound",
+        &["SoundCraft"],
         "Recording, editing and mixing audio",
         [[0x1f, 0xa5, 0xc9], [0x0e, 0x72, 0x90], [0x5f, 0xd0, 0xee]],
         "nerds-coach/nerds-sound",
     ),
     app(
         "deckcraft",
-        "DeckCraft",
         "NERDS Deck",
+        &["DeckCraft"],
         "Presentations and slide shows",
         [[0xf0, 0x7a, 0x1e], [0xa8, 0x4f, 0x0a], [0xff, 0xa0, 0x60]],
         "nerds-coach/nerds-deck",
     ),
     app(
         "cadcraft",
-        "CADCraft",
         "NERDS CAD",
+        &["CADCraft"],
         "Computer-aided design and drafting",
         [[0x3e, 0xa6, 0xe8], [0x1a, 0x6f, 0xa8], [0x7c, 0xc8, 0xff]],
         "nerds-coach/nerds-cad",
     ),
     app(
         "gridcraft",
-        "GridCraft",
         "NERDS Grid",
+        &["GridCraft"],
         "Spreadsheets and data",
         [[0x1f, 0x9d, 0x55], [0x12, 0x70, 0x3a], [0x4f, 0xd6, 0x8a]],
         "nerds-coach/nerds-grid",
@@ -249,7 +251,7 @@ pub const DISCORD_APP_URL: &str = "";
 pub const LAUNCHER: CraftApp = app(
     "artcraft-launcher",
     "NERDS Launcher",
-    "NERDS Launcher",
+    &[],
     "Installs and updates the NerdsCraft Suite",
     [NERDS_BLUE, NERDS_INK_LIGHT, NERDS_INK_DARK],
     "nerds-coach/nerds-launcher",
@@ -314,7 +316,10 @@ mod tests {
         for a in &SUITE {
             assert!(a.display.starts_with("NERDS "), "{} has no NERDS name", a.id);
             assert!(a.repo.starts_with(&format!("{NERDS_OWNER}/nerds-")), "{} isn't a NERDS build: {}", a.id, a.repo);
-            assert_eq!(a.name.to_lowercase(), a.id);
+            assert_eq!(a.name, a.display, "{} installs under a name it doesn't show", a.id);
+            // The upstream name comes first among the former names: the NERDS builds installed
+            // under it until they took their NERDS names, and its data folders still carry it.
+            assert_eq!(a.former_names.first().map(|n| n.to_lowercase()).as_deref(), Some(a.id), "{}", a.id);
         }
         let mut repos: Vec<_> = SUITE.iter().map(|a| a.repo).collect();
         repos.sort_unstable();
@@ -328,10 +333,17 @@ mod tests {
     }
 
     #[test]
+    fn apps_answer_to_their_nerds_and_upstream_names() {
+        let photo = CraftApp::by_id("photocraft").unwrap();
+        assert_eq!(photo.names().collect::<Vec<_>>(), ["NERDS Photo", "PhotoCraft"]);
+        assert_eq!(LAUNCHER.names().collect::<Vec<_>>(), ["NERDS Launcher"]);
+    }
+
+    #[test]
     fn pdfcraft_also_answers_to_printcraft() {
         let pdf = CraftApp::by_id("pdfcraft").unwrap();
         assert_eq!(pdf.stems().collect::<Vec<_>>(), ["pdfcraft", "printcraft"]);
-        assert_eq!(pdf.names().collect::<Vec<_>>(), ["PdfCraft", "PrintCraft"]);
+        assert_eq!(pdf.names().collect::<Vec<_>>(), ["NERDS PDF", "PdfCraft", "PrintCraft"]);
         assert_eq!(pdf.website(), "https://github.com/nerds-coach/nerds-pdf");
         assert_eq!(CraftApp::by_id("wordcraft").unwrap().website(), "https://github.com/nerds-coach/nerds-word");
     }
