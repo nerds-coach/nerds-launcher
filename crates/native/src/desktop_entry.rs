@@ -145,7 +145,7 @@ mod tests {
     fn writes_a_complete_entry() {
         let text = render(app("photocraft"), Path::new("/home/ana/Applications/photocraft-0.6.0-linux-x86_64.AppImage"), true).unwrap();
         let expected = format!(
-            "[Desktop Entry]\nType=Application\nName=PhotoCraft\nComment={}\n\
+            "[Desktop Entry]\nType=Application\nName=NERDS Photo\nComment={}\n\
              Exec=\"/home/ana/Applications/photocraft-0.6.0-linux-x86_64.AppImage\" %F\n\
              Icon=ai.storyteller.photocraft\nTerminal=false\nCategories=Graphics;2DGraphics;RasterGraphics;Photography;\n\
              StartupWMClass=photocraft\nX-ArtCraft-Launcher=true\n",
