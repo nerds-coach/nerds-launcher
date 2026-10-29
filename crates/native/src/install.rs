@@ -2405,7 +2405,7 @@ mod tests {
         assert!(hint.ends_with("or sudo pacman -Syu"));
 
         let aur_hint = pacman_update_hint(app, "wordcraft-bin", None);
-        assert!(aur_hint.starts_with("WordCraft was installed from the AUR (wordcraft-bin)."));
+        assert!(aur_hint.starts_with("NERDS Word was installed from the AUR (wordcraft-bin)."));
 
         let si = "Repository      : omarchy\nName            : wordcraft-bin\nVersion         : 0.6.1-1\n";
         assert_eq!(parse_pacman_repo(si).as_deref(), Some("omarchy"));
