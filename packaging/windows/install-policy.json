@@ -1,0 +1,53 @@
+{
+  "id": "artcraft-launcher",
+  "name": "NERDS Launcher",
+  "mode": "perUser",
+  "upgradeCode": "16B1ECD5-EA7F-49A7-B0B1-EB10D4C8268C",
+  "sources": [
+    "artcraft-launcher.wxs"
+  ],
+  "icon": "assets/app-icon/artcraft-launcher.ico",
+  "localization": [
+    "artcraft-launcher.en-us.wxl"
+  ],
+  "extensions": [
+    "UI",
+    "Util"
+  ],
+  "payloads": [
+    "NOTICE",
+    "artcraft-launcher.exe"
+  ],
+  "registry": [
+    [
+      "1",
+      "Software\\NERDS Craft\\NERDS Launcher",
+      "InstallDir",
+      "[INSTALLFOLDER]"
+    ],
+    [
+      "1",
+      "Software\\NERDS Craft\\NERDS Launcher",
+      "DesktopShortcutChoice",
+      "[DESKTOPSHORTCUTCHOICE]"
+    ],
+    [
+      "1",
+      "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\artcraft-launcher.exe",
+      "",
+      "[#ArtCraftLauncherExe]"
+    ],
+    [
+      "1",
+      "Software\\NERDS Craft\\NERDS Launcher",
+      "StartMenuShortcut",
+      "#1"
+    ],
+    [
+      "1",
+      "Software\\NERDS Craft\\NERDS Launcher",
+      "DesktopShortcut",
+      "#1"
+    ]
+  ]
+}

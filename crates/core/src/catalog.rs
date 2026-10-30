@@ -1,32 +1,38 @@
-//! The NerdsCraft Suite: the thirteen apps the launcher knows about (the NerdsCraft Suite's apps, shown
-//! under NERDS names and colours).
+//! The NerdsCraft Suite: the thirteen apps the launcher knows about, under their NERDS names and
+//! colours.
 //!
 //! The list is data so a later version can fetch it from an API; [`SUITE`] is the built-in copy.
 //!
 //! Text here is English, the source the UI translates from: each `tagline` has a catalog row
 //! keyed by the app id (`tr_ctx(app.id, app.tagline)` in `ui-egui`).
 
+/// Who makes an app. Every NERDS app is `Official` (a NERDS build of an official Craft App); a
+/// community app is maintained elsewhere and is labelled as such wherever it is shown (upstream
+/// lists one, SolidCraft, which the NERDS suite leaves out).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AppKind {
+    Official,
+    Community,
+}
+
 /// One app in the suite.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct CraftApp {
     /// Machine name: repo, binary, package and asset stem (`photocraft`).
     pub id: &'static str,
-    /// The name the app installs under: its macOS bundle (`NERDS Photo.app`) and Windows Installer
-    /// product (`NERDS Photo`). Install and detection code matches on this (and on
-    /// [`CraftApp::former_names`]), so it must be the name the release's own installer uses.
+    /// Its NERDS name (`NERDS Photo`): what the launcher shows, and the name its macOS bundle
+    /// (`NERDS Photo.app`) and Windows Installer product carry. Install and detection code matches
+    /// on this and on [`CraftApp::former_names`].
     pub name: &'static str,
-    /// The name the launcher shows: the NERDS name, the same as [`CraftApp::name`] now that the
-    /// NERDS builds install under it.
-    pub display: &'static str,
     /// What it's for, in a few words (English; the UI translates it by app id).
     pub tagline: &'static str,
-    /// Brand colour (sRGB), for surfaces: NERDS blue for every app.
+    /// Brand colour (sRGB), for surfaces: its Craft app's colour, as its NERDS icon has.
     pub color: [u8; 3],
     /// The brand colour for text on a light background (the site's light `--app-ink`).
     pub ink_light: [u8; 3],
     /// The brand colour for text on a dark background (the site's dark `--app-ink`).
     pub ink_dark: [u8; 3],
-    /// GitHub `owner/repo`.
+    /// GitHub `owner/repo`: the NERDS build of the app (`nerds-coach/nerds-photo`).
     pub repo: &'static str,
     /// Older names its release assets may carry (PdfCraft shipped as PrintCraft until 0.2.1).
     pub former_ids: &'static [&'static str],
@@ -34,12 +40,28 @@ pub struct CraftApp {
     /// their NERDS names (`PhotoCraft`), which is also the name its data folders, Windows registry
     /// key and Mac `<Name>Version` key keep, and PdfCraft's PrintCraft.
     pub former_names: &'static [&'static str],
+    pub kind: AppKind,
+    /// Who publishes it, as the card's byline shows it (`NERDS`).
+    pub publisher: &'static str,
+    /// The publisher its Windows installer names, besides the NERDS builds' `NERDS Craft` and the
+    /// earlier `Learning Machines LLC` (`detect.rs`), for an app that has another.
+    pub msi_publisher: Option<&'static str>,
+    /// The bundle id when it isn't `ai.storyteller.<id>` (a community app brings its own).
+    pub bundle: Option<&'static str>,
+    /// Older bundle ids its Flatpak shipped under (SolidCraft was `ai.storyteller.solidcraft`).
+    pub former_bundles: &'static [&'static str],
+    /// Its website, when it isn't a page on getartcraft.com (a community app has its own).
+    pub site: Option<&'static str>,
+    /// Whether the launcher installs its macOS build. `false` while those builds carry no
+    /// Developer ID signature the launcher can check: it then opens a copy that's there and
+    /// links to the releases, but installs nothing.
+    pub installs_on_mac: bool,
 }
 
 impl CraftApp {
     /// `ai.storyteller.<id>`: macOS bundle id, Flatpak id and Linux desktop-file id.
     pub fn bundle_id(&self) -> String {
-        format!("ai.storyteller.{}", self.id)
+        self.bundle.map_or_else(|| format!("ai.storyteller.{}", self.id), str::to_string)
     }
 
     pub fn releases_url(&self) -> String {
@@ -50,15 +72,26 @@ impl CraftApp {
         format!("https://github.com/{}", self.repo)
     }
 
-    /// The app's page: its source repository until NERDS has a page per app.
+    /// The app's page: its own site when it has one, else its NERDS repository (NERDS has no page
+    /// per app yet).
     pub fn website(&self) -> String {
-        self.repo_url()
+        self.site.map_or_else(|| self.repo_url(), str::to_string)
     }
 
     /// Whether the app has a page of its own, apart from its repository (the UI leaves out a
     /// Website link that would only repeat the GitHub one).
     pub fn has_own_website(&self) -> bool {
         self.website() != self.repo_url()
+    }
+
+    /// Whether the launcher installs this app from a `kind` package.
+    pub fn installs(&self, kind: crate::PackageKind) -> bool {
+        kind != crate::PackageKind::Dmg || self.installs_on_mac
+    }
+
+    /// Bundle ids this app may be installed under, current first.
+    pub fn bundle_ids(&self) -> impl Iterator<Item = String> + '_ {
+        std::iter::once(self.bundle_id()).chain(self.former_bundles.iter().map(|b| b.to_string()))
     }
 
     /// Asset stems this app's releases may use, current first.
@@ -84,7 +117,24 @@ const fn app(
     [color, ink_light, ink_dark]: [[u8; 3]; 3],
     repo: &'static str,
 ) -> CraftApp {
-    CraftApp { id, name, display: name, tagline, color, ink_light, ink_dark, repo, former_ids: &[], former_names }
+    CraftApp {
+        id,
+        name,
+        tagline,
+        color,
+        ink_light,
+        ink_dark,
+        repo,
+        former_ids: &[],
+        former_names,
+        kind: AppKind::Official,
+        publisher: "NERDS",
+        msi_publisher: None,
+        bundle: None,
+        former_bundles: &[],
+        site: None,
+        installs_on_mac: true,
+    }
 }
 
 /// NERDS blue (#0077C0), sampled from the NERDS logo: the launcher's own colour.
@@ -209,6 +259,27 @@ pub const SUITE: [CraftApp; 13] = [
     ),
 ];
 
+/// Upstream's community app, which the NERDS suite leaves out (it has no NERDS build). It stays
+/// described here so the code for community apps (their own publisher, bundle ids, a macOS
+/// build the launcher can't verify) keeps its tests. Not part of [`SUITE`].
+pub const SOLIDCRAFT: CraftApp = CraftApp {
+    kind: AppKind::Community,
+    publisher: "Tangency Labs",
+    msi_publisher: Some("SolidCraft contributors"),
+    bundle: Some("io.tangencylabs.solidcraft"),
+    former_bundles: &["ai.storyteller.solidcraft", "ai.storyteller.solvecraft"],
+    site: Some("https://solidcraft.io"),
+    installs_on_mac: false,
+    ..app(
+        "solidcraft",
+        "SolidCraft",
+        &[],
+        "Parametric 3D CAD",
+        [[0x46, 0xa1, 0xfb], [0x16, 0x53, 0xae], [0x8c, 0xc4, 0xff]],
+        "tangency-labs/solidcraft",
+    )
+};
+
 /// The GitHub account the NERDS builds live under: every app's `repo` and the launcher's own.
 pub const NERDS_OWNER: &str = "nerds-coach";
 
@@ -314,9 +385,9 @@ mod tests {
         ids.dedup();
         assert_eq!(ids.len(), SUITE.len());
         for a in &SUITE {
-            assert!(a.display.starts_with("NERDS "), "{} has no NERDS name", a.id);
+            assert!(a.name.starts_with("NERDS "), "{} has no NERDS name", a.id);
+            assert_eq!(a.kind, AppKind::Official, "{}", a.id);
             assert!(a.repo.starts_with(&format!("{NERDS_OWNER}/nerds-")), "{} isn't a NERDS build: {}", a.id, a.repo);
-            assert_eq!(a.name, a.display, "{} installs under a name it doesn't show", a.id);
             // The upstream name comes first among the former names: the NERDS builds installed
             // under it until they took their NERDS names, and its data folders still carry it.
             assert_eq!(a.former_names.first().map(|n| n.to_lowercase()).as_deref(), Some(a.id), "{}", a.id);
@@ -326,7 +397,7 @@ mod tests {
         repos.dedup();
         assert_eq!(repos.len(), SUITE.len(), "two apps share a repository");
         assert!(LAUNCHER.repo.starts_with(NERDS_OWNER));
-        let mut shown: Vec<_> = SUITE.iter().map(|a| a.display).collect();
+        let mut shown: Vec<_> = SUITE.iter().map(|a| a.name).collect();
         shown.sort_unstable();
         shown.dedup();
         assert_eq!(shown.len(), SUITE.len(), "two apps share a NERDS name");
