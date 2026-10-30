@@ -1,0 +1,208 @@
+    Updating git repository `https://github.com/storytold/egui.git`
+    Updating git repository `https://github.com/storytold/winit.git`
+    Updating crates.io index
+    Updating git repository `https://github.com/storytold/craft-libs`
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+ Downloading crates ...
+  Downloaded cobs v0.3.0
+  Downloaded enum-map v3.1.0
+  Downloaded glifo v0.3.0
+  Downloaded enum-map-derive v1.0.1
+  Downloaded icu_locale_fallback_data v2.3.0
+  Downloaded accesskit v0.25.1
+  Downloaded icu_decimal v2.3.0
+  Downloaded fixed_decimal v0.7.3
+  Downloaded accesskit_consumer v0.39.1
+  Downloaded icu_locale_fallback v2.3.0
+  Downloaded icu_pattern v0.5.0
+  Downloaded icu_plurals v2.3.0
+  Downloaded icu_provider_blob v2.3.0
+  Downloaded icu_provider_adapters v2.3.0
+  Downloaded kittest v0.5.0
+  Downloaded postcard v1.1.3
+  Downloaded serde_json v1.0.154
+  Downloaded unicode-bidi v0.3.18
+  Downloaded unicode-properties v0.1.4
+  Downloaded utf16_iter v1.0.5
+  Downloaded vello_cpu v0.2.0
+  Downloaded vello_common v0.2.0
+  Downloaded write16 v1.0.0
+   Compiling syn v3.0.6
+   Compiling serde v1.0.229
+   Compiling stable_deref_trait v1.2.1
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling unicode-bidi v0.3.18
+   Compiling accesskit v0.25.1
+   Compiling synstructure v0.14.0
+   Compiling unicode-properties v0.1.4
+   Compiling epaint_default_fonts v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling icu_locale_fallback_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_properties_data v2.3.0
+   Compiling utf8_iter v1.0.4
+   Compiling write16 v1.0.0
+   Compiling serde_json v1.0.154
+   Compiling utf16_iter v1.0.5
+   Compiling getrandom v0.3.4
+   Compiling accesskit_consumer v0.39.1
+   Compiling craft-fonts-build v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling tempfile v3.27.0
+   Compiling kittest v0.5.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling serde_derive v1.0.229
+   Compiling zerofrom-derive v0.1.8
+   Compiling bytemuck v1.25.2
+   Compiling yoke-derive v0.8.4
+   Compiling zerofrom v0.1.8
+   Compiling zerovec-derive v0.11.6
+   Compiling thiserror v2.0.21
+   Compiling displaydoc v0.2.7
+   Compiling cobs v0.3.0
+   Compiling color v0.3.3
+   Compiling yoke v0.8.3
+   Compiling font-types v0.12.6
+   Compiling naga-types v30.0.1
+   Compiling zerovec v0.11.8
+   Compiling postcard v1.1.3
+   Compiling read-fonts v0.41.0
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.2.0
+   Compiling tinystr v0.8.4
+   Compiling zerotrie v0.2.5
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling potential_utf v0.1.6
+   Compiling emath v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling ecolor v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling vello_cpu v0.2.0
+   Compiling harfrust v0.12.0
+   Compiling skrifa v0.44.0
+   Compiling naga v30.0.1
+   Compiling wgpu-types v30.0.1
+   Compiling epaint v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling gpu-allocator v0.28.0
+   Compiling icu_collections v2.3.0
+   Compiling fixed_decimal v0.7.3
+   Compiling tiny-skia-path v0.11.4
+   Compiling wgpu-naga-bridge v30.0.1
+   Compiling wgpu-hal v30.0.1
+   Compiling wgpu-core-deps-windows-linux-android v30.0.1
+   Compiling egui v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling icu_locale_fallback v2.3.0
+   Compiling image v0.25.10
+   Compiling icu_provider_adapters v2.3.0
+   Compiling wgpu-core v30.0.1
+   Compiling tiny-skia v0.11.4
+   Compiling usvg v0.45.1
+   Compiling icu_plurals v2.3.0
+   Compiling icu_decimal v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_provider_blob v2.3.0
+   Compiling rgb v0.8.53
+   Compiling enum-map-derive v1.0.1
+   Compiling resvg v0.45.1
+   Compiling enum-map v3.1.0
+   Compiling craft-i18n v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling wgpu v30.0.1
+   Compiling craft-ui v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling egui_extras v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling dify v0.8.0
+   Compiling artcraft-launcher-core v0.10.0 (/home/runner/work/nerds-launcher/nerds-launcher/crates/core)
+   Compiling artcraft-launcher-ui-egui v0.10.0 (/home/runner/work/nerds-launcher/nerds-launcher/crates/ui-egui)
+   Compiling egui_kittest v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+    Finished `test` profile [optimized + debuginfo] target(s) in 2m 28s
+     Running tests/ui.rs (target/debug/deps/ui-91c779adbbf72247)
+
+running 79 tests
+test a_dismissed_install_prompt_is_not_called_a_cancelled_download ... ok
+test a_frame_stands_in_for_the_pictures_until_they_arrive ... ok
+test a_fresh_install_confirms_the_folder_and_configures_before_installing ... ok
+test a_job_finished_while_hidden_shows_one_fresh_toast_on_the_next_frame ... ok
+test a_kept_download_offers_retry_install_and_download_again ... ok
+test a_kept_update_names_its_version_and_an_up_to_date_app_is_not_downloaded_again ... ok
+test a_narrow_settings_row_keeps_its_control_clear_of_its_label ... ok
+test a_narrow_toolbar_names_its_controls_and_passes_strict_accessibility ... ok
+test a_not_installed_card_is_grey_until_the_pointer_is_over_it ... ok
+test a_page_without_pictures_has_no_gallery ... ok
+test an_apps_page_is_a_card_in_the_middle_with_next_and_previous_arrows_and_closes_from_outside ... ok
+test an_install_waiting_for_another_says_so_and_can_be_cancelled ... ok
+test an_occupied_folder_asks_before_replacing_it ... ok
+test app_and_launcher_offer_version_choices_without_starting_an_install ... ok
+test automatic_checks_run_every_five_minutes ... ok
+test automatic_updates_are_disabled_by_default ... ok
+test automatic_updates_queue_installs_for_outdated_apps_and_launcher ... ok
+test changelog_shortcuts_zoom_only_the_notes_text ... ok
+test choosing_an_app_version_turns_its_main_action_into_install ... ok
+test clicking_a_card_opens_its_details_drawer ... ok
+test closing_the_dialog_without_installing_drops_the_chosen_version ... ok
+test command_m_minimizes_the_mac_window_only ... ok
+test control_wheel_zooms_the_main_ui ... ok
+test custom_title_bar_has_window_buttons ... ok
+test details_drawer_in_the_light_theme ... ok
+test discord_link_opens_app_when_discord_is_installed ... ok
+test downloads_can_be_paused_resumed_and_discarded ... ok
+test each_cancellation_says_what_it_called_off ... ok
+test every_page_opens_and_pages_through_its_pictures ... ok
+test every_table_column_sorts_both_ways ... ok
+test feed_announcements_and_alerts_show_until_dismissed ... ok
+test grid_shows_every_status_and_installs_on_click ... ok
+test hiding_an_app_removes_it_until_it_is_unhidden ... ok
+test hostile_release_asset_urls_never_reach_the_opener ... ok
+test install_locations_survive_settings_save_and_older_settings_use_system_default ... ok
+test keeps_working_with_no_window_then_draws_in_a_new_one ... ok
+test launcher_update_prompts_to_relaunch_with_updated_version ... ok
+test links_open_the_right_pages ... ok
+test links_to_the_website_github_and_each_apps_pages ... ok
+test looks_again_at_installed_apps_every_few_minutes_not_every_frame ... ok
+test maximized_the_close_button_reaches_the_screens_corner ... ok
+test name_and_tagline_are_centred_on_the_icon ... ok
+test narrow_header_keeps_the_view_switch_clear_of_brand_text ... ok
+test offline_the_frame_says_so_and_opening_the_page_again_retries ... ok
+test opening_a_page_asks_for_its_pictures_once_and_only_while_it_lacks_some ... ok
+test opening_an_app_counts_and_frequently_used_puts_the_most_opened_first ... ok
+test opening_an_app_counts_once_across_discarded_passes ... ok
+test saved_filters_are_migrated_on_ui_construction ... ok
+test settings_link_to_discord ... ok
+test settings_shows_a_default_folder_only_when_every_app_shares_it ... ok
+test switching_views ... ok
+test table_view_and_light_theme ... ok
+test the_actual_open_button_launches_once_across_a_discarded_pass ... ok
+test the_actual_update_button_queues_once_across_a_discarded_pass ... ok
+test the_current_desktop_setting_is_only_offered_where_the_os_has_desktops ... ok
+test the_drawer_and_the_enlarged_picture_survive_any_window_size ... ok
+test the_enlarged_view_shows_a_frame_for_a_picture_still_missing ... ok
+test the_first_close_to_the_tray_is_explained_once ... ok
+test the_footer_names_the_services_behind_what_is_on_screen ... ok
+test the_install_folder_default_follows_the_package_the_backend_falls_back_to ... ok
+test the_install_folder_fields_default_to_the_hosts_answer ... ok
+test the_launcher_banner_cancel_is_sent_once_across_discarded_passes ... ok
+test the_launcher_update_waiting_for_other_installs_can_be_cancelled ... ok
+test the_launcher_updates_itself_and_quits_to_restart ... ok
+test the_lead_picture_can_be_enlarged ... ok
+test the_os_animation_setting_is_followed_as_it_changes ... ok
+test the_rate_limit_notice_never_runs_under_the_footer_links ... ok
+test the_same_download_is_sent_once_across_discarded_passes_but_again_next_frame ... ok
+test the_sort_offers_name_both_ways_recently_updated_and_frequently_used ... ok
+test the_toolbar_has_no_filter_dropdown ... ok
+test the_uninstall_prompt_keeps_its_own_size_after_a_taller_dialog ... ok
+test toolbar_keeps_navigation_refresh_search_and_view_on_one_unclipped_row ... ok
+test use_default_removes_an_app_override_and_settings_can_reset_the_root ... ok
+test version_choices_have_room_and_nightly_scrolls_with_the_versions ... ok
+test web_build_offers_downloads ... ok
+test with_animations_off_hovering_a_card_shows_at_once ... ok
+test with_animations_off_the_wheel_scrolls_at_once ... ok
+test with_animations_on_hovering_a_card_animates ... ok
+test with_animations_on_the_wheel_glides ... ok
+
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.34s
+
