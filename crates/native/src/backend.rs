@@ -1273,7 +1273,7 @@ mod tests {
         assert_eq!(found.unwrap().map(|r| r.tag), Some("v0.14.0".to_string()));
         // Without it, or without the list, the downgrade doesn't start.
         let gone = downgrade_previous(app, &pinned, &tagged("0.13.0"), Some(&installed), || Ok(vec![tagged("0.13.0")])).unwrap_err();
-        assert!(gone.contains("FilmCraft 0.14.0 isn't published any more") && gone.contains("Nothing was changed"), "{gone}");
+        assert!(gone.contains("NERDS Film 0.14.0 isn't published any more") && gone.contains("Nothing was changed"), "{gone}");
         let offline = downgrade_previous(app, &pinned, &tagged("0.13.0"), Some(&installed), || Err("offline".into())).unwrap_err();
         assert!(offline.contains("(offline)") && offline.contains("nothing was changed"), "{offline}");
     }

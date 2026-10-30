@@ -616,7 +616,6 @@ mod linux_tests {
         };
         assert!(ours("photocraft"));
         assert!(ours("ai.storyteller.photocraft"));
-        assert!(ours("ai.storyteller.solvecraft"));
         assert!(!ours("unrelated-package"));
     }
 

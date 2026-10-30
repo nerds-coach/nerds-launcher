@@ -374,7 +374,7 @@ fn install_commands(sent: &RefCell<Vec<Command>>) -> Vec<Command> {
 fn app_and_launcher_offer_version_choices_without_starting_an_install() {
     let (mut h, sent) = harness(ViewMode::Grid, egui::Theme::Dark, true);
     h.run_steps(6);
-    h.get_by_label("More actions for PhotoCraft").click();
+    h.get_by_label("More actions for NERDS Photo").click();
     h.run_steps(3);
     h.get_by_label("Choose version").click();
     h.run_steps(3);
@@ -493,7 +493,7 @@ fn version_menu(latest: Release, answer: Vec<Release>) -> VersionsHarness {
         None,
     );
     h.run_steps(6);
-    h.get_by_label("More actions for PhotoCraft").click();
+    h.get_by_label("More actions for NERDS Photo").click();
     h.run_steps(3);
     h.get_by_label("Choose version").click();
     h.run_steps(4);
@@ -1119,7 +1119,7 @@ fn a_narrow_toolbar_names_its_controls_and_passes_strict_accessibility() {
     h.get_by_role_and_label(egui::accesskit::Role::Button, "Check for updates");
     h.get_by_role_and_label(egui::accesskit::Role::Button, "Settings");
     h.get_by_role_and_label(egui::accesskit::Role::ComboBox, "Sort");
-    h.get_by_role_and_label(egui::accesskit::Role::Button, "More actions for PhotoCraft");
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "More actions for NERDS Photo");
     let unnamed = h.unnamed_widgets();
     assert!(unnamed.is_empty(), "narrow toolbar has unnamed input widgets: {unnamed:?}");
     h.check_accessibility();
@@ -1575,13 +1575,13 @@ fn the_uninstall_prompt_keeps_its_own_size_after_a_taller_dialog() {
     h.get_by_label("Done").click();
     h.run_steps(3);
     // PhotoCraft is installed, so its … menu offers Uninstall.
-    h.get_by_role_and_label(egui::accesskit::Role::Button, "More actions for PhotoCraft").click();
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "More actions for NERDS Photo").click();
     h.run_steps(3);
     h.get_by_label("Uninstall…").click();
     h.run_steps(4);
     h.check_accessibility();
-    h.get_by_role_and_label(egui::accesskit::Role::Label, "Uninstall PhotoCraft?");
-    assert_eq!(h.query_all_by_label_contains("Uninstall PhotoCraft?").count(), 1, "the title icon is decorative, not a second copy of the heading");
+    h.get_by_role_and_label(egui::accesskit::Role::Label, "Uninstall NERDS Photo?");
+    assert_eq!(h.query_all_by_label_contains("Uninstall NERDS Photo?").count(), 1, "the title icon is decorative, not a second copy of the heading");
     snapshot(&mut h, "uninstall-prompt-dark");
     // The buttons follow the text closely, not somewhere down the height Settings had (#88).
     let text = h.get_by_label("The app will be moved to the Trash. Your documents and settings stay.").rect();
@@ -2723,17 +2723,17 @@ fn changelog_shortcuts_zoom_only_the_notes_text() {
     h.run_steps(4);
     // The grid's default order is name A-Z, so pick the app explicitly: the first card is not
     // PhotoCraft, and the heading assertion below is about this release's own page.
-    h.get_by_label("More actions for PhotoCraft").click();
+    h.get_by_label("More actions for NERDS Photo").click();
     h.run_steps(2);
     h.get_by_label("Release notes").click();
     h.run_steps(4);
     assert_eq!(
-        h.query_all_by_role_and_label(egui::accesskit::Role::Image, "PhotoCraft 0.5.0").count(),
+        h.query_all_by_role_and_label(egui::accesskit::Role::Image, "NERDS Photo 0.5.0").count(),
         0,
         "the Notes hero icon is decorative and must not repeat the release heading"
     );
     assert_eq!(
-        h.query_all_by_role_and_label(egui::accesskit::Role::Label, "PhotoCraft 0.5.0").count(),
+        h.query_all_by_role_and_label(egui::accesskit::Role::Label, "NERDS Photo 0.5.0").count(),
         1,
         "the release heading appears exactly once"
     );
