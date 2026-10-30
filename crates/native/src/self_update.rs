@@ -233,8 +233,9 @@ pub fn update(
     let (asset, _) = pick_asset(release, &[artcraft_launcher_core::catalog::LAUNCHER_ASSET_STEM, LAUNCHER.id], platform, &[install.kind()])
         .ok_or_else(|| format!("NERDS Launcher {} has no {} for {}", release.version_label(), install.kind().label(), platform.label()))?;
     let asset = asset.clone();
-    let mut job = Job { http, paths, stop, phase, install_locations: &Default::default(), replace: false };
-    let file = install::download(release, &asset, &mut job)?;
+    let mut job = Job { http, paths, stop, phase, install_locations: &Default::default(), replace: false, downgrade: None };
+    // The download and its verified checksum; the launcher's own update needs only the file.
+    let (file, _sha) = install::download(release, &asset, &mut job)?;
     #[cfg(windows)]
     windows_precheck(install, paths, &file)?;
     // The restart ends this process: nothing else may be under way.
