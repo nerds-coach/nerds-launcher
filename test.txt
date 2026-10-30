@@ -1,0 +1,729 @@
+warning: patch `egui_demo_lib v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_inspection v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+warning: patch `egui_system_font_provider v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling zerofrom v0.1.8
+   Compiling stable_deref_trait v1.2.1
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling cobs v0.3.0
+   Compiling postcard v1.1.3
+   Compiling accesskit v0.25.1
+   Compiling vello_common v0.2.0
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling zerotrie v0.2.5
+   Compiling icu_provider v2.3.1
+   Compiling potential_utf v0.1.6
+   Compiling icu_collections v2.3.0
+   Compiling emath v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling unicode-bidi v0.3.18
+   Compiling ecolor v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling vello_cpu v0.2.0
+   Compiling objc2-app-kit v0.3.2
+   Compiling utf16_iter v1.0.5
+   Compiling epaint_default_fonts v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling unicode-properties v0.1.4
+   Compiling write16 v1.0.0
+   Compiling icu_normalizer v2.3.0
+   Compiling epaint v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling icu_properties v2.3.0
+   Compiling serde_json v1.0.154
+   Compiling egui v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling artcraft-launcher-core v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/crates/core)
+   Compiling tempfile v3.27.0
+   Compiling icu_locale_fallback_data v2.3.0
+   Compiling accesskit_consumer v0.39.1
+   Compiling fixed_decimal v0.7.3
+   Compiling winit v0.30.13 (https://github.com/storytold/winit.git?rev=a517b3846ee8457d84ee4975110bfda6797c44dc#a517b384)
+   Compiling icu_locale_fallback v2.3.0
+   Compiling icu_provider_adapters v2.3.0
+   Compiling icu_decimal v2.3.0
+   Compiling icu_plurals v2.3.0
+   Compiling icu_provider_blob v2.3.0
+   Compiling enum-map-derive v1.0.1
+   Compiling craft-i18n v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling enum-map v3.1.0
+   Compiling craft-fonts-build v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling craft-ui v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling egui-wgpu v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling egui_extras v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling artcraft-launcher-ui-egui v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/crates/ui-egui)
+   Compiling rustls-webpki v0.103.16
+   Compiling kittest v0.5.0
+   Compiling rustls v0.23.46
+   Compiling egui_kittest v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling ureq-proto v0.6.5
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling ureq v3.5.0
+   Compiling plist v1.10.3
+   Compiling idna_adapter v1.2.2
+   Compiling chrono v0.4.45
+   Compiling craft-update v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling idna v1.1.0
+   Compiling url v2.5.8
+   Compiling accesskit_macos v0.27.1
+   Compiling accesskit_winit v0.34.1
+   Compiling webbrowser v1.2.4
+   Compiling winresource v0.1.34
+   Compiling artcraft-launcher-native v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/crates/native)
+   Compiling arboard v3.6.1
+   Compiling muda v0.21.2
+   Compiling egui-winit v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling artcraft-launcher v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/apps/artcraft-launcher)
+   Compiling eframe v0.37.0 (https://github.com/storytold/egui.git?rev=6d518fc799681571963842f95b55a6b68431b15a#6d518fc7)
+   Compiling tray-icon v0.26.1
+   Compiling rfd v0.17.2
+   Compiling craft-quit v0.1.0 (https://github.com/storytold/craft-libs?rev=92d392cff132eaf53e13afff77f38b5c11b73aa0#92d392cf)
+   Compiling artcraft-launcher-web v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/apps/artcraft-launcher-web)
+   Compiling xtask v0.10.0 (/Users/runner/work/nerds-launcher/nerds-launcher/xtask)
+    Finished `test` profile [optimized + debuginfo] target(s) in 4m 12s
+     Running unittests src/main.rs (target/debug/deps/artcraft_launcher-14b10a8577433deb)
+
+running 44 tests
+test logging::tests::records_logged_before_the_file_exists_are_written_when_it_is_attached ... ok
+test logging::tests::redact_credentials_copies_unicode_whitespace_whole ... ok
+test logging::tests::redact_credentials_replaces_bearer_tokens ... ok
+test logging::tests::rotation_into_an_unusable_directory_is_an_error_not_a_panic ... ok
+test logging::tests::env_logger_records_reach_the_attached_file ... ok
+test logging::tests::the_file_stops_at_its_size_cap_with_one_note ... ok
+test logging::tests::rotation_keeps_the_previous_logs_and_starts_an_empty_file ... ok
+test logging::tests::without_a_file_nothing_is_kept ... ok
+test motion::tests::a_short_mask_leaves_animations_on ... ok
+test motion::tests::windows_animation_setting_is_bit_33_of_the_mask ... ok
+test logging::tests::the_pending_buffer_is_bounded_and_says_how_much_it_dropped ... ok
+test settings_file::tests::a_portable_suite_keeps_its_settings_inside_itself ... ok
+test settings_file::tests::a_missing_or_broken_file_has_no_settings ... ok
+test settings_file::tests::saving_keeps_what_eframe_stored ... ok
+test settings_file::tests::saving_settings_leaves_an_unrelated_temporary_file_alone ... ok
+test tests::a_tray_quit_nobody_took_up_ends_the_launcher ... ok
+test tests::a_wayland_session_is_known_before_the_window_opens ... ok
+test tests::a_wayland_window_cannot_hide ... ok
+test settings_file::tests::settings_saved_with_no_file_read_back ... ok
+test tests::browse_starts_at_the_nearest_folder_that_exists ... ok
+test tests::closing_keeps_the_launcher_in_the_tray ... ok
+test tests::closing_quits_without_a_tray_or_when_the_user_turned_it_off ... ok
+test tests::dx12_shaders_compile_with_fxc_unless_asked ... ok
+test tests::intel_macs_create_the_device_without_indirect_validation ... ok
+test tests::intel_macs_skip_the_indirect_validation_shaders ... ok
+test tests::notification_identity_is_claimed_once ... ok
+test tests::other_windows_hide ... ok
+test tests::quit_wins_over_opening_the_window ... ok
+test tests::quitting_overrides_a_close_to_the_tray ... ok
+test tests::a_window_that_hides_is_not_closed_to_the_tray ... ok
+test tests::the_device_asks_for_no_more_than_the_gpu_offers ... ok
+test tests::saved_filters_are_migrated_when_desktop_settings_load ... ok
+test tests::the_tray_alone_opens_the_window_when_asked ... ok
+test tests::the_tray_alone_waits_until_asked ... ok
+test tests::warp_beats_a_gl_gpu_but_not_a_d3d12_gpu ... ok
+test tests::with_no_window_a_show_request_opens_one ... ok
+test tests::with_no_window_changed_settings_are_saved_before_quitting ... ok
+test tests::with_no_window_nobody_came_back_to_it ... ok
+test tests::with_no_window_quit_wins_over_a_show_request ... ok
+test tests::with_no_window_the_ui_says_when_to_look_again ... ok
+test tests::with_no_window_unchanged_settings_are_not_written ... ok
+test tray::tests::linux_tray_has_a_stable_id_not_the_process_id ... ok
+test logging::tests::a_poisoned_lock_does_not_stop_logging ... ok
+test tests::with_no_window_it_sleeps_until_woken ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests/arguments.rs (target/debug/deps/arguments-6e28b3e34b2d84ef)
+
+running 2 tests
+test an_argument_that_is_not_utf8_is_ignored_like_any_other ... ok
+test the_version_is_printed_with_arguments_the_desktop_adds ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/update_helper.rs (target/debug/deps/update_helper-31c66228e753f256)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/version_info.rs (target/debug/deps/version_info-3f8941c54f3de135)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/artcraft_launcher_core-f79e64ed6d420530)
+
+running 54 tests
+test catalog::tests::every_app_has_its_icon ... ok
+test catalog::tests::pdfcraft_also_answers_to_printcraft ... ok
+test catalog::tests::apps_answer_to_their_nerds_and_upstream_names ... ok
+test catalog::tests::suite_has_thirteen_apps_with_unique_ids ... ok
+test details::tests::every_app_has_a_page ... ok
+test details::tests::every_page_belongs_to_a_suite_app_once ... ok
+test details::tests::only_jpeg_files_are_accepted ... ok
+test details::tests::oversized_screenshots_are_refused_before_decoding ... ok
+test details::tests::pages_are_filled_in ... ok
+test details::tests::picture_addresses_come_only_from_the_pages_own_pictures ... ok
+test details::tests::reads_jpeg_frame_dimensions ... ok
+test distro::tests::os_release_is_parsed ... ok
+test distro::tests::the_distro_family_picks_the_package_format ... ok
+test feed::tests::a_feed_url_cannot_traverse_out_of_the_repository ... ok
+test feed::tests::a_rename_out_of_storytold_is_dropped ... ok
+test feed::tests::feed_release_drops_an_asset_from_another_tag ... ok
+test feed::tests::a_local_mirror_is_trusted_only_when_asked_for_and_never_goes_stale ... ok
+test feed::tests::reads_what_storyteller_web_serves ... ignored, needs a sample written by storyteller-web
+test feed::tests::follows_repo_renames_but_never_trusts_a_repo_it_was_not_told_about ... ok
+test feed::tests::survives_anything_the_server_might_send ... ok
+test feed::tests::uses_fresh_entries_and_falls_back_for_everything_else ... ok
+test feed::tests::reads_notices_and_renames ... ok
+test platform::tests::apple_silicon_keeps_the_intel_fallback ... ok
+test platform::tests::asset_names_carry_their_architecture ... ok
+test platform::tests::freebsd_picks_the_tarball_for_the_processor ... ok
+test platform::tests::intel_macos_never_selects_an_arm_only_build ... ok
+test platform::tests::macos_prefers_the_published_universal_build ... ok
+test platform::tests::macos_split_builds_match_the_processor ... ok
+test platform::tests::picks_the_native_build_first_and_falls_back_to_emulation ... ok
+test platform::tests::reads_asset_names ... ok
+test platform::tests::strictly_matches_architecture_for_all_linux_package_formats ... ok
+test protocol::tests::install_folders_inherit_the_default_unless_the_app_has_an_override ... ok
+test protocol::tests::old_backend_options_keep_system_install_locations ... ok
+test release::tests::a_nightly_without_published_checksums_is_unavailable ... ok
+test release::tests::drops_downloads_that_point_elsewhere ... ok
+test release::tests::file_names_cannot_escape ... ok
+test release::tests::list_picks_the_newest_stable_release ... ok
+test release::tests::only_plain_https_links_pass ... ok
+test release::tests::reads_checksums_and_redirects ... ok
+test release::tests::reads_the_latest_release ... ok
+test release::tests::release_html_url_rejects_traversal_and_metacharacters ... ok
+test release::tests::selected_release_cannot_download_an_asset_from_a_different_tag ... ok
+test release::tests::selection_follows_nightly_or_pins_an_older_release_without_beta_fallback ... ok
+test release::tests::traversal_cannot_escape_the_repository ... ok
+test release::tests::truncate_keeps_whole_characters ... ok
+test status::tests::status_covers_every_case ... ok
+test time::tests::ago_kind_matches_the_english_fallback ... ok
+test release::tests::version_choices_exclude_drafts_and_distinguish_nightly_from_betas ... ok
+test time::tests::month_keys_cover_the_calendar ... ok
+test time::tests::reads_github_timestamps ... ok
+test time::tests::shows_dates_people_read ... ok
+test version::tests::orders_versions_and_spots_updates ... ok
+test version::tests::reads_package_manager_versions ... ok
+test version::tests::reads_tags_and_platform_spellings ... ok
+
+test result: ok. 53 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/artcraft_launcher_native-48b2f857cb68130e)
+
+running 228 tests
+test backend::tests::a_429_stops_the_retries_and_holds_off_the_api ... ok
+test backend::tests::a_downgrade_is_only_a_version_chosen_by_name_below_the_installed_one ... ok
+test backend::tests::a_failed_job_counts_as_installed_only_when_the_new_version_arrived ... ok
+test backend::tests::a_check_that_finds_a_newer_release_ends_the_retry_offer ... ok
+test backend::tests::a_kept_download_is_reported_and_can_be_thrown_away ... ok
+test backend::tests::a_local_mirror_answers_for_every_app_on_its_own ... ok
+test backend::tests::a_cancelled_launcher_update_stops_waiting_and_claims_nothing ... ok
+test backend::tests::a_panicking_check_worker_releases_its_busy_flag ... ok
+test backend::tests::a_panicking_detection_worker_releases_its_busy_flag ... ok
+test backend::tests::a_panicking_job_worker_removes_its_busy_entry ... ok
+test backend::tests::after_loading_github_waits_for_a_serious_feed_failure ... ok
+test backend::tests::an_install_cannot_use_a_stale_release_from_a_different_track ... ok
+test backend::tests::before_everything_loads_github_is_asked_more_eagerly ... ok
+test backend::tests::changing_the_settings_reports_kept_downloads_again ... ok
+test backend::tests::feed_url_overrides_are_loopback_only_outside_local_mirror_builds ... ok
+test backend::tests::github_is_only_the_fallback_and_is_asked_rarely ... ok
+test backend::tests::job_finished_is_emitted_after_its_busy_entry_is_removed ... ok
+test backend::tests::only_a_failed_shared_call_can_count_as_installed ... ok
+test backend::tests::only_a_version_chosen_by_name_below_the_installed_one_looks_for_a_package_to_put_back ... ok
+test backend::tests::refresh_asks_github_when_its_redirect_names_a_newer_release_than_the_feed ... ok
+test backend::tests::the_first_poll_tries_once_and_falls_back_at_once ... ok
+test backend::tests::a_pinned_app_is_never_offered_a_newer_release ... ok
+test backend::tests::the_launcher_gives_up_waiting_and_names_the_busy_apps ... ok
+test backend::tests::the_limit_notice_shows_only_while_details_are_missing ... ok
+test desktop_entry::tests::quotes_exec_paths_per_the_spec ... ok
+test desktop_entry::tests::reads_back_the_program_it_wrote_and_the_apps_own_entries ... ok
+test desktop_entry::tests::writes_a_complete_entry ... ok
+test detect::tests::apps_find_their_exe_under_their_nerds_and_upstream_folders ... ok
+test detect::tests::nerds_builds_match_under_their_nerds_name_and_publisher ... ok
+test detect::tests::parse_cli_version_accepts_id_display_name_and_former_id ... ok
+test detect::tests::pdfcraft_exe_is_sought_under_every_name_it_has_shipped_as ... ok
+test detect::tests::pdfcraft_matches_its_former_printcraft_installer_name ... ok
+test detect::tests::pdfcraft_still_matches_its_own_installer_name ... ok
+test detect::tests::printcraft_entries_match_nothing_else ... ok
+test detect::tests::recognises_appimage_names_conservatively ... ok
+test detect::tests::the_launcher_msi_installs_to_artcraft_launcher_and_the_apps_do_not ... ok
+test detect::tests::the_launcher_records_its_folder_under_the_publisher_key ... ok
+test feed_throttle::tests::a_429_during_the_first_load_ends_the_fast_start ... ok
+test feed_throttle::tests::a_429_throttles_hard_and_harder ... ok
+test feed_throttle::tests::a_broken_or_absurd_saved_file_means_no_wait ... ok
+test feed_throttle::tests::a_good_answer_resets_the_backoff ... ok
+test feed_throttle::tests::a_healthy_first_load_retries_quickly ... ok
+test feed_throttle::tests::failures_back_off_after_loading ... ok
+test feed_throttle::tests::jitter_only_ever_delays_a_429 ... ok
+test feed_throttle::tests::once_loaded_never_more_than_one_request_a_minute ... ok
+test feed_throttle::tests::retry_after_is_honoured_but_never_shortens_our_wait ... ok
+test feed_throttle::tests::the_backoff_survives_a_restart ... ok
+test feed_throttle::tests::the_first_load_ends_after_ten_requests_even_without_an_answer ... ok
+test feed_throttle::tests::the_first_load_may_go_faster_but_never_past_ten_a_minute ... ok
+test http::tests::a_complete_body_of_exactly_the_published_size_succeeds ... ok
+test backend::tests::the_launcher_restarts_only_once_every_other_job_has_ended ... ok
+test http::tests::a_file_over_the_cap_is_refused ... ok
+test http::tests::a_gzip_bomb_answer_is_refused_before_parsing ... ok
+test http::tests::a_kept_file_that_no_longer_matches_is_fetched_again ... ok
+test http::tests::a_kept_file_that_still_matches_is_not_fetched_again ... ok
+test http::tests::a_missing_file_fails_at_once ... ok
+test http::tests::a_partial_file_from_an_earlier_run_is_continued ... ok
+test http::tests::a_secondary_limit_waits_for_retry_after_not_the_hourly_reset ... ok
+test http::tests::a_dropped_connection_resumes_where_it_stopped ... ok
+test http::tests::an_empty_hourly_quota_waits_for_the_reset ... ok
+test http::tests::an_oversized_feed_answer_is_refused_before_parsing ... ok
+test http::tests::an_oversized_partial_file_is_restarted_from_zero ... ok
+test http::tests::an_oversized_partial_file_that_cannot_be_removed_reports_an_error ... ok
+test http::tests::cancelling_throws_the_partial_file_away ... ok
+test http::tests::cleaning_keeps_current_partial_files_and_removes_leftovers ... ok
+test http::tests::corrupt_data_is_fetched_again_and_never_kept ... ok
+test http::tests::downloads_a_real_release_asset ... ignored, needs network access
+test http::tests::get_bytes_rejects_oversized_payload ... ok
+test http::tests::github_refusals_are_read_the_way_github_documents_them ... ok
+test http::tests::host_is_what_follows_the_scheme ... ok
+test http::tests::partial_files_are_named_after_the_file_and_size ... ok
+test http::tests::pausing_keeps_the_partial_file_and_resuming_continues_it ... ok
+test http::tests::reads_content_ranges ... ok
+test http::tests::a_server_that_ignores_ranges_starts_over ... ok
+test install::msi_batch::tests::a_batch_too_long_for_one_command_line_falls_back_to_one_prompt_each ... ok
+test install::msi_batch::tests::a_job_counts_as_preparing_until_it_arrives_or_leaves ... ok
+test install::msi_batch::tests::a_path_that_could_break_out_of_the_quotes_is_refused ... ok
+test install::msi_batch::tests::a_quote_in_a_path_cannot_end_the_string ... ok
+test install::msi_batch::tests::base64_matches_the_standard_test_vectors ... ok
+test install::msi_batch::tests::exit_codes_mean_the_same_as_for_one_app ... ok
+test install::msi_batch::tests::the_command_line_is_the_single_app_route_with_the_same_parts ... ok
+test install::msi_batch::tests::the_elevated_script_runs_each_package_and_keeps_the_first_failure ... ok
+test install::msi_batch::tests::the_launcher_side_asks_once_and_reports_a_declined_prompt ... ok
+test install::msi_downgrade::tests::a_failed_install_puts_the_previous_version_back_and_says_so ... ok
+test install::msi_downgrade::tests::a_failed_removal_changes_nothing_and_installs_nothing ... ok
+test install::msi_downgrade::tests::a_refused_prompt_also_puts_the_previous_version_back ... ok
+test install::msi_downgrade::tests::a_removal_that_fails_after_removing_one_copy_puts_the_previous_version_back ... ok
+test install::msi_downgrade::tests::each_outcome_tells_the_person_what_is_installed_now ... ok
+test install::msi_downgrade::tests::only_a_real_product_code_reaches_the_elevated_session ... ok
+test install::msi_downgrade::tests::the_newer_copy_goes_before_the_chosen_version_and_nothing_is_put_back_on_success ... ok
+test install::msi_downgrade::tests::the_session_exit_code_says_which_step_stopped_it ... ok
+test install::msi_downgrade::tests::when_putting_back_fails_too_the_person_is_told_how_to_recover ... ok
+test install::msi_downgrade::tests::without_the_one_prompt_session_nothing_is_changed ... ok
+test install::tests::a_failed_install_keeps_the_download_for_the_next_try ... ok
+test install::tests::a_failed_rollback_keeps_the_old_app_and_reports_its_backup_path ... ok
+test install::tests::a_new_install_reports_what_it_would_write_over ... ok
+test http::tests::small_binary_files_are_read_whole_and_a_404_is_none ... ok
+test install::tests::a_release_without_a_checksum_is_refused_before_anything_is_fetched ... ok
+test install::tests::an_unavailable_msi_is_refused_before_starting_the_installer ... ok
+test install::tests::arch_packages_from_a_repository_are_updated_with_the_system ... ok
+test install::tests::aur_packages_are_not_updated_as_arch_pkg ... ok
+test install::tests::each_way_back_is_allowed_only_for_the_install_it_can_undo ... ok
+test install::tests::an_unavailable_custom_folder_is_rejected_before_downloading ... ok
+test install::tests::install_rejects_an_artifact_whose_version_is_not_the_advertised_one ... ok
+test install::tests::lays_out_both_freebsd_tarball_styles_like_usr_local ... ok
+test install::tests::install_refuses_to_downgrade_when_target_release_is_older ... ok
+test install::tests::macos_checks::a_real_craft_app_carries_the_teams_signature ... ignored, needs a Craft App from a real release
+test backend::tests::a_failing_api_is_retried_quickly_only_during_the_first_load ... ok
+test install::tests::macos_checks::a_copy_under_the_old_name_is_replaced_by_one_under_the_new_name ... ok
+test install::tests::macos_checks::an_unrelated_bundle_at_the_selected_destination_is_preserved ... ok
+test install::tests::macos_checks::only_the_teams_signature_passes ... ok
+test install::tests::macos_checks::an_unsigned_update_leaves_the_installed_copy_alone ... ok
+test install::tests::msi_folder_assignment_preserves_spaces_unicode_and_root_separators ... ok
+test install::tests::msi_install_uses_the_package_target_instead_of_a_symlinked_cache ... ok
+test install::tests::msi_updates_keep_the_registered_context_and_new_installs_send_no_scope ... ok
+test install::tests::only_the_release_arch_package_is_updated_by_the_launcher ... ok
+test install::tests::release_arch_packages_are_updated_as_arch_pkg ... ok
+test install::tests::selected_folders_must_exist_and_leave_no_probe_files ... ok
+test install::tests::single_top_folder_rejects_symlink ... ok
+test install::tests::solidcraft_is_never_installed_from_its_unsigned_macos_build ... ok
+test install::tests::swap_keeps_the_old_copy_until_the_new_one_is_in_place ... ok
+test install::tests::swap_preserves_a_dangling_backup_symlink ... ok
+test install::tests::swap_preserves_an_unrelated_backup_directory ... ok
+test install::tests::swap_preserves_an_unrelated_backup_file ... ok
+test install::tests::the_default_folder_is_wherever_the_installer_would_put_a_new_app ... ok
+test install::tests::the_mac_default_folder_lookup_creates_nothing ... ok
+test install::tests::the_mac_default_folder_lookup_does_not_write_through_a_planted_link ... ok
+test install::tests::tree_files_does_not_traverse_directory_symlinks ... ok
+test install::tests::unavailable_arch_package_not_selected_for_new_install ... ok
+test install::tests::updates_keep_the_installed_format ... ok
+test install::tests::updates_stay_beside_the_launchers_copy_and_new_installs_use_the_chosen_folder ... ok
+test manifest::tests::round_trips_and_survives_garbage ... ok
+test msi_context::tests::a_blocked_lookup_without_a_record_stops_the_update ... ok
+test msi_context::tests::a_copy_that_is_not_an_msi_takes_the_package_default ... ok
+test msi_context::tests::a_fresh_install_is_machine_wide ... ok
+test msi_context::tests::a_fresh_install_is_not_looked_up ... ok
+test msi_context::tests::a_lookup_that_cannot_run_falls_back_to_the_uninstall_record ... ok
+test msi_context::tests::an_answer_that_is_unclear_or_doubled_never_uses_the_uninstall_record ... ok
+test msi_context::tests::an_update_keeps_the_context_of_the_copy_it_replaces ... ok
+test msi_context::tests::an_update_without_its_product_code_stops_before_probing ... ok
+test msi_context::tests::authoritative_machine_context_is_preserved ... ok
+test msi_context::tests::known_updates_keep_the_authoritative_context ... ok
+test msi_context::tests::malformed_product_codes_stop_before_any_shell_call ... ok
+test msi_context::tests::managed_and_unmanaged_accounts_are_both_per_user ... ok
+test msi_context::tests::missing_unknown_or_conflicting_contexts_are_not_guessed ... ok
+test msi_context::tests::records_in_two_contexts_give_no_fallback_scope ... ok
+test msi_context::tests::unavailable_context_never_becomes_a_fresh_install ... ok
+test packages::tests::candidate_names_cover_bundle_ids_for_deb_rpm_and_pacman ... ok
+test packages::tests::finds_aur_packages_in_every_flavour ... ok
+test packages::tests::prefers_managers_in_order_and_reads_revisions ... ok
+test packages::tests::reads_each_package_managers_listing ... ok
+test packages::tests::solidcraft_flatpak_is_found_under_its_older_ids_current_first ... ok
+test paths::tests::atomic_write_does_not_follow_a_temporary_file_symlink ... ok
+test paths::tests::atomic_write_does_not_overwrite_an_unrelated_temporary_file ... ok
+test paths::tests::atomic_write_replaces_a_complete_file_and_cleans_up_on_failure ... ok
+test process::discord_tests::discord_url_gives_app_or_web_url ... ok
+test process::discord_tests::linux_candidates_include_flatpak_and_system_paths ... ok
+test process::discord_tests::macos_candidates_include_standard_apps ... ok
+test process::explorer_tests::explorer_select_quotes_only_the_path ... ok
+test process::explorer_tests::explorer_select_uses_backslashes ... ok
+test process::explorer_tests::explorer_select_without_spaces ... ok
+test process::inherited_pipe_tests::exited_helper_does_not_wait_past_deadline_for_inherited_pipes ... ok
+test process::inherited_pipe_tests::pipe_holder ... ignored, self-spawned subprocess fixture
+test process::inherited_pipe_tests::pipe_parent ... ignored, self-spawned subprocess fixture
+test process::run_tests::a_failing_helper_reports_its_own_error ... ok
+test process::run_tests::a_helper_that_keeps_writing_still_times_out ... ok
+test process::run_tests::a_silent_failure_and_a_success ... ok
+test process::run_tests::successful_helpers_can_write_past_the_stderr_capture_limit ... ok
+test process::run_tests::successful_helpers_can_write_past_the_stdout_capture_limit ... ok
+test process::tests::running_paths_are_matched_literally ... ok
+test proxy::tests::scutil_falls_back_to_http_proxy ... ok
+test proxy::tests::scutil_https_proxy_with_exceptions ... ok
+test proxy::tests::scutil_without_a_proxy ... ok
+test proxy::tests::system_proxy_becomes_a_ureq_proxy_that_skips_loopback ... ok
+test proxy::tests::windows_bypass_list ... ok
+test proxy::tests::windows_per_protocol_list_prefers_https ... ok
+test proxy::tests::windows_settings_that_cannot_be_used ... ok
+test proxy::tests::windows_single_proxy_for_everything ... ok
+test queue::gathering::a_call_is_held_until_the_last_job_has_joined_and_then_takes_them_all ... ok
+test queue::gathering::a_cancel_ends_the_wait_without_running_anything ... ok
+test queue::gathering::a_job_that_drops_out_does_not_hold_the_others_forever ... ok
+test queue::gathering::a_job_that_is_told_to_wait_hears_it_once ... ok
+test queue::tests::a_dismissed_prompt_cancels_every_job_of_the_call ... ok
+test queue::tests::a_job_arriving_mid_install_waits_then_runs ... ok
+test queue::tests::a_job_taken_into_another_jobs_call_hears_it_started ... ok
+test queue::tests::a_job_whose_call_has_started_sees_it_through ... ok
+test queue::tests::a_waiting_job_can_be_cancelled_and_is_left_out_of_the_call ... ok
+test queue::tests::an_installer_that_dies_frees_the_queue_and_fails_its_jobs ... ok
+test queue::tests::installers_never_run_at_the_same_time ... ok
+test queue::tests::jobs_that_wait_together_share_one_call_per_command ... ok
+test queue::tests::waiting_alone_for_the_installer_can_be_cancelled ... ok
+test screenshots::tests::a_damaged_saved_copy_is_ignored ... ok
+test screenshots::tests::a_downloaded_picture_is_saved_where_it_will_be_read_from ... ok
+test screenshots::tests::a_picture_declaring_enormous_dimensions_is_refused_and_not_saved ... ok
+test screenshots::tests::saved_pictures_need_no_network_and_a_failure_ends_the_run ... ok
+test screenshots::tests::what_is_not_a_picture_is_not_kept ... ok
+test self_update::tests::a_corrupt_self_update_timestamp_does_not_overflow ... ok
+test self_update::tests::a_development_build_does_not_update_itself ... ok
+test self_update::tests::a_failed_update_is_offered_again_and_reported_once ... ok
+test self_update::tests::a_future_self_update_timestamp_does_not_suppress_updates ... ok
+test self_update::tests::a_missing_msi_cannot_schedule_a_self_update ... ok
+test self_update::tests::a_version_just_installed_is_not_offered_again ... ok
+test self_update::tests::msi_self_update_uses_the_target_of_a_symlinked_download ... ok
+test self_update::tests::only_a_scheduled_update_is_recorded_as_installed ... ok
+test self_update::tests::picks_the_nerds_launcher_files ... ok
+test self_update::tests::the_helper_uses_the_portable_launchers_own_folders ... ok
+test self_update::tests::the_launcher_picks_its_own_release_files ... ok
+test self_update::tests::the_new_bundle_replaces_the_running_one ... ok
+test self_update::tests::the_restart_waits_for_the_old_process_to_exit ... ok
+test self_update::tests::the_restarted_launcher_does_not_inherit_a_pretend_version ... ok
+test self_update::tests::the_update_helper_reads_back_its_arguments ... ok
+test self_update::tests::update_refuses_to_downgrade_when_release_is_older ... ok
+test single_instance::tests::a_fragmented_greeting_waits_for_the_complete_message ... ok
+test single_instance::tests::a_fresh_secret_is_a_distinct_nonempty_hex_string ... ok
+test single_instance::tests::a_newer_start_replaces_an_older_running_launcher ... ok
+test single_instance::tests::a_peer_that_keeps_sending_cannot_extend_the_greeting_deadline ... ok
+test single_instance::tests::a_replace_requires_the_same_users_token ... ok
+test single_instance::tests::a_running_launcher_from_before_the_handshake_is_recognised ... ok
+test install::tests::macos_checks::custom_bundles_are_detected_and_updates_stay_in_their_actual_location ... ok
+test single_instance::tests::a_tokenless_retry_replaces_a_running_launcher_from_before_the_token_handshake ... ok
+test single_instance::tests::an_older_greeting_without_a_write_shutdown_still_gets_an_answer ... ok
+test single_instance::tests::replaying_an_old_auth_response_is_rejected ... ok
+test single_instance::tests::rogue_server_failing_proof_receives_no_client_credentials ... ok
+test single_instance::tests::the_same_or_an_older_start_shows_the_running_launcher ... ok
+test single_instance::tests::token_is_never_transmitted_over_the_wire ... ok
+test single_instance::tests::verdict_reads_defensively ... ok
+test single_instance::tests::a_start_from_before_the_handshake_still_shows_the_window ... ok
+test install::tests::macos_checks::the_bundle_must_be_the_releases_version ... ok
+
+test result: ok. 224 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 42.01s
+
+     Running tests/windows_msi_context.rs (target/debug/deps/windows_msi_context-0f3ab59ef7437e02)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/artcraft_launcher_ui_egui-add461db34deaf27)
+
+running 71 tests
+test app::tests::a_cjk_language_is_drawn_only_with_its_own_installed_face ... ok
+test app::tests::a_launch_count_is_incremented_once_per_visible_frame ... ok
+test app::tests::a_repeated_pass_sends_nothing_but_a_new_frame_sends_again ... ok
+test app::tests::a_ui_toast_is_shown_once_across_passes ... ok
+test app::tests::attaching_a_window_keeps_messages_still_waiting_to_be_shown ... ok
+test app::tests::distinct_actions_in_a_later_pass_are_both_delivered ... ok
+test app::tests::a_hidden_result_gets_its_expiry_from_the_pass_that_shows_it ... ok
+test app::tests::a_pending_action_survives_the_fonts_ready_early_return_exactly_once ... ok
+test app::tests::two_distinct_intents_with_the_same_command_are_both_delivered ... ok
+test card_parts::tests::a_kept_version_notes_the_newer_release_without_colour ... ok
+test card_parts::tests::an_update_colours_only_the_new_version ... ok
+test cjk_font::tests::cjk_sits_on_the_latin_baseline ... ok
+test cjk_font::tests::face_index_finds_families_in_real_fonts ... ok
+test cjk_font::tests::face_index_rejects_what_isnt_a_font ... ok
+test cjk_font::tests::face_metrics_reads_font_metrics ... ok
+test cjk_font::tests::misans_is_looked_for_where_users_install_fonts ... ok
+test cjk_font::tests::system_font_loads_when_present ... ok
+test i18n::tests::an_abusive_locale_tag_is_bounded ... ok
+test i18n::tests::catalogs_have_rows_and_no_empty_translations ... ok
+test i18n::tests::chinese_counts_and_english_fallback_work ... ok
+test app::tests::strict_drawing_policy_rejects_cjk_text_without_its_installed_face - should panic ... ok
+test i18n::tests::complete_catalogs_translate_every_tagline ... ok
+test i18n::tests::complete_catalogs_translate_package_formats ... ok
+test i18n::tests::czech_plural_rule_works ... ok
+test i18n::tests::complete_catalogs_cover_every_ui_literal ... ok
+test i18n::tests::ellipsis_preserved ... ok
+test i18n::tests::french_locales_and_plurals_work ... ok
+test i18n::tests::german_counts_dates_and_messages_work ... ok
+test i18n::tests::german_locales_resolve ... ok
+test i18n::tests::hungarian_locales_and_plurals_work ... ok
+test i18n::tests::japanese_locales_and_counts_work ... ok
+test i18n::tests::language_labels_come_from_the_registry ... ok
+test i18n::tests::locale_tags_resolve ... ok
+test i18n::tests::message_templates_match_real_messages ... ok
+test i18n::tests::no_duplicate_keys ... ok
+test i18n::tests::every_msg_row_translates_its_own_text ... ok
+test i18n::tests::parse_rows_of_every_kind ... ok
+test i18n::tests::picker_lists_english_first_then_names_alphabetically ... ok
+test i18n::tests::plural_forms_count_matches_language ... ok
+test i18n::tests::polish_locales_resolve ... ok
+test i18n::tests::polish_plural_rule_works ... ok
+test i18n::tests::product_names_stay_in_english ... ok
+test i18n::tests::russian_plural_rule_works ... ok
+test i18n::tests::simplified_chinese_locales_respect_the_script ... ok
+test i18n::tests::spanish_locales_and_plurals_work ... ok
+test i18n::tests::placeholders_match_in_translation ... ok
+test i18n::tests::system_font_covers_japanese_in_every_ui_family ... ok
+test i18n::tests::unescape_works ... ok
+test i18n::tests::untranslated_plurals_fall_back_to_english_by_count ... ok
+test icons::tests::grey_pixels_have_no_colour_and_keep_their_alpha ... ok
+test install_target::tests::a_fresh_install_tries_the_preferred_format_then_the_rest ... ok
+test local_time::tests::a_date_follows_the_zone_it_is_read_in ... ok
+test i18n::tests::system_font_covers_chinese_in_every_ui_family ... ok
+test motion::tests::a_big_step_in_points_scrolls_at_once_too ... ok
+test motion::tests::egui_spreads_a_wheel_notch_over_frames ... ok
+test motion::tests::a_wheel_notch_scrolls_at_once ... ok
+test motion::tests::every_step_keeps_the_wheel_source ... ok
+test motion::tests::other_input_is_left_alone ... ok
+test motion::tests::shift_scrolls_sideways_at_once ... ok
+test motion::tests::the_styles_follow_the_setting ... ok
+test notes::tests::a_long_list_folds_after_six_changes_and_a_short_one_does_not ... ok
+test notes::tests::reads_githubs_generated_notes ... ok
+test theme::tests::production_fonts_are_latin_plus_attributed_monochrome_fallbacks ... ok
+test theme::tests::bundled_font_stack_covers_representative_dynamic_release_and_feed_text ... ok
+test versions::tests::only_a_kept_version_behind_the_newest_stable_release_is_noted ... ok
+test views::tests::a_flatpak_copy_of_the_launcher_gets_the_bundle ... ok
+test views::tests::a_plain_linux_copy_still_gets_the_appimage ... ok
+test widgets::tests::each_glyph_has_its_own_shapes ... ok
+test widgets::tests::every_painter_glyph_stays_inside_its_control ... ok
+test widgets::tests::external_openers_refuse_hostile_urls ... ok
+test app::tests::selecting_chinese_keeps_the_selection_frame_english_until_the_font_gate ... ok
+
+test result: ok. 71 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+
+     Running tests/chinese.rs (target/debug/deps/chinese-13dd769ddceb9eef)
+
+running 1 test
+test simplified_chinese_switches_persists_and_keeps_install_actions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/french.rs (target/debug/deps/french-ae3447e0791e8487)
+
+running 1 test
+test french_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/german.rs (target/debug/deps/german-1418437ff840c835)
+
+running 1 test
+test german_switches_persists_and_keeps_install_actions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/hungarian.rs (target/debug/deps/hungarian-6f4be9d6dbbf2896)
+
+running 1 test
+test hungarian_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/japanese.rs (target/debug/deps/japanese-cf996c9b5c6f25a7)
+
+running 1 test
+test japanese_switches_persists_and_keeps_install_actions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/polish.rs (target/debug/deps/polish-a27c368a7b125d75)
+
+running 1 test
+test polish_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/portuguese.rs (target/debug/deps/portuguese-5a4dae2253fa81e3)
+
+running 1 test
+test portuguese_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/russian.rs (target/debug/deps/russian-9ee2865e69ea8c02)
+
+running 1 test
+test russian_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/spanish.rs (target/debug/deps/spanish-d16b8a4a700793b1)
+
+running 1 test
+test spanish_ui_translates_labels_dates_and_messages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/ui.rs (target/debug/deps/ui-f22496db91835db3)
+
+running 79 tests
+test a_frame_stands_in_for_the_pictures_until_they_arrive ... ok
+test a_fresh_install_confirms_the_folder_and_configures_before_installing ... ok
+test a_job_finished_while_hidden_shows_one_fresh_toast_on_the_next_frame ... ok
+test a_kept_update_names_its_version_and_an_up_to_date_app_is_not_downloaded_again ... ok
+test a_kept_download_offers_retry_install_and_download_again ... ok
+test a_narrow_toolbar_names_its_controls_and_passes_strict_accessibility ... ok
+test a_narrow_settings_row_keeps_its_control_clear_of_its_label ... ok
+test a_page_without_pictures_has_no_gallery ... ok
+test an_apps_page_is_a_card_in_the_middle_with_next_and_previous_arrows_and_closes_from_outside ... ok
+test an_install_waiting_for_another_says_so_and_can_be_cancelled ... ok
+test an_occupied_folder_asks_before_replacing_it ... ok
+test a_dismissed_install_prompt_is_not_called_a_cancelled_download ... ok
+test automatic_checks_run_every_five_minutes ... ok
+test automatic_updates_are_disabled_by_default ... ok
+test app_and_launcher_offer_version_choices_without_starting_an_install ... ok
+test automatic_updates_queue_installs_for_outdated_apps_and_launcher ... ok
+test choosing_an_app_version_turns_its_main_action_into_install ... ok
+test clicking_a_card_opens_its_details_drawer ... ok
+test closing_the_dialog_without_installing_drops_the_chosen_version ... ok
+test command_m_minimizes_the_mac_window_only ... ok
+test control_wheel_zooms_the_main_ui ... ok
+test custom_title_bar_has_window_buttons ... ok
+test details_drawer_in_the_light_theme ... ok
+test discord_link_opens_app_when_discord_is_installed ... ok
+test downloads_can_be_paused_resumed_and_discarded ... ok
+test changelog_shortcuts_zoom_only_the_notes_text ... ok
+test each_cancellation_says_what_it_called_off ... ok
+test every_table_column_sorts_both_ways ... ok
+test feed_announcements_and_alerts_show_until_dismissed ... ok
+test grid_shows_every_status_and_installs_on_click ... ok
+test a_not_installed_card_is_grey_until_the_pointer_is_over_it ... ok
+test hiding_an_app_removes_it_until_it_is_unhidden ... ok
+test install_locations_survive_settings_save_and_older_settings_use_system_default ... ok
+test keeps_working_with_no_window_then_draws_in_a_new_one ... ok
+test launcher_update_prompts_to_relaunch_with_updated_version ... ok
+test links_open_the_right_pages ... ok
+test every_page_opens_and_pages_through_its_pictures ... ok
+test looks_again_at_installed_apps_every_few_minutes_not_every_frame ... ok
+test maximized_the_close_button_reaches_the_screens_corner ... ok
+test hostile_release_asset_urls_never_reach_the_opener ... ok
+test name_and_tagline_are_centred_on_the_icon ... ok
+test links_to_the_website_github_and_each_apps_pages ... ok
+test offline_the_frame_says_so_and_opening_the_page_again_retries ... ok
+test opening_an_app_counts_and_frequently_used_puts_the_most_opened_first ... ok
+test opening_an_app_counts_once_across_discarded_passes ... ok
+test saved_filters_are_migrated_on_ui_construction ... ok
+test settings_link_to_discord ... ok
+test opening_a_page_asks_for_its_pictures_once_and_only_while_it_lacks_some ... ok
+test switching_views ... ok
+test table_view_and_light_theme ... ok
+test the_actual_open_button_launches_once_across_a_discarded_pass ... ok
+test the_actual_update_button_queues_once_across_a_discarded_pass ... ok
+test settings_shows_a_default_folder_only_when_every_app_shares_it ... ok
+test the_current_desktop_setting_is_only_offered_where_the_os_has_desktops ... ok
+test the_enlarged_view_shows_a_frame_for_a_picture_still_missing ... ok
+test the_first_close_to_the_tray_is_explained_once ... ok
+test the_drawer_and_the_enlarged_picture_survive_any_window_size ... ok
+test the_install_folder_default_follows_the_package_the_backend_falls_back_to ... ok
+test the_install_folder_fields_default_to_the_hosts_answer ... ok
+test the_launcher_banner_cancel_is_sent_once_across_discarded_passes ... ok
+test the_footer_names_the_services_behind_what_is_on_screen ... ok
+test the_launcher_updates_itself_and_quits_to_restart ... ok
+test the_lead_picture_can_be_enlarged ... ok
+test the_launcher_update_waiting_for_other_installs_can_be_cancelled ... ok
+test the_rate_limit_notice_never_runs_under_the_footer_links ... ok
+test the_same_download_is_sent_once_across_discarded_passes_but_again_next_frame ... ok
+test the_sort_offers_name_both_ways_recently_updated_and_frequently_used ... ok
+test the_toolbar_has_no_filter_dropdown ... ok
+test the_uninstall_prompt_keeps_its_own_size_after_a_taller_dialog ... ok
+test toolbar_keeps_navigation_refresh_search_and_view_on_one_unclipped_row ... ok
+test use_default_removes_an_app_override_and_settings_can_reset_the_root ... ok
+test the_os_animation_setting_is_followed_as_it_changes ... ok
+test version_choices_have_room_and_nightly_scrolls_with_the_versions ... ok
+test with_animations_off_hovering_a_card_shows_at_once ... ok
+test with_animations_off_the_wheel_scrolls_at_once ... ok
+test with_animations_on_hovering_a_card_animates ... ok
+test with_animations_on_the_wheel_glides ... ok
+test web_build_offers_downloads ... ok
+test narrow_header_keeps_the_view_switch_clear_of_brand_text ... ok
+
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.93s
+
+     Running unittests src/main.rs (target/debug/deps/artcraft_launcher_web-45dfae9a1a492496)
+
+running 1 test
+test tests::lang_comes_from_the_query_not_the_fragment ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/xtask-6bbd8604ff56fd35)
+
+running 18 tests
+test icns::tests::fills_every_slot_of_each_size ... ok
+test icns::tests::rejects_bad_input ... ok
+test ico::tests::packs_directory_and_payloads ... ok
+test ico::tests::rejects_bad_input ... ok
+test local::tests::dates_and_versions ... ok
+test local::tests::dev_versions_sit_between_releases_and_follow_commit_time ... ok
+test local::tests::intervals ... ok
+test ico::tests::committed_icon_is_valid ... ok
+test local::tests::only_plain_names_are_served ... ok
+test local::tests::terminal_sanitization_escapes_ansi_and_control_codes ... ok
+test icns::tests::committed_icon_is_valid ... ok
+test local::tests::writes_a_feed_the_launcher_reads ... ok
+test version::tests::keeps_crlf_line_endings ... ok
+test version::tests::reads_the_workspace_version ... ok
+test version::tests::replaces_only_the_workspace_version ... ok
+test version::tests::validates_versions ... ok
+test version::tests::the_real_manifest_has_a_valid_version ... ok
+test local::tests::read_line_bounded_enforces_limits ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests artcraft_launcher_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests artcraft_launcher_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests artcraft_launcher_ui_egui
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
