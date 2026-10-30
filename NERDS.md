@@ -6,6 +6,14 @@ file lists the changes, as the Apache License asks of modified files.
 
 ## Stage 1: the launcher (this change)
 
+**Following upstream**: this branch merges upstream's `main` (last: ArtCraft Launcher 0.10.0,
+which installs the apps' dual-scope Windows installers for one person or for everyone, in the
+scope they were installed in). Upstream's community app, SolidCraft, has no NERDS build and is
+left out of the suite (`catalog::SOLIDCRAFT` stays only as a test example). The NERDS Launcher
+keeps its own self-update (`native/src/self_update.rs`; upstream moved its own into
+`craft-update`, which would look for ArtCraft's signed releases) and its own install folder,
+`%LOCALAPPDATA%\Programs\NERDS Launcher` (`packaging/windows/install-policy.json`).
+
 **Look**
 - Colours: `crates/ui-egui/src/theme.rs`. NERDS blue `#0077C0` (sampled from the NERDS logo) for
   accents and primary buttons; deep navy `#0D1824` surfaces in dark mode, cool white `#F5F7FA` in
@@ -79,7 +87,9 @@ file lists the changes, as the Apache License asks of modified files.
   people read and leaves identifiers alone (data folders, file formats, registry keys, bundle
   ids), so settings and documents carry over. The apps that show ArtCraft's logo show NERDS's.
   Their Help menus still link to ArtCraft's website and Discord, the community behind the apps.
-- An app's own update check (PhotoCraft and PdfCraft have one) looks at its NERDS repository.
+- Each app's own update check (the shared `craft-update` library, `craft_update::suite::<APP>`)
+  looks at its NERDS repository and names the app by its NERDS name, so it never offers
+  ArtCraft's build of the app.
 - A Mac app installed under its upstream name (`PhotoCraft.app`) is replaced by the NERDS-named
   bundle on its next update or reinstall; the old copy goes to the Trash (`install::macos`).
 - The ArtCraft release feed is off (`USE_RELEASE_FEED`): it only knows the upstream builds.
