@@ -929,7 +929,9 @@ mod tests {
         for a in SUITE.iter().filter(|a| a.former_ids.is_empty()) {
             let exe = format!("{}.exe", a.id);
             let in_program_files: Vec<PathBuf> = roots.iter().flat_map(|r| a.names().map(|n| r.join(n).join(&exe))).collect();
-            assert_eq!(in_program_files.len(), 4, "{}: NERDS and upstream folder under each root", a.name);
+            // NERDS and upstream folder under each root, and one for an earlier NERDS name.
+            assert_eq!(in_program_files.len(), roots.len() * a.names().count(), "{}", a.name);
+            assert!(a.names().count() >= 2, "{}: a NERDS and an upstream name", a.name);
             assert_eq!(exe_candidates(a, None, &roots), in_program_files);
             let with_location: Vec<PathBuf> = std::iter::once(location.join(&exe)).chain(in_program_files).collect();
             assert_eq!(exe_candidates(a, Some(&location), &roots), with_location);
