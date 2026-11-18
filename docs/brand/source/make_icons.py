@@ -1,19 +1,19 @@
-"""NERDS app icons: one NERDS-blue tile per app with a white symbol for what the app does.
+"""NERDS app icons: one tile per app in its own colour, with a symbol for what the app does.
 All shapes are plain SVG paths (no fonts), drawn on a 1024 grid."""
 import math, re, sys
 from pathlib import Path
 
-W = '#FFFFFF'          # symbol
-B = '@B@'              # cut-outs inside white shapes: the tile colour (filled in per app)
-L = '@L@'              # secondary details: a light tint of the tile colour (per app)
+W = '@W@'              # symbol: white, or the app's own symbol colour (filled in per app)
+B = '@B@'              # cut-outs inside the symbol: the tile colour (filled in per app)
+L = '@L@'              # secondary details: a tint between the symbol and the tile (per app)
 
-# Each app's tile colour: the field colour of its Craft app icon, so NERDS Photo is as blue as
-# PhotoCraft and NERDS Vector as red-orange as VectorCraft. The launcher's own tile is NERDS blue.
+# Each app's colours, as NERDS chose them (2026-11-18): the tile, and the symbol when it isn't
+# white (NERDS Photo is a navy tile with a light-blue symbol). The launcher's own tile is NERDS blue.
 COLOURS = {
-    'photocraft': '#2f7bf5', 'vectorcraft': '#e8573f', 'filmcraft': '#8b5cf6', 'lightcraft': '#f2a516',
-    'pdfcraft': '#12a58a', 'effectcraft': '#e0368f', 'designcraft': '#7bb51c', 'figcraft': '#02da96',
-    'wordcraft': '#3b5bdb', 'soundcraft': '#14a9c4', 'deckcraft': '#f26b1d', 'cadcraft': '#14a3c7',
-    'gridcraft': '#1f9d55', 'nerds-launcher': '#0077c0',
+    'pdfcraft': '#f40f02', 'effectcraft': '#9999ff', 'soundcraft': '#9999ff', 'vectorcraft': '#ff9a00',
+    'designcraft': '#ff3366', 'lightcraft': '#31a8ff', 'photocraft': ('#001e36', '#31a8ff'),
+    'filmcraft': '#9999ff', 'cadcraft': '#e51050', 'figcraft': '#ff61f6', 'gridcraft': '#217346',
+    'deckcraft': '#d04423', 'wordcraft': '#1b5ebe', 'nerds-launcher': '#0077c0',
 }
 
 def _rgb(h): return [int(h[i:i + 2], 16) for i in (1, 3, 5)]
@@ -22,22 +22,24 @@ def mix(h, other, t): return _hex([a + (b - a) * t for a, b in zip(_rgb(h), _rgb
 def lighten(h, t): return mix(h, '#ffffff', t)
 def darken(h, t): return mix(h, '#000000', t)
 
-def palette(colour):
-    """Tile gradient (top, bottom), cut-out and light-detail colours for one tile colour. Light
-    colours (amber, mint, lime) are taken a touch deeper, and every symbol has a soft shadow, so
-    white stays readable on them."""
-    r, g, b = (v / 255 for v in _rgb(colour))
-    lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    deepen = max(0.0, (lum - 0.5) * 0.5)
-    base = darken(colour, deepen)
-    return lighten(base, 0.14), darken(base, 0.16), darken(base, 0.04), lighten(base, 0.58)
+def colours(app):
+    """(tile, symbol) for an app."""
+    c = COLOURS[app]
+    return c if isinstance(c, tuple) else (c, '#ffffff')
+
+def palette(tile_colour, symbol):
+    """Tile gradient (top, bottom), symbol, cut-out and secondary-detail colours. The tile's
+    middle is the chosen colour itself; every symbol has a soft shadow, so white stays readable
+    on the lighter tiles."""
+    light = lighten(tile_colour, 0.58) if symbol == '#ffffff' else mix(symbol, tile_colour, 0.42)
+    return lighten(tile_colour, 0.09), darken(tile_colour, 0.10), symbol, darken(tile_colour, 0.04), light
 
 MARK = re.search(r'<g fill="[^"]+" fill-rule="evenodd">(.*?)</g>',
                  Path(sys.argv[1]).read_text()).group(1)   # nerds-mark.svg paths
 
-def tile(body, name, colour):
-    top, bottom, cut, light = palette(colour)
-    body = body.replace('@B@', cut).replace('@L@', light)
+def tile(body, name, app):
+    top, bottom, symbol, cut, light = palette(*colours(app))
+    body = body.replace('@W@', symbol).replace('@B@', cut).replace('@L@', light)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="{name}">'
             f'<title>{name}</title><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">'
             f'<stop offset="0" stop-color="{top}"/><stop offset="1" stop-color="{bottom}"/></linearGradient>'
@@ -72,7 +74,7 @@ ICONS['vectorcraft'] = ('NERDS Vector',
     f('M170,790 h60 v60 h-60 Z') + f('M794,790 h60 v60 h-60 Z'))
 
 # Video editing: a clapperboard with a play button.
-ICONS['filmcraft'] = ('NERDS Film',
+ICONS['filmcraft'] = ('NERDS Studio',
     f('M268,452 H756 Q796,452 796,492 V736 Q796,776 756,776 H268 Q228,776 228,736 V492 Q228,452 268,452 Z') +
     f('M454,532 L454,700 L600,616 Z', B) +
     f('M226,402 L758,262 Q794,253 803,289 L813,326 L247,476 L236,436 Q228,410 226,402 Z') +
@@ -126,7 +128,7 @@ ICONS['figcraft'] = ('NERDS Proto',
     f('M592,594 L592,790 L646,736 L696,836 L722,824 L672,724 L746,718 Z', W))
 
 # Writing and document design: a page of text and a pencil.
-ICONS['wordcraft'] = ('NERDS Word',
+ICONS['wordcraft'] = ('NERDS Type',
     page(232, 196, 700, 828) + fold(700, 196) +
     s('M300,330 H520 M300,420 H620 M300,510 H620 M300,600 H560 M300,690 H460', 36, B) +
     f('M820,420 L880,480 L600,760 L520,780 L540,700 Z', B) +
@@ -176,5 +178,5 @@ ICONS['nerds-launcher'] = ('NERDS Launcher', launcher())
 
 out = Path(sys.argv[2])
 for app, (name, body) in ICONS.items():
-    (out / f'{app}.svg').write_text(tile(body, name, COLOURS[app]))
+    (out / f'{app}.svg').write_text(tile(body, name, app))
 print(len(ICONS), 'icons')

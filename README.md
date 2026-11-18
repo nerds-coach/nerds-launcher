@@ -17,13 +17,13 @@
 <p align="center">
   <img src="assets/app-icons/photocraft.png" width="48" alt="NERDS Photo">
   <img src="assets/app-icons/vectorcraft.png" width="48" alt="NERDS Vector">
-  <img src="assets/app-icons/filmcraft.png" width="48" alt="NERDS Film">
+  <img src="assets/app-icons/filmcraft.png" width="48" alt="NERDS Studio">
   <img src="assets/app-icons/lightcraft.png" width="48" alt="NERDS Light">
   <img src="assets/app-icons/pdfcraft.png" width="48" alt="NERDS PDF">
   <img src="assets/app-icons/effectcraft.png" width="48" alt="NERDS Effects">
   <img src="assets/app-icons/designcraft.png" width="48" alt="NERDS Layout">
   <img src="assets/app-icons/figcraft.png" width="48" alt="NERDS Proto">
-  <img src="assets/app-icons/wordcraft.png" width="48" alt="NERDS Word">
+  <img src="assets/app-icons/wordcraft.png" width="48" alt="NERDS Type">
   <img src="assets/app-icons/soundcraft.png" width="48" alt="NERDS Sound">
   <img src="assets/app-icons/deckcraft.png" width="48" alt="NERDS Deck">
   <img src="assets/app-icons/cadcraft.png" width="48" alt="NERDS CAD">
@@ -45,13 +45,13 @@ own builds) is listed in [NERDS.md](NERDS.md).
 |:-:|---|---|---|
 | <img src="assets/app-icons/photocraft.png" width="32"> | **NERDS Photo** | Image editing: layers, masks, type and real PSD files | [PhotoCraft](https://github.com/storytold/photocraft) |
 | <img src="assets/app-icons/vectorcraft.png" width="32"> | **NERDS Vector** | Vector illustration | [VectorCraft](https://github.com/storytold/vectorcraft) |
-| <img src="assets/app-icons/filmcraft.png" width="32"> | **NERDS Film** | Video editing, color and sound | [FilmCraft](https://github.com/storytold/filmcraft) |
+| <img src="assets/app-icons/filmcraft.png" width="32"> | **NERDS Studio** | Video editing, color and sound | [FilmCraft](https://github.com/storytold/filmcraft) |
 | <img src="assets/app-icons/lightcraft.png" width="32"> | **NERDS Light** | Photo library and raw development | [LightCraft](https://github.com/storytold/lightcraft) |
 | <img src="assets/app-icons/pdfcraft.png" width="32"> | **NERDS PDF** | Reading, organizing and protecting PDFs | [PdfCraft](https://github.com/storytold/pdfcraft) |
 | <img src="assets/app-icons/effectcraft.png" width="32"> | **NERDS Effects** | Motion graphics and visual effects | [EffectCraft](https://github.com/storytold/effectcraft) |
 | <img src="assets/app-icons/designcraft.png" width="32"> | **NERDS Layout** | Page layout and publishing | [DesignCraft](https://github.com/storytold/designcraft) |
 | <img src="assets/app-icons/figcraft.png" width="32"> | **NERDS Proto** | Interface design and prototyping | [FigCraft](https://github.com/storytold/figcraft) |
-| <img src="assets/app-icons/wordcraft.png" width="32"> | **NERDS Word** | Writing and document design | [WordCraft](https://github.com/storytold/wordcraft) |
+| <img src="assets/app-icons/wordcraft.png" width="32"> | **NERDS Type** | Writing and document design | [WordCraft](https://github.com/storytold/wordcraft) |
 | <img src="assets/app-icons/soundcraft.png" width="32"> | **NERDS Sound** | Recording, editing and mixing audio | [SoundCraft](https://github.com/storytold/soundcraft) |
 | <img src="assets/app-icons/deckcraft.png" width="32"> | **NERDS Deck** | Presentations and slide shows | [DeckCraft](https://github.com/storytold/deckcraft) |
 | <img src="assets/app-icons/cadcraft.png" width="32"> | **NERDS CAD** | Computer-aided design and drafting | [CADCraft](https://github.com/storytold/cadcraft) |

@@ -1299,7 +1299,7 @@ fn a_kept_update_names_its_version_and_an_up_to_date_app_is_not_downloaded_again
     h.run_steps(2);
     assert_eq!(*sent.borrow(), [Command::Install { app: "effectcraft".into() }]);
     // WordCraft is up to date: its menu offers Reinstall, which uses the kept file.
-    let row = h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Word").rect().center().y;
+    let row = h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Type").rect().center().y;
     h.get_all_by_label_contains("More actions").find(|n| (n.rect().center().y - row).abs() < 25.0).unwrap().click();
     h.run_steps(3);
     h.get_by_label("Reinstall");
@@ -1407,7 +1407,7 @@ fn hiding_an_app_removes_it_until_it_is_unhidden() {
     h.get_by_label("Hidden Apps 1").click();
     h.run_steps(4);
     h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Photo");
-    assert!(h.query_by_role_and_label(egui::accesskit::Role::Label, "NERDS Word").is_none());
+    assert!(h.query_by_role_and_label(egui::accesskit::Role::Label, "NERDS Type").is_none());
     let row = h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Photo").rect().center().y;
     h.get_all_by_label_contains("More actions").find(|n| (n.rect().center().y - row).abs() < 25.0).unwrap().click();
     h.run_steps(3);
@@ -1429,7 +1429,7 @@ fn switching_views() {
     h.run_steps(4);
     assert_eq!(h.state().as_ref().unwrap().settings.view, ViewMode::Table);
     h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Photo");
-    h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Word");
+    h.get_by_role_and_label(egui::accesskit::Role::Label, "NERDS Type");
     // The row icon is decorative; the wordmark carries the name exactly once.
     assert_eq!(h.query_all_by_role_and_label(egui::accesskit::Role::Image, "NERDS Photo").count(), 0, "the table icon must not repeat the wordmark");
     assert_eq!(
@@ -1494,13 +1494,13 @@ fn every_table_column_sorts_both_ways() {
     h.get_by_label("Status").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(&o[..4], ["NERDS Photo", "NERDS Effects", "NERDS Light", "NERDS Word"], "{o:?}");
+    assert_eq!(&o[..4], ["NERDS Photo", "NERDS Effects", "NERDS Light", "NERDS Type"], "{o:?}");
     // Reversed: the apps not installed first, then up to date, then the updates last. The table
     // keeps its column's order; only the grid puts installed apps above the rest.
     h.get_by_label("Status").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(&o[o.len().saturating_sub(4)..], ["NERDS Light", "NERDS Word", "NERDS Photo", "NERDS Effects"], "{o:?}");
+    assert_eq!(&o[o.len().saturating_sub(4)..], ["NERDS Light", "NERDS Type", "NERDS Photo", "NERDS Effects"], "{o:?}");
     // The old Installed and Latest columns are gone; Version shows the number, and from and to for an update.
     assert!(h.query_by_label("Latest").is_none());
     h.get_by_label("Version");
@@ -1514,7 +1514,7 @@ fn every_table_column_sorts_both_ways() {
     h.get_by_label("App").click();
     h.run_steps(3);
     let o = order(&h);
-    assert_eq!(o.first().map(String::as_str), Some("NERDS Word"), "{o:?}");
+    assert_eq!(o.first().map(String::as_str), Some("NERDS Vector"), "{o:?}");
 }
 
 /// The first close to the tray is explained once, by a system notification (#45, #215).
@@ -2125,7 +2125,7 @@ fn clicking_a_card_opens_its_details_drawer() {
     h.run_steps(8);
     // Every app has a page: a card of each generation opens one.
     h.get_by_label("NERDS Vector details");
-    h.get_by_label("NERDS Word details");
+    h.get_by_label("NERDS Type details");
     h.get_by_label("NERDS Photo details").click();
     h.run_steps(10);
     h.check_accessibility();
@@ -2875,7 +2875,7 @@ fn opening_an_app_counts_and_frequently_used_puts_the_most_opened_first() {
     h.run_steps(6);
     h.state_mut().as_mut().unwrap().settings.sort = SortKey::Frequent;
     h.run_steps(4);
-    // Installed apps in name order: Effect (updates), Light (Open), Photo (updates), Word (Open).
+    // Installed apps in name order: Effect (updates), Light (Open), Photo (updates), Type (Open).
     let opens: Vec<_> = h.get_all_by_label("Open").collect();
     assert_eq!(opens.len(), 2);
     opens[1].click(); // WordCraft
@@ -2883,7 +2883,7 @@ fn opening_an_app_counts_and_frequently_used_puts_the_most_opened_first() {
     assert!(sent.borrow().contains(&Command::Launch { app: "wordcraft".into() }));
     assert_eq!(h.state().as_ref().unwrap().settings.launches.get("wordcraft"), Some(&1));
     h.run_steps(4);
-    let word = h.get_by_label("NERDS Word details").rect();
+    let word = h.get_by_label("NERDS Type details").rect();
     let light = h.get_by_label("NERDS Light details").rect();
     assert!(word.min.y < light.min.y || (word.min.y == light.min.y && word.min.x < light.min.x), "{word:?} {light:?}");
 }
@@ -2901,7 +2901,7 @@ fn an_apps_page_is_a_card_in_the_middle_with_next_and_previous_arrows_and_closes
     // A card with a margin of window all round, not a panel against one edge.
     let close = h.get_by_label("Close (Esc)").rect();
     assert!(close.right() < 1180.0 - 24.0 && close.left() > 24.0, "{close:?}");
-    // Next goes to the following app in the grid's order (Word after Photo), and back again.
+    // Next goes to the following app in the grid's order (Type after Photo), and back again.
     h.get_by_label("Next app").click();
     h.run_steps(12);
     assert!(showing(&h, "wordcraft"));

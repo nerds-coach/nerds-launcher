@@ -21,16 +21,20 @@ keeps its own self-update (`native/src/self_update.rs`; upstream moved its own i
   (`apps/artcraft-launcher-web/index.html`) matches.
 - Header logo: the NERDS N mark and N.E.R.D.S. side by side (`docs/brand/nerds-logo-horizontal*.svg`).
 - App icon, tray icon, Windows installer art and the macOS DMG background: NERDS.
-- App icons: one tile per app in its Craft app's colour, with a white symbol for what it does
+- App icons: one tile per app in the colour NERDS chose for it (2026-11-18), with a white symbol
+  for what it does; NERDS Photo is a navy tile with a light-blue symbol
   (`assets/app-icons/source/*.svg`, drawn by `docs/brand/source/make_icons.py`, rendered by
-  `packaging/icons.sh`). Each app's accent in the launcher is its Craft colour too.
+  `packaging/icons.sh`). Each app's accent in the launcher is that colour too (NERDS Photo's is
+  the light blue), with text shades that stay readable in light and dark mode.
 
 **Names**
 - NERDS Launcher, the NerdsCraft Suite, and each app as "NERDS" + what it does
   (`crates/core/src/catalog.rs`). The NERDS builds of the apps install under these names too, so
   `name` (what install and detection match) and `display` are the same. The upstream name is the
   first of `former_names`: earlier NERDS builds installed under it, and the apps' data folders,
-  Windows registry key and Mac `<Name>Version` key keep it.
+  Windows registry key and Mac `<Name>Version` key keep it. A NERDS name an app had before
+  follows it (NERDS Film is now NERDS Studio, NERDS Word NERDS Type), so those installs are still
+  found and updated in place.
 - All user-facing text, in all eleven languages, and the packaging (MSI, DMG, .deb/.rpm, Flatpak)
   say NERDS Launcher. The Windows installer has its own upgrade code and component IDs, so it
   never replaces or clashes with an ArtCraft Launcher install.

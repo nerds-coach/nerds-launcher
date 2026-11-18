@@ -146,16 +146,17 @@ pub const NERDS_INK_DARK: [u8; 3] = [0x5c, 0xb6, 0xf2];
 
 /// The suite, in display order. `name` is the NERDS name each build installs as and the launcher
 /// shows; `former_names` starts with the upstream app's name, which earlier NERDS builds installed
-/// as. Each app keeps its Craft app's colour (`[surface, ink on light, ink on dark]`), as its NERDS
-/// icon does. `repo` is the NERDS build of the app: the upstream release with the NERDS icon and
-/// names (`nerds-coach/nerds-*`).
+/// as, then any earlier NERDS name (NERDS Film is now NERDS Studio, NERDS Word NERDS Type). Each
+/// app has the colour NERDS chose for it (`[surface, ink on light, ink on dark]`), as its NERDS icon
+/// does; NERDS Photo's icon is a navy tile with a symbol in this light blue. `repo` is the NERDS
+/// build of the app: the upstream release with the NERDS icon and names (`nerds-coach/nerds-*`).
 pub const SUITE: [CraftApp; 13] = [
     app(
         "photocraft",
         "NERDS Photo",
         &["PhotoCraft"],
         "Image editing",
-        [[0x2f, 0x7b, 0xf5], [0x1a, 0x5b, 0xc4], [0x7f, 0xb0, 0xff]],
+        [[0x31, 0xa8, 0xff], [0x20, 0x6f, 0xa8], [0x33, 0xa9, 0xff]],
         "nerds-coach/nerds-photo",
     ),
     app(
@@ -163,15 +164,15 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Vector",
         &["VectorCraft"],
         "Vector illustration",
-        [[0xe8, 0x57, 0x3f], [0xb8, 0x3a, 0x24], [0xff, 0x8a, 0x70]],
+        [[0xff, 0x9a, 0x00], [0x99, 0x5c, 0x00], [0xff, 0x9a, 0x00]],
         "nerds-coach/nerds-vector",
     ),
     app(
         "filmcraft",
-        "NERDS Film",
-        &["FilmCraft"],
+        "NERDS Studio",
+        &["FilmCraft", "NERDS Film"],
         "Video editing, color and sound",
-        [[0x8b, 0x5c, 0xf6], [0x6a, 0x3f, 0xd6], [0xb6, 0x9c, 0xff]],
+        [[0x99, 0x99, 0xff], [0x63, 0x63, 0xa6], [0x99, 0x99, 0xff]],
         "nerds-coach/nerds-film",
     ),
     app(
@@ -179,7 +180,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Light",
         &["LightCraft"],
         "Photo library and raw development",
-        [[0xf2, 0xa5, 0x16], [0x8a, 0x58, 0x00], [0xff, 0xc1, 0x4d]],
+        [[0x31, 0xa8, 0xff], [0x20, 0x6f, 0xa8], [0x33, 0xa9, 0xff]],
         "nerds-coach/nerds-light",
     ),
     CraftApp {
@@ -189,7 +190,7 @@ pub const SUITE: [CraftApp; 13] = [
             "NERDS PDF",
             &["PdfCraft", "PrintCraft"],
             "Reading, organizing and protecting PDFs",
-            [[0x12, 0xa5, 0x8a], [0x0a, 0x75, 0x63], [0x3f, 0xd6, 0xb8]],
+            [[0xf4, 0x0f, 0x02], [0xd4, 0x0d, 0x02], [0xf9, 0x7d, 0x76]],
             "nerds-coach/nerds-pdf",
         )
     },
@@ -198,7 +199,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Effects",
         &["EffectCraft"],
         "Motion graphics and visual effects",
-        [[0xe0, 0x36, 0x8f], [0xb0, 0x20, 0x6c], [0xff, 0x7a, 0xb8]],
+        [[0x99, 0x99, 0xff], [0x63, 0x63, 0xa6], [0x99, 0x99, 0xff]],
         "nerds-coach/nerds-effects",
     ),
     app(
@@ -206,7 +207,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Layout",
         &["DesignCraft"],
         "Page layout and publishing",
-        [[0x7b, 0xb5, 0x1c], [0x45, 0x70, 0x08], [0xa6, 0xe0, 0x4a]],
+        [[0xff, 0x33, 0x66], [0xc9, 0x28, 0x51], [0xff, 0x76, 0x98]],
         "nerds-coach/nerds-layout",
     ),
     app(
@@ -214,15 +215,15 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Proto",
         &["FigCraft"],
         "Interface design and prototyping",
-        [[0x02, 0xda, 0x96], [0x04, 0x7a, 0x56], [0x4f, 0xe8, 0xb6]],
+        [[0xff, 0x61, 0xf6], [0xa6, 0x3f, 0xa0], [0xff, 0x61, 0xf6]],
         "nerds-coach/nerds-proto",
     ),
     app(
         "wordcraft",
-        "NERDS Word",
-        &["WordCraft"],
+        "NERDS Type",
+        &["WordCraft", "NERDS Word"],
         "Writing and document design",
-        [[0x3f, 0x5f, 0xe0], [0x2a, 0x44, 0xb8], [0x8e, 0xa2, 0xff]],
+        [[0x1b, 0x5e, 0xbe], [0x1b, 0x5e, 0xbe], [0x7f, 0xa5, 0xdb]],
         "nerds-coach/nerds-word",
     ),
     app(
@@ -230,7 +231,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Sound",
         &["SoundCraft"],
         "Recording, editing and mixing audio",
-        [[0x1f, 0xa5, 0xc9], [0x0e, 0x72, 0x90], [0x5f, 0xd0, 0xee]],
+        [[0x99, 0x99, 0xff], [0x63, 0x63, 0xa6], [0x99, 0x99, 0xff]],
         "nerds-coach/nerds-sound",
     ),
     app(
@@ -238,7 +239,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Deck",
         &["DeckCraft"],
         "Presentations and slide shows",
-        [[0xf0, 0x7a, 0x1e], [0xa8, 0x4f, 0x0a], [0xff, 0xa0, 0x60]],
+        [[0xd0, 0x44, 0x23], [0xbd, 0x3e, 0x20], [0xe2, 0x8d, 0x79]],
         "nerds-coach/nerds-deck",
     ),
     app(
@@ -246,7 +247,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS CAD",
         &["CADCraft"],
         "Computer-aided design and drafting",
-        [[0x3e, 0xa6, 0xe8], [0x1a, 0x6f, 0xa8], [0x7c, 0xc8, 0xff]],
+        [[0xe5, 0x10, 0x50], [0xd0, 0x0f, 0x49], [0xf1, 0x7e, 0xa0]],
         "nerds-coach/nerds-cad",
     ),
     app(
@@ -254,7 +255,7 @@ pub const SUITE: [CraftApp; 13] = [
         "NERDS Grid",
         &["GridCraft"],
         "Spreadsheets and data",
-        [[0x1f, 0x9d, 0x55], [0x12, 0x70, 0x3a], [0x4f, 0xd6, 0x8a]],
+        [[0x21, 0x73, 0x46], [0x21, 0x73, 0x46], [0x7e, 0xae, 0x94]],
         "nerds-coach/nerds-grid",
     ),
 ];
