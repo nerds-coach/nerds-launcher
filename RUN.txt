@@ -1,0 +1,3 @@
+run: https://github.com/nerds-coach/nerds-launcher/actions/runs/44351941877
+commit: b3aa465b185366b5a2eec29a62d8e9c8042d8161
+job: test-Windows
